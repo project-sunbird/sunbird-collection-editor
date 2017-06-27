@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="/templates/ja_social_ii/favicon.ico" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- inject:css -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="styles/semantic.min.css">
+    <link rel="stylesheet" href="styles/content-editor.css" />
+    <link rel="stylesheet" type="text/css" href="styles/MyFontsWebfontsKit.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog.min.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="styles/noto.css">
+    <!-- endinject -->
+</head>
+
+<body class="ui fluid container">
+    <!-- End of localhost only code-->
+    <div ng-app="editorApp" class="maincontainer" ng-strict-di>
+        <div ng-controller="popupController as $ctrl" id="popuptemplate"></div>
+        <div ng-controller="MainCtrl">            
+            <div ng-if="editorContainer" ng-include="editorContainer.templateURL"></div>            
+        </div>
+    </div>
+    <!-- inject:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/async/dist/async.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/fabric/dist/fabric.min.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/x2js/index.js"></script>
+    <script src="bower_components/eventbus/index.js"></script>
+    <script src="bower_components/uuid/index.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/ng-dialog/js/ngDialog.js"></script>
+    <script src="bower_components/ngSafeApply/index.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.core.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.directive.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.common.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.core.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.cssLoader.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.jsLoader.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js"></script>
+    <script src="bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js"></script>
+    <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
+    <script src="scripts/dev/localhost-ce.js"></script>
+    <script src="libs/semantic.min.js"></script>
+    <script src="libs/mousetrap.min.js"></script>
+    <!-- Load Framework -->
+    <script src="scripts/framework/libs/ES5Polyfill.js"></script>
+    <script src="scripts/framework/class.js"></script>
+    <script src="scripts/framework/bootstrap-framework.js"></script>
+    <script src="scripts/framework/manager/resource-manager.js"></script>
+    <script src="scripts/framework/manager/event-manager.js"></script>
+    <script src="scripts/framework/manager/plugin-manager.js"></script>
+    <!-- Load Services -->
+    <script src="scripts/framework/service/iservice.js"></script>
+    <script src="scripts/framework/service/content-service.js"></script>
+    <script src="scripts/framework/service/search-service.js"></script>
+    <script src="scripts/framework/service/language-service.js"></script>
+    <script src="scripts/framework/repo/irepo.js"></script>
+    <script src="scripts/framework/repo/published-repo.js"></script>
+    <!-- Load Content Editor -->
+    <script src="scripts/contenteditor/bootstrap-editor.js"></script>
+    <script src="scripts/contenteditor/ce-config.js"></script>
+    <script src="scripts/contenteditor/content-editor.js"></script>
+    <script src="scripts/contenteditor/content-editor-api.js"></script>
+    <script src="scripts/contenteditor/base-plugin.js"></script>
+    <script src="scripts/contenteditor/manager/sidebar-manager.js"></script>
+    <script src="scripts/contenteditor/manager/container-manager.js"></script>
+    <script src="scripts/contenteditor/service/config-service.js"></script>
+    <script src="scripts/contenteditor/service/popup-service.js"></script>
+    <script src="scripts/contenteditor/service/telemetry-service.js"></script>
+    <script src="scripts/contenteditor/dispatcher/idispatcher.js"></script>
+    <script src="scripts/contenteditor/dispatcher/console-dispatcher.js"></script>
+    <script src="scripts/contenteditor/dispatcher/local-dispatcher.js"></script>
+    <script src="scripts/contenteditor/dispatcher/piwik-dispatcher.js"></script>
+    <script src="scripts/contenteditor/md5.js"></script>
+    <!-- Load Angular Controllers -->
+    <script src="scripts/angular/controller/main.js"></script>
+    <script src="scripts/angular/controller/popup-controller.js"></script>
+    <script src="scripts/angular/directive/template-compiler-directive.js"></script>
+    <!-- endinject -->
+</body>
+
+</html>

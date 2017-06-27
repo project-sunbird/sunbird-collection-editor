@@ -1,0 +1,333 @@
+/*
+CSS file for Content Editor
+*/
+
+html,
+body {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.maincontainer {
+    height: 90%;
+}
+
+.wrapper {
+    height: 100%;
+}
+
+.at-canvas {
+    border: 1px solid grey;
+}
+
+.at-dd-image-icon {
+    width: 17px !important;
+    height: 17px !important;
+}
+
+.at-menu-item {
+    width: 52.52px !important;
+    height: 42px !important;
+}
+
+.at-menu-image-item > .ui.image {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.at-context-menu {
+    background-color: #dddddd;
+}
+
+.at-inverted {
+    filter: invert(100%);
+}
+
+.at-center-container {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+#mainContainerGrid.ui.grid {
+    min-height: 100%;
+}
+
+.canvas-container {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    vertical-align: middle;
+}
+
+.grid-center-container {
+    padding: 0px !important;
+}
+
+.masthead {
+    min-height: 40px;
+}
+
+.stage-number {
+    position: absolute;
+    left: -23px;
+    bottom: 0;
+    font-size: 12px;
+}
+
+.thumbnail-container {
+    padding-left: 10px;
+}
+
+.thumbnail {
+    width: 160px !important;
+    height: 90px;
+    border-radius: 0px !important;
+}
+
+.thumbnail-ribbon {
+    top: 0.4rem !important;
+}
+
+.content-title {
+    font-size: 16px;
+    padding: 5px !important;
+    border: 1px white solid !important;
+    border-radius: 0px !important;
+}
+
+.content-masterhead {
+    background: #ffffff !important;
+    padding-top: 10px !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 1px !important;
+}
+
+.content-logo {
+    width: 50px !important;
+    position: relative;
+    margin-left: 15px !important;
+}
+
+.content-concept-label {
+    margin-left: 6px;
+    font-size: 13px;
+    color: grey;
+}
+
+.content-type-label {
+    margin-top: 8px;
+    font-size: 13px;
+    color: grey;
+}
+
+.content-teacher-comments {
+    width: 720px !important;
+    border-radius: 0px !important;
+    margin-top: 25px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    vertical-align: middle !important;
+    display: block;
+    font-size: 15px !important;
+}
+
+.config-toolbar {
+    box-sizing: border-box;
+    height: 32px;
+    background: linear-gradient(to bottom, white 0%, #eeeeee 100%);
+    box-shadow: 0 2px 6px 0 rgba(22, 45, 61, 0.55);
+    border-radius: 16px;
+    min-width: 32px;
+    cursor: pointer;
+    position: relative;
+    color: #2d4150;
+    line-height: 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 -5px 0 0;
+    padding: 0;
+    font-size: 15px;
+    list-style: none;
+    vertical-align: top;
+}
+
+.config-toolbar:hover {
+    color: #3797EA;
+}
+
+.ui.horizontal.list>.item.config-toolbar>i.icon {
+    margin-left: 4px;
+    margin-top: 4px;
+    font-size: 19px !important;
+}
+
+.ngdialog.ngdialog-theme-default {
+    padding-top: 80px !important;
+}
+
+.show-action-form-btn {
+    position: absolute;
+    left: 89px;
+    top: 13px;
+}
+
+#geniecontrols {
+    border: none;
+    outline: none;
+    width: 726px;
+    height: 411px;
+    margin-top: 20px;
+    position: fixed;
+    display: none;
+    pointer-events: none;
+}
+
+#geniecontrolsimage {
+    outline: none;
+    border: none;
+    width: 720px;
+    height: 405px;
+    background: none;
+    pointer-events: none;
+    position: absolute;
+}
+
+.username {
+    cursor: pointer;
+    text-align: right;
+}
+
+.user-details-container {
+    top: 555px;
+    left: 1px;
+    bottom: auto;
+    right: auto;
+    width: 344px!important;
+}
+
+.user-avtar {
+    width: 45px !important;
+    height: 45px !important;
+}
+
+.usercontext {
+    position: fixed;
+    font-size: 11px;
+    top: 8px;
+    right: 20px;
+    z-index: 1000;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+.scrollable-slides {
+    overflow-y: auto;
+    height: 516px;
+}
+
+.migartion-message-container {
+    padding: 10px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.load-screen-container {
+    margin: 12% 10%;
+}
+
+.load-screen-list {
+    margin-left: 40% !important;
+    padding: 10px !important;
+}
+
+.load-screen-dimmer {
+    background-color: rgba(255, 255, 255, .95) !important;
+}
+
+.migration-message {
+    font-size: 16px !important;
+}
+
+.migartion-positive-btn {
+    margin-left: 15px !important;
+}
+
+.ui.loading.table tr td {
+    border-top: 0px !important;
+}
+
+.ui.loading.table thead tr th {
+    border-bottom: 0px !important;
+}
+
+#configMenu {
+    margin: 1px 25px 0 0;
+    float: right;
+}
+
+#configMenu .ui.button {
+    border-left: 1px solid #ccc !important;
+}
+
+#configMenu .ui.button:last-child {
+    border-right: 1px solid #ccc !important;
+}
+
+.download-collaborator-icon {
+    padding: 6px;
+    color: #767676;
+    display: inline-block;
+    float: right;
+}
+
+.download-collaborator-icon .download.link.icon {
+    line-height: 26px;
+}
+
+.ce-button.button,
+.ce-button .button {
+    background-color: #999;
+}
+
+.sidebar-menu {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-left: 30px !important;
+    border: none !important;
+    border-left: 1px solid #eee !important;
+    box-shadow: none !important;
+    float: right !important;
+    margin-right: 6px !important;
+}
+
+.sidebar-help {
+    height: 430px;
+    overflow-y: auto;
+}
+
+.sidebar-holder {
+    width: 100%;
+    overflow-y: auto;
+    margin: 0px !important;
+    border: none !important;
+    border-radius: 0px !important;
+    background: white !important;
+    box-shadow: none !important;
+}
