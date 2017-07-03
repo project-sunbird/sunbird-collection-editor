@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * Popup service helps to show interactive popup modal/dialog window from plugin
- * 
+ *
  * @class org.ekstep.services.popupService
  * @author Sunil A S <sunils@ilimi.in>
  */
@@ -14,19 +14,19 @@ org.ekstep.services.popupService = new(org.ekstep.services.iService.extend({
     },
     /**
      *
-     * loads HTML template and angular module 
+     * loads HTML template and angular module
      * @param templatePath {string} path to HTML template
      * @param controllerPath {string} path to angular module
      * @memberof org.ekstep.services.popupService
      */
     loadNgModules: function(templatePath, controllerPath) {
-        this.loadModules && this.loadModules(templatePath, controllerPath);
+        return this.loadModules(templatePath, controllerPath)
     },
     /**
      *
      * opens popup modal/dialog window
      * @param config {object} config object refers to ngDialog open method parameter. please refer [ngDialog docs]{@link https://github.com/likeastore/ngDialog#openoptions}
-     * @param callback {function} pre close Callback 
+     * @param callback {function} pre close Callback
      * @memberof org.ekstep.services.popupService
      */
     open: function(config, callback) {
