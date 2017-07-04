@@ -13,6 +13,9 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
+    setNodeTitle: function(title) {
+        if(title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().setTitle(title);
+    },
     addNode: function(objectType) {
         var selectedNode = this.getActiveNode();
         var config = org.ekstep.collectioneditor.collectionService.getConfig();
