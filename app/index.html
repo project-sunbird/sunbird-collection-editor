@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
     <link rel="stylesheet" type="text/css" href="styles/iconfont.css">
     <link rel="stylesheet" type="text/css" href="styles/noto.css">
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <!-- endinject -->
 </head>
 
@@ -24,8 +25,8 @@
     <!-- End of localhost only code-->
     <div ng-app="editorApp" class="maincontainer" ng-strict-di>
         <div ng-controller="popupController as $ctrl" id="popuptemplate"></div>
-        <div ng-controller="MainCtrl">            
-            <div ng-if="editorContainer" ng-include="editorContainer.templateURL"></div>            
+        <div ng-controller="MainCtrl">
+            <div ng-if="editorContainer" ng-include="editorContainer.templateURL"></div>
         </div>
     </div>
     <!-- inject:js -->
