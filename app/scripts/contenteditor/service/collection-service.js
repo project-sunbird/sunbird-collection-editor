@@ -31,6 +31,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         selectedNode.addChildren(node);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
+        ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -131,7 +132,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         }
     },
     initContextMenuDropDown: function() {
-        setTimeout(function() { ecEditor.jQuery('.ui.inline.dropdown').dropdown({}) }, 200);
+        setTimeout(function() { 
+            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});
+            ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
+        }, 200);
     },
     toCollection: function(data) {
         var instance = this;
