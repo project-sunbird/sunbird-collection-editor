@@ -14,7 +14,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
     setNodeTitle: function(title) {
-        if(title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().setTitle(title);
+        var instance = this;
+        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({'title': title }).done(function(a, b){
+            instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
+        });
     },
     addNode: function(objectType) {
         var selectedNode = this.getActiveNode();
@@ -94,34 +97,38 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 }
             },
             renderNode: function(event, data) {
-                var node = data.node;
-                var $nodeSpan = $(node.span);
-                var config = org.ekstep.collectioneditor.collectionService.getConfig();
-                // for read mode do not add context menu on node
-                if (config.mode === "read") return;
-                // limit adding nodes depending on config levels for nested stucture
-                if ((!$nodeSpan.data('rendered') && data.node.getLevel() >= config.levels) || (!$nodeSpan.data('rendered') && config.rules.definition[data.node.data.objectType].childrenTypes.length == 0)) {
-                    var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>');
-                    $nodeSpan.append(contextButton);
-                    contextButton.hide();
-                    $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
-                    $nodeSpan.data('rendered', true);
-                }
-
-                if (!$nodeSpan.data('rendered') && (config.rules.definition[data.node.data.objectType].childrenTypes.length > 0)) {
-                    if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType)) {
-                        var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType));
-                        $nodeSpan.append(contextButton);
-                        $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
-                        $nodeSpan.data('rendered', true);
-                        contextButton.hide();
-                        instance.initContextMenuDropDown();
-                    }
-                }
+                instance.onRenderNode(event, data)
             }
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.sortChildren(null, true);
+    },
+    onRenderNode: function(event, data, force) {
+        var instance = this;
+        var node = data.node;
+        var $nodeSpan = $(node.span);
+        var config = org.ekstep.collectioneditor.collectionService.getConfig();
+        // for read mode do not add context menu on node
+        if (config.mode === "read") return;
+        // limit adding nodes depending on config levels for nested stucture
+        if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.levels) || (!$nodeSpan.data('rendered') && config.rules.definition[data.node.data.objectType].childrenTypes.length == 0)) {
+            var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>');
+            $nodeSpan.append(contextButton);
+            contextButton.hide();
+            $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
+            $nodeSpan.data('rendered', true);
+        }
+
+        if ((!$nodeSpan.data('rendered') || force) && (config.rules.definition[data.node.data.objectType].childrenTypes.length > 0)) {
+            if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType)) {
+                var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType));
+                $nodeSpan.append(contextButton);
+                $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
+                $nodeSpan.data('rendered', true);
+                contextButton.hide();
+                instance.initContextMenuDropDown();
+            }
+        }
     },
     initContextMenuDropDown: function() {
         setTimeout(function() { ecEditor.jQuery('.ui.inline.dropdown').dropdown({}) }, 200);
@@ -142,7 +149,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             return child.data.id
         });
 
-        ecEditor._.forEach(data.children, function(collection) {            
+        ecEditor._.forEach(data.children, function(collection) {
             if (collection.children && collection.children.length > 0) {
                 instance.toCollection(collection);
             }
@@ -174,13 +181,13 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 "objectType": obj.objectType,
                 "metadata": obj.metadata,
                 "children": child,
-                "id": id,
+                "id": id || UUID(),
                 "folder": (instance.getConfig().rules.definition[obj.objectType].childrenTypes.length > 0),
                 "root": obj.root
             });
 
             if (obj.children && obj.children.length > 0) {
-                _.forEach(obj.children, function(childId, obj) { 
+                _.forEach(obj.children, function(childId, obj) {
                     obj = _.pick(instance.data, [childId]);
                     instance._buildFancyTree(obj, child);
                 });
