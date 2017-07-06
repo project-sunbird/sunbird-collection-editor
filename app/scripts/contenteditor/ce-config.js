@@ -11,7 +11,9 @@ org.ekstep.contenteditor.config = {
         { "id": "org.ekstep.preview", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.lessonbrowser", "ver": "1.0", "type": "plugin" },
+        { "id": "org.ekstep.assetbrowser", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.conceptselector", "ver": "1.0", "type": "plugin" },
+        { "id": "org.ekstep.collectioneditormeta", "ver": "1.0", "type": "plugin" }
     ],
     corePluginsPackaged: false,
     dispatcher: "local",
