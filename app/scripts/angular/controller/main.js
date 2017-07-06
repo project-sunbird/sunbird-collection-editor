@@ -25,6 +25,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad',
         };    
 
         org.ekstep.contenteditor.containerManager.initialize({loadNgModules: $scope.loadNgModules, scope: $scope });
+        org.ekstep.collectioneditor.metaPageManager.initialize({loadNgModules: $scope.loadNgModules });
 
         // container scope starts
         $scope.editorContainer = undefined;

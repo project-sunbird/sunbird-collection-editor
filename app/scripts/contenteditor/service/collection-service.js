@@ -19,6 +19,9 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
     },
+    setActiveNode: function(key) {
+        if(key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
+    },    
     addNode: function(objectType) {
         var selectedNode = this.getActiveNode();
         var config = org.ekstep.collectioneditor.collectionService.getConfig();
@@ -31,7 +34,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         selectedNode.addChildren(node);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
-        ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
+        //ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -70,6 +73,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 if (data && data.operation === "add") org.ekstep.collectioneditor.mutationService.add("nodesAdded", { "ts": Date.now(), "target": data.childNode.key, "action": "add", "parent": data.node.key, "attribute": "node", "oldValue": "", "newValue": data.childNode.toDict(true), "position": data.node.getLevel() + 1 });
                 if (data && data.operation === "remove") org.ekstep.collectioneditor.mutationService.add("nodesRemoved", { "ts": Date.now(), "target": data.key, "action": "delete", "parent": data.node.parent.key, "attribute": "node", "oldValue": data.node.toDict(true), "newValue": "", "position": data.node.getLevel() });
             },
+            activate: function(event, data) {
+                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
+                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:'+ data.node.data.objectType);
+            },
             dnd: {
                 autoExpandMS: 400,
                 focusOnClick: true,
@@ -103,6 +110,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.sortChildren(null, true);
+        node.getFirstChild().setActive(); //select the first node by default
     },
     onRenderNode: function(event, data, force) {
         var instance = this;
@@ -133,8 +141,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     },
     initContextMenuDropDown: function() {
         setTimeout(function() { 
-            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});
-            ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
+            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});            
         }, 200);
     },
     toCollection: function(data) {
