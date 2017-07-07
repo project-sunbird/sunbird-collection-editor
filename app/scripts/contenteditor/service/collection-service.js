@@ -15,31 +15,32 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     },
     setNodeTitle: function(title) {
         var instance = this;
-        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({'title': title }).done(function(a, b){
+        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
     },
     setActiveNode: function(key) {
-        if(key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
-    },    
+        if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
+    },
     addNode: function(objectType) {
         var selectedNode = this.getActiveNode();
-        var config = org.ekstep.collectioneditor.collectionService.getConfig();
-        var node = _.clone(config.defaultTemplate);
-        node.title = 'Untitled ' + config.labels[objectType];
-        node.objectType = objectType;
+        objectType = this.getObjectType(objectType);
+        var node = {};
+        node.title = 'Untitled ' + objectType.label;
+        node.objectType = objectType.type;
         node.id = UUID();
         node.root = false;
-        if (config.rules.definition[objectType].childrenTypes.length > 0) node.folder = true;
+        node.folder = (objectType.childrenTypes.length > 0);
+        node.icon = objectType.iconClass;
+        node.metadata = {};
         selectedNode.addChildren(node);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
-        //ecEditor.dispatchEvent("org.ekstep.collectioneditor:collectioneditormeta");
+        org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, contentType: objectType.type };
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
-        var config = org.ekstep.collectioneditor.collectionService.getConfig()
-        if (!config.rules.definition[selectedNode.data.objectType].root) {
+        if (!selectedNode.root) {
             var result = confirm("Do you want to remove this unit?");
             if (result == true) {
                 selectedNode.remove();
@@ -48,11 +49,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     },
     getContextMenuTemplate: function(objectType) {
         var instance = this;
-        var childrens = this.config.rules.definition[objectType].childrenTypes;
+        var childrenTypes = this.getObjectType(objectType).childrenTypes;
         var contextMenu = "";
-        if (childrens && childrens.length === 0) return undefined;
-        ecEditor._.forEach(childrens, function(child) {
-            if (instance.config.labels[child]) contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + child + '\')">' + instance.config.labels[child] + '</div>';
+        if (childrenTypes && childrenTypes.length === 0) return undefined;
+        ecEditor._.forEach(childrenTypes, function(types) {
+            if (instance.getObjectType(types).label) contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
         });
 
         return '<span style="padding-left: 20px;left: 65%;">' +
@@ -69,13 +70,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree({
             extensions: ["dnd"],
             source: tree,
-            modifyChild: function(event, data) {
-                if (data && data.operation === "add") org.ekstep.collectioneditor.mutationService.add("nodesAdded", { "ts": Date.now(), "target": data.childNode.key, "action": "add", "parent": data.node.key, "attribute": "node", "oldValue": "", "newValue": data.childNode.toDict(true), "position": data.node.getLevel() + 1 });
-                if (data && data.operation === "remove") org.ekstep.collectioneditor.mutationService.add("nodesRemoved", { "ts": Date.now(), "target": data.key, "action": "delete", "parent": data.node.parent.key, "attribute": "node", "oldValue": data.node.toDict(true), "newValue": "", "position": data.node.getLevel() });
+            modifyChild: function(event, data) {                
             },
-            activate: function(event, data) {
-                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
-                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:'+ data.node.data.objectType);
+            activate: function(event, data) {                
+                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
             },
             dnd: {
                 autoExpandMS: 400,
@@ -83,19 +81,17 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
                 preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
                 dragStart: function(node, data) {
-                    var config = org.ekstep.collectioneditor.collectionService.getConfig();
-                    if (config.mode === "edit") return true;
-                    if (config.mode === "read") return false;
+                    var config = instance.getConfig();
+                    if (config.mode === "Edit") return true;
+                    if (config.mode === "Read") return false;
                 },
                 dragEnter: function(node, data) {
                     return true;
                 },
                 dragDrop: function(node, data) {
                     if (data.hitMode === "before" || data.hitMode === "after") return false;
-                    var config = org.ekstep.collectioneditor.collectionService.getConfig();
-
                     if (node.data && node.data.objectType) {
-                        var dropAllowed = _.includes(config.rules.definition[node.data.objectType].childrenTypes, data.otherNode.data.objectType);
+                        var dropAllowed = _.includes(instance.getObjectType(node.data.objectType).childrenTypes, data.otherNode.data.objectType);
                         if (dropAllowed) {
                             data.otherNode.moveTo(node, data.hitMode)
                         } else {
@@ -116,11 +112,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         var instance = this;
         var node = data.node;
         var $nodeSpan = $(node.span);
-        var config = org.ekstep.collectioneditor.collectionService.getConfig();
+        var config = this.config;
         // for read mode do not add context menu on node
-        if (config.mode === "read") return;
+        if (config.mode === "Read") return;
         // limit adding nodes depending on config levels for nested stucture
-        if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.levels) || (!$nodeSpan.data('rendered') && config.rules.definition[data.node.data.objectType].childrenTypes.length == 0)) {
+        if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && this.getObjectType(data.node.data.objectType).childrenTypes.length == 0)) {
             var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>');
             $nodeSpan.append(contextButton);
             contextButton.hide();
@@ -128,7 +124,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             $nodeSpan.data('rendered', true);
         }
 
-        if ((!$nodeSpan.data('rendered') || force) && (config.rules.definition[data.node.data.objectType].childrenTypes.length > 0)) {
+        if ((!$nodeSpan.data('rendered') || force) && (this.getObjectType(data.node.data.objectType).childrenTypes.length > 0)) {
             if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType)) {
                 var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType));
                 $nodeSpan.append(contextButton);
@@ -140,8 +136,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         }
     },
     initContextMenuDropDown: function() {
-        setTimeout(function() { 
-            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});            
+        setTimeout(function() {
+            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});
         }, 200);
     },
     toCollection: function(data) {
@@ -168,43 +164,71 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
 
         return instance.data;
     },
-    fromCollection: function(data) {
-        var rootNode = _.pickBy(data, function(data) {
-            return data.root === true
+    getObjectType: function(type) {
+        return _.find(this.config.rules.objectTypes, function(obj) {
+            return obj.type === type
         });
-
-        //TODO: raise error telemetry
-        if (!rootNode) {
-            console.error("Root node not found from the data");
-            return;
-        }
-        this.data = data;
-        return this._buildFancyTree(rootNode);
-
     },
-    _buildFancyTree: function(data, tree) {
+    fromCollection: function(data) {
+        var treeData = this._buildTree(data);
+        var instance = this;
+        this.addTree([{
+            "id": data.identifier || UUID(),
+            "title": data.name,
+            "objectType": data.contentType,
+            "metadata": _.omit(data, ["children", "collections"]),
+            "folder": true,
+            "children": treeData,
+            "root": true,
+            "icon": instance.getObjectType(data.contentType).iconClass
+        }]);
+    },
+    _buildTree: function(data, tree) {
         var instance = this,
             tree = tree || [];
-        _.forIn(data, function(obj, id) {
-            var child = [];
-            tree.push({
-                "title": obj.title,
-                "objectType": obj.objectType,
-                "metadata": obj.metadata,
-                "children": child,
-                "id": id || UUID(),
-                "folder": (instance.getConfig().rules.definition[obj.objectType].childrenTypes.length > 0),
-                "root": obj.root
-            });
-
-            if (obj.children && obj.children.length > 0) {
-                _.forEach(obj.children, function(childId, obj) {
-                    obj = _.pick(instance.data, [childId]);
-                    instance._buildFancyTree(obj, child);
+        _.forEach(data.children, function(child) {
+            var objectType = instance.getObjectType(child.contentType);
+            var childTree = [];
+            if (objectType) {
+                tree.push({
+                    "id": child.identifier || UUID(),
+                    "title": child.name,
+                    "objectType": child.contentType,
+                    "metadata": _.omit(child, ["children", "collections"]),
+                    "folder": (objectType.childrenTypes.length > 0),
+                    "children": childTree,
+                    "root": false,
+                    "icon": instance.getObjectType(child.contentType).iconClass
                 });
+                if (objectType.childrenTypes.length > 0) {
+                    instance._buildTree(child, childTree);
+                }
             }
         });
 
         return tree;
+    },
+    getCollectionHeirarchy: function(data) {
+        var instance = this;
+
+        if (!data) return;
+        instance.data[data.data.id] = {
+            "name": data.title,
+            "contentType": data.data.objectType,
+            "children": [],
+            "root": data.data.root
+        }
+
+        if (data.children && data.children.length > 0) {
+            instance.data[data.data.id].children = ecEditor._.map(data.children, function(child) {
+                return child.data.id
+            });
+        }
+
+        ecEditor._.forEach(data.children, function(collection) {
+            instance.getCollectionHeirarchy(collection);
+        });
+
+        return instance.data;
     }
 }));

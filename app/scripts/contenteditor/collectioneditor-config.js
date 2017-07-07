@@ -4,3 +4,8 @@ org.ekstep.collectioneditor.config = {
         { "id": "org.ekstep.collectioneditormeta", "ver": "1.0", "type": "plugin" }
     ]
 }
+
+
+org.ekstep.collectioneditor.cache = {
+	nodesModified: {}
+};
