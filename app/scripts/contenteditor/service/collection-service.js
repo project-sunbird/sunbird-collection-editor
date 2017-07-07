@@ -141,30 +141,6 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             ecEditor.jQuery('.ui.inline.dropdown').dropdown({});
         }, 200);
     },
-    toCollection: function(data) {
-        var instance = this;
-
-        if (!data) return;
-        instance.data[data.data.id] = {
-            "title": data.title,
-            "objectType": data.data.objectType,
-            "metadata": data.data.metadata,
-            "children": [],
-            "root": data.data.root
-        }
-
-        if (data.children && data.children.length > 0) instance.data[data.data.id].children = ecEditor._.map(data.children, function(child) {
-            return child.data.id
-        });
-
-        ecEditor._.forEach(data.children, function(collection) {
-            if (collection.children && collection.children.length > 0) {
-                instance.toCollection(collection);
-            }
-        });
-
-        return instance.data;
-    },
     getObjectType: function(type) {
         return _.find(this.config.rules.objectTypes, function(obj) {
             return obj.type === type
@@ -209,7 +185,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
 
         return tree;
     },
-    getCollectionHeirarchy: function(data) {
+    getCollectionHierarchy: function(data) {
         var instance = this;
 
         if (!data) return;
@@ -227,7 +203,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         }
 
         ecEditor._.forEach(data.children, function(collection) {
-            instance.getCollectionHeirarchy(collection);
+            instance.getCollectionHierarchy(collection);
         });
 
         return instance.data;
