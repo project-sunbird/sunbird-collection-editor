@@ -72,7 +72,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             source: tree,
             modifyChild: function(event, data) {                
             },
-            activate: function(event, data) {                
+            activate: function(event, data) { 
+                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);               
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
             },
             dnd: {
