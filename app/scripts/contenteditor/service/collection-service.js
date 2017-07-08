@@ -28,21 +28,23 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     filterNode: function(text) {
         if(text) ecEditor.jQuery("#collection-tree").fancytree("getTree").filterNodes(text, {autoExpand: true });
     },
-    addNode: function(objectType) {
+    addNode: function(objectType, data) {
+        data = data || {};
         var selectedNode = this.getActiveNode();
         objectType = this.getObjectType(objectType);
         var node = {};
-        node.title = 'Untitled ' + objectType.label;
+        node.title = data.name ? data.name : 'Untitled ' + objectType.label;
         node.objectType = objectType.type;
-        node.id = UUID();
+        node.contentType = data.contentType || objectType.type;
+        node.id = data.identifier ? data.identifier : UUID();
         node.root = false;
         node.folder = (objectType.childrenTypes.length > 0);
         node.icon = objectType.iconClass;
-        node.metadata = {};
+        node.metadata = data || {};
         selectedNode.addChildren(node);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
-        org.ekstep.collectioneditor.cache.nodesModified[node.id] = { metadata: {}, isNew: true, root: node.root };
+        org.ekstep.collectioneditor.cache.nodesModified[node.id] = { metadata: {}, isNew: !(_.has(data, "identifier")), root: node.root };
         org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
     },
     removeNode: function() {
@@ -60,7 +62,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         var contextMenu = "";
         if (childrenTypes && childrenTypes.length === 0) return undefined;
         ecEditor._.forEach(childrenTypes, function(types) {
-            if (instance.getObjectType(types).label) contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
+            if (instance.getObjectType(types).addType === "Browser") {
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson()">' + instance.getObjectType(types).label + '</div>';
+            } else {
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';    
+            }            
         });
 
         return '<span style="padding-left: 20px;left: 65%;">' +
@@ -71,6 +77,16 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             '</div>' +
             '</div>' +
             '<i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>'
+    },
+    addLesson: function() {
+        var instance = this;
+        ecEditor.dispatchEvent("org.ekstep.lessonbrowser:show", function(err, res) {
+            if(res) {
+                _.forEach(res, function(obj) {
+                    instance.addNode(obj.objectType, obj);
+                });
+            }
+        });
     },
     addTree: function(tree) {
         var instance = this;
@@ -177,7 +193,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         this.addTree([{
             "id": data.identifier || UUID(),
             "title": data.name,
-            "objectType": data.contentType,
+            "objectType": data.contentType || data.objectType,
+            "contentType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
             "folder": true,
             "children": treeData,
@@ -195,7 +212,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 tree.push({
                     "id": child.identifier || UUID(),
                     "title": child.name,
-                    "objectType": child.contentType,
+                    "objectType": child.contentType || child.objectType,
+                    "contentType": child.contentType,
                     "metadata": _.omit(child, ["children", "collections"]),
                     "folder": (objectType.childrenTypes.length > 0),
                     "children": childTree,
