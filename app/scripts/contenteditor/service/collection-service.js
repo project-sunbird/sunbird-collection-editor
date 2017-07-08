@@ -22,6 +22,12 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     setActiveNode: function(key) {
         if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
     },
+    clearFilter: function() {
+        ecEditor.jQuery("#collection-tree").fancytree("getTree").clearFilter();
+    },
+    filterNode: function(text) {
+        if(text) ecEditor.jQuery("#collection-tree").fancytree("getTree").filterNodes(text, {autoExpand: true });
+    },
     addNode: function(objectType) {
         var selectedNode = this.getActiveNode();
         objectType = this.getObjectType(objectType);
@@ -68,7 +74,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     addTree: function(tree) {
         var instance = this;
         ecEditor.jQuery("#collection-tree").fancytree({
-            extensions: ["dnd"],
+            extensions: ["dnd", "filter"],
             source: tree,
             modifyChild: function(event, data) {},
             activate: function(event, data) {
@@ -98,6 +104,18 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                             alert(data.otherNode.title + " cannot be added to " + data.node.title);
                         }
                     }
+                },
+                filter: {
+                    autoApply: true, 
+                    autoExpand: false,
+                    counter: true,
+                    fuzzy: false,
+                    hideExpandedCounter: true,
+                    hideExpanders: false,
+                    highlight: true,
+                    leavesOnly: false,
+                    nodata: true,
+                    mode: "dimm"
                 }
             },
             renderNode: function(event, data) {
