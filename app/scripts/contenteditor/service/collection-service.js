@@ -42,11 +42,12 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         selectedNode.addChildren(node);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
-        org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, contentType: objectType.type };
+        org.ekstep.collectioneditor.cache.nodesModified[node.id] = { metadata: {}, isNew: true, root: node.root };
+        org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
-        if (!selectedNode.root) {
+        if (!selectedNode.data.root) {
             var result = confirm("Do you want to remove this unit?");
             if (result == true) {
                 selectedNode.remove();
@@ -76,10 +77,16 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree({
             extensions: ["dnd", "filter"],
             source: tree,
-            modifyChild: function(event, data) {},
+            modifyChild: function(event, data) {
+                if(data && data.operation === "remove") {
+                    org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'remove', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+                    ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild().setActive();
+                }
+            },
             activate: function(event, data) {
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
+                org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'select', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
             },
             dnd: {
                 autoExpandMS: 400,
@@ -99,7 +106,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                     if (node.data && node.data.objectType) {
                         var dropAllowed = _.includes(instance.getObjectType(node.data.objectType).childrenTypes, data.otherNode.data.objectType);
                         if (dropAllowed) {
-                            data.otherNode.moveTo(node, data.hitMode)
+                            data.otherNode.moveTo(node, data.hitMode);
+                            org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
                         } else {
                             alert(data.otherNode.title + " cannot be added to " + data.node.title);
                         }

@@ -202,7 +202,8 @@ window.org.ekstep.contenteditor.api = {
      * @memberof org.ekstep.contenteditor.api
      */
     getCurrentStage: function() {
-        return org.ekstep.contenteditor.stageManager.currentStage;
+        //return org.ekstep.contenteditor.stageManager.currentStage;
+        return org.ekstep.collectioneditor.collectionService.getActiveNode().data;
     },
 
     /**
