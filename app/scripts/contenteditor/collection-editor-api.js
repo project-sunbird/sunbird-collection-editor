@@ -1,7 +1,14 @@
 org.ekstep.collectioneditor.api = {
     initEditor: function(config, cb) {
+        var startTime = Date.now();
         if (config) org.ekstep.collectioneditor.collectionService.initialize(config);
         org.ekstep.pluginframework.pluginManager.loadAllPlugins(org.ekstep.collectioneditor.config.plugins, undefined, function () {
+            org.ekstep.services.telemetryService.initialize({
+                uid: config.context.uid,
+                sid: config.context.sid,
+                content_id: config.context.contentId
+            }, org.ekstep.collectioneditor.config.dispatcher);
+            org.ekstep.services.telemetryService.startEvent(true).append("loadtimes", { plugins: (Date.now() - startTime) });        
             if (cb) cb();    
         });        
     },

@@ -161,7 +161,7 @@ org.ekstep.services.telemetryService = new(org.ekstep.services.iService.extend({
             "mid": "",
             "ets": (new Date()).getTime(), 
             "ver": "1.0",
-            "pdata": {"id": "ATTool","pid": "ContentEditor","ver": "2.0"},
+            "pdata": {"id": "","pid": "CollectionEditor","ver": "1.0"},
             "cdata": this.context.cdata, //TODO: No correlation data as of now. Needs to be sent by portal in context
             "uid": this.context.uid, // uuid of the requester
             "context": {"sid": this.context.sid,"content_id": this.context.content_id},

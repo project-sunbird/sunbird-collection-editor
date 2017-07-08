@@ -70,10 +70,9 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree({
             extensions: ["dnd"],
             source: tree,
-            modifyChild: function(event, data) {                
-            },
-            activate: function(event, data) { 
-                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);               
+            modifyChild: function(event, data) {},
+            activate: function(event, data) {
+                ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
             },
             dnd: {
@@ -186,9 +185,12 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         return tree;
     },
     getCollectionHierarchy: function(data) {
-        var instance = this;
-
         if (!data) return;
+        instance.data = {};
+        return this._toFlatObj(data);
+    },
+    _toFlatObj: function(data) {
+        var instance = this;
         instance.data[data.data.id] = {
             "name": data.title,
             "contentType": data.data.objectType,
@@ -203,7 +205,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         }
 
         ecEditor._.forEach(data.children, function(collection) {
-            instance.getCollectionHierarchy(collection);
+            instance._toFlatObj(collection);
         });
 
         return instance.data;
