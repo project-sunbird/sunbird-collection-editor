@@ -182,7 +182,7 @@ window.org.ekstep.contenteditor.api = {
      * @memberof org.ekstep.contenteditor.api
      */
     getAngularScope: function() {
-        return org.ekstep.contenteditor.toolbarManager.scope;
+        return {};
     },
 
     /**
