@@ -3,7 +3,8 @@ org.ekstep.collectioneditor.config = {
       { "id": "org.ekstep.lessonbrowser", "ver": "1.0", "type": "plugin" },                
       { "id": "org.ekstep.textbookmeta", "ver": "1.0", "type": "plugin" },
       { "id": "org.ekstep.unitmeta", "ver": "1.0", "type": "plugin" },
-      { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" }
+      { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
+      { "id": "org.ekstep.ceheader", "ver": "1.0", "type": "plugin" }
     ],
     dispatcher: "local"
 }
