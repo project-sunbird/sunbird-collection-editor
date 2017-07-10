@@ -12,7 +12,7 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).conf
 angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad',
     function($scope, $ocLazyLoad) {
         
-        org.ekstep.contenteditor.init(undefined, undefined, $scope, undefined, function() {
+        org.ekstep.contenteditor.init({}, {}, $scope, undefined, function() {
             $scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE);            
             $scope.popupService = org.ekstep.contenteditor.api.getService(ServiceConstants.POPUP_SERVICE);            
         });    
