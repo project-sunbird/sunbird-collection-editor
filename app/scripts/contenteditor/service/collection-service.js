@@ -49,7 +49,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
             var result = ecEditor.getService('popup').open({
-                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this&nbsp;<span class="removal-element">unit</span></div><div class="remove-unit-buttons"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
+                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this?</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
                         selectedNode.remove();
