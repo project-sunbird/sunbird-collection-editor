@@ -48,10 +48,17 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     removeNode: function() {
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
-            var result = confirm("Do you want to remove this unit?");
-            if (result == true) {
-                selectedNode.remove();
-            }
+            var result = ecEditor.getService('popup').open({
+                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this&nbsp;<span class="removal-element">unit</span></div><div class="remove-unit-buttons"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
+                controller: ["$scope", function($scope) {
+                    $scope.confirm = function() {
+                        selectedNode.remove();
+                        $scope.closeThisDialog();
+                    };
+                }],
+                plain: true,
+                showClose: false
+            });
         }
     },
     getContextMenuTemplate: function(objectType) {
@@ -61,10 +68,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         if (childrenTypes && childrenTypes.length === 0) return undefined;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson()">' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
             } else {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';    
-            }            
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
+            }
         });
 
         return '<span style="padding-left: 20px;left: 65%;">' +
@@ -76,13 +83,16 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             '</div>' +
             '<i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>'
     },
-    addLesson: function() {
+    addLesson: function(type) {
         var instance = this;
-        ecEditor.dispatchEvent("org.ekstep.lessonbrowser:show", function(err, res) {
-            if(res) {
-                _.forEach(res, function(obj) {
-                    instance.addNode(obj.contentType, obj);
-                });
+        ecEditor.dispatchEvent("org.ekstep.lessonbrowser:show", {
+            filters: { lessonType: [type] },
+            callback: function(err, res) {
+                if (res) {
+                    _.forEach(res, function(obj) {
+                        instance.addNode(obj.contentType, obj);
+                    });
+                }
             }
         });
     },
@@ -92,7 +102,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             extensions: ["dnd", "filter"],
             source: tree,
             modifyChild: function(event, data) {
-                if(data && data.operation === "remove") {
+                if (data && data.operation === "remove") {
                     org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'remove', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
                     ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild().setActive();
                 }
@@ -128,7 +138,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                     }
                 },
                 filter: {
-                    autoApply: true, 
+                    autoApply: true,
                     autoExpand: false,
                     counter: true,
                     fuzzy: false,
@@ -191,7 +201,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         this.addTree([{
             "id": data.identifier || UUID(),
             "title": data.name,
-            "objectType": data.contentType,            
+            "objectType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
             "folder": true,
             "children": treeData,
@@ -224,10 +234,14 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
 
         return tree;
     },
-    getCollectionHierarchy: function(data) {
-        if (!data) return;
-        instance.data = {};
-        return this._toFlatObj(data);
+    getCollectionHierarchy: function() {
+        var instance = this;
+        this.data = {};
+        var data = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild();
+        return {
+            nodesModified: org.ekstep.collectioneditor.cache.nodesModified,
+            hierarchy: [instance._toFlatObj(data)]
+        };
     },
     _toFlatObj: function(data) {
         var instance = this;
