@@ -128,6 +128,12 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 },
                 dragDrop: function(node, data) {
                     if (data.hitMode === "before" || data.hitMode === "after") return false;
+                    if (instance.config.rules && instance.config.rules.levels) {
+                        if ((instance.checkTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
+                            alert('Operation not allowed');
+                            return false;
+                        }
+                    }
                     if (node.data && node.data.objectType) {
                         var dropAllowed = _.includes(instance.getObjectType(node.data.objectType).childrenTypes, data.otherNode.data.objectType);
                         if (dropAllowed) {
@@ -264,5 +270,20 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         });
 
         return instance.data;
+    },
+    checkTreeDepth: function(root) {
+        var buffer = [{ node: root, depth: 1 }];
+        var current = buffer.pop();
+        var max = 0;
+
+        while (current && current.node) {
+            // Find all children of this node.
+            _.forEach(current.node.children, function(child) {
+                buffer.push({ node: child, depth: current.depth + 1 });
+            });
+            if (current.depth > max) max = current.depth;
+            current = buffer.pop();
+        }
+        return max;
     }
 }));
