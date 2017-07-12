@@ -7,6 +7,7 @@
     "body-parser": "*",
     "express": "^4.14.0",
     "grunt-contrib-rename": "0.0.3",
+    "gulp-sass": "^3.1.0",
     "lodash": "^4.16.6",
     "request": "*",
     "xmlbuilder": "*"

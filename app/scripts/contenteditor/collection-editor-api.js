@@ -17,9 +17,6 @@ org.ekstep.collectioneditor.api = {
     		case "collection":
     			return org.ekstep.collectioneditor.collectionService
     			break;
-            case "meta":
-                return org.ekstep.services.metaService;
-                break;
     	}
     },
     registerMetaPage: function(config) {
