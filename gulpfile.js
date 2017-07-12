@@ -13,6 +13,7 @@ var rename = require("gulp-rename");
 var merge = require('merge-stream');
 var sass = require('gulp-sass');
 var cleanCSS = require('clean-css');
+var replace = require('gulp-string-replace');
 
 var cachebust = new CacheBuster();
 const zip = require('gulp-zip');
@@ -181,7 +182,13 @@ gulp.task('zip', ['minify', 'inject'], function() {
         .pipe(gulp.dest(''));
 });
 
-gulp.task('build', ['minify', 'inject', 'zip']);
+gulp.task('replacepath', ['minify', 'inject'],function() {
+  gulp.src(["external.min.css"])
+    .pipe(replace('../fonts/', 'fonts/'))
+    .pipe(gulp.dest('collection-editor/styles/'))
+});
+
+gulp.task('build', ['minify', 'inject', 'replacepath', 'zip']);
 
 var corePlugins = [
     "org.ekstep.lessonbrowser-1.0",

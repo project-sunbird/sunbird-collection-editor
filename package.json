@@ -32,6 +32,7 @@
     "gulp-main-bower-files": "^1.6.0",
     "gulp-minifier": "^0.1.4",
     "gulp-rename": "^1.2.2",
+    "gulp-string-replace": "^0.4.0",
     "gulp-strip-debug": "^1.1.0",
     "gulp-zip": "^3.2.0",
     "jasmine": "2.5.2",
