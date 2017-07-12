@@ -241,7 +241,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         var data = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild();
         return {
             nodesModified: org.ekstep.collectioneditor.cache.nodesModified,
-            hierarchy: [instance._toFlatObj(data)]
+            hierarchy: instance._toFlatObj(data)
         };
     },
     _toFlatObj: function(data) {
