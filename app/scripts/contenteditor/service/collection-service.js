@@ -26,7 +26,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree("getTree").clearFilter();
     },
     filterNode: function(text) {
-        if(text) ecEditor.jQuery("#collection-tree").fancytree("getTree").filterNodes(text, {autoExpand: true });
+        if (text) ecEditor.jQuery("#collection-tree").fancytree("getTree").filterNodes(text, { autoExpand: true });
     },
     addNode: function(objectType, data) {
         data = data || {};
@@ -34,7 +34,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         objectType = this.getObjectType(objectType);
         var node = {};
         node.title = data.name ? data.name : 'Untitled ' + objectType.label;
-        node.objectType = data.contentType || objectType.type;        
+        node.objectType = data.contentType || objectType.type;
         node.id = data.identifier ? data.identifier : UUID();
         node.root = false;
         node.folder = (objectType.childrenTypes.length > 0);
@@ -48,7 +48,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     removeNode: function() {
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
-            var result = ecEditor.getService('popup').open({
+            ecEditor.getService('popup').open({
                 template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this?</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
@@ -129,8 +129,12 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                 dragDrop: function(node, data) {
                     if (data.hitMode === "before" || data.hitMode === "after") return false;
                     if (instance.config.rules && instance.config.rules.levels) {
-                        if ((instance.checkTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
-                            alert('Operation not allowed');
+                        if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
+                            ecEditor.getService('popup').open({
+                                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;This operation is not allowed! Maximum collection level reached ('+ instance.config.rules.levels +')</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"></div></div></div>',                            
+                                plain: true,
+                                showClose: false
+                            });
                             return false;
                         }
                     }
@@ -271,7 +275,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
 
         return instance.data;
     },
-    checkTreeDepth: function(root) {
+    maxTreeDepth: function(root) {
         var buffer = [{ node: root, depth: 1 }];
         var current = buffer.pop();
         var max = 0;
