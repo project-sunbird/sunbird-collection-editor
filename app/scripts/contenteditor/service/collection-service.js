@@ -54,6 +54,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                     $scope.confirm = function() {
                         selectedNode.remove();
                         $scope.closeThisDialog();
+                        delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
                     };
                 }],
                 plain: true,
