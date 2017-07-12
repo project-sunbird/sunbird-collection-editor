@@ -182,13 +182,19 @@ gulp.task('zip', ['minify', 'inject'], function() {
         .pipe(gulp.dest(''));
 });
 
-gulp.task('replacepath', ['minify', 'inject'],function() {
+gulp.task('replacefontpath', ['minify', 'inject'],function() {
   gulp.src(["external.min.css"])
     .pipe(replace('../fonts/', 'fonts/'))
     .pipe(gulp.dest('collection-editor/styles/'))
 });
 
-gulp.task('build', ['minify', 'inject', 'replacepath', 'zip']);
+gulp.task('replacepluginspath', ['minify', 'inject'],function() {
+  gulp.src(["collectioneditor.min.css"])
+    .pipe(replace('/plugins', '/content-plugins'))
+    .pipe(gulp.dest('collection-editor/scripts/'))
+});
+
+gulp.task('build', ['minify', 'inject', 'replacefontpath','replacepluginspath', 'zip']);
 
 var corePlugins = [
     "org.ekstep.lessonbrowser-1.0",
