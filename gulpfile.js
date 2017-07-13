@@ -11,8 +11,6 @@ var CacheBuster = require('gulp-cachebust');
 var mergeStream = require('merge-stream');
 var rename = require("gulp-rename");
 var merge = require('merge-stream');
-var sass = require('gulp-sass');
-var cleanCSS = require('clean-css');
 var replace = require('gulp-string-replace');
 
 var cachebust = new CacheBuster();
