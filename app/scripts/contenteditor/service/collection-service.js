@@ -40,7 +40,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         node.folder = (objectType.childrenTypes.length > 0);
         node.icon = objectType.iconClass;
         node.metadata = data || {};
-        selectedNode.addChildren(node);
+        var newNode = selectedNode.addChildren(node);
+        this.setActiveNode(newNode.key);
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
         org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
