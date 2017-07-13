@@ -69,9 +69,9 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         if (childrenTypes && childrenTypes.length === 0) return undefined;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             } else {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')">' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             }
         });
 
@@ -131,7 +131,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                     if (instance.config.rules && instance.config.rules.levels) {
                         if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
                             ecEditor.getService('popup').open({
-                                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;This operation is not allowed! Maximum collection level reached ('+ instance.config.rules.levels +')</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"></div></div></div>',                            
+                                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;This operation is not allowed! Maximum collection level reached (' + instance.config.rules.levels + ')</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"></div></div></div>',
                                 plain: true,
                                 showClose: false
                             });
@@ -198,7 +198,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
     },
     initContextMenuDropDown: function() {
         setTimeout(function() {
-            ecEditor.jQuery('.ui.inline.dropdown').dropdown({});
+            ecEditor.jQuery('.ui.inline.dropdown').dropdown({ on: 'hover' });
         }, 200);
     },
     getObjectType: function(type) {
