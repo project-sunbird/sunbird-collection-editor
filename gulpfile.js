@@ -39,7 +39,7 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js",
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
-    "app/scripts/contenteditor/md5.js"
+    "app/scripts/collectioneditor/md5.js"
 ];
 
 var bower_css = [
@@ -50,23 +50,23 @@ var bower_css = [
 ];
 
 var scriptfiles = [
-    "app/scripts/contenteditor/bootstrap-editor.js",
-    "app/scripts/contenteditor/ce-config.js",
-    "app/scripts/contenteditor/collectioneditor-config.js",
-    "app/scripts/contenteditor/content-editor.js",
-    "app/scripts/contenteditor/content-editor-api.js",
-    "app/scripts/contenteditor/collection-editor-api.js",
-    "app/scripts/contenteditor/base-plugin.js",
-    "app/scripts/contenteditor/manager/header-manager.js",
-    "app/scripts/contenteditor/manager/container-manager.js",
-    "app/scripts/contenteditor/manager/metapage-manager.js",
-    "app/scripts/contenteditor/service/collection-service.js",
-    "app/scripts/contenteditor/service/popup-service.js",
-    "app/scripts/contenteditor/service/telemetry-service.js",
-    "app/scripts/contenteditor/dispatcher/idispatcher.js",
-    "app/scripts/contenteditor/dispatcher/console-dispatcher.js",
-    "app/scripts/contenteditor/dispatcher/local-dispatcher.js",
-    "app/scripts/contenteditor/dispatcher/piwik-dispatcher.js",
+    "app/scripts/collectioneditor/bootstrap-editor.js",
+    "app/scripts/collectioneditor/ce-config.js",
+    "app/scripts/collectioneditor/collectioneditor-config.js",
+    "app/scripts/collectioneditor/content-editor.js",
+    "app/scripts/collectioneditor/content-editor-api.js",
+    "app/scripts/collectioneditor/collection-editor-api.js",
+    "app/scripts/collectioneditor/base-plugin.js",
+    "app/scripts/collectioneditor/manager/header-manager.js",
+    "app/scripts/collectioneditor/manager/container-manager.js",
+    "app/scripts/collectioneditor/manager/metapage-manager.js",
+    "app/scripts/collectioneditor/service/collection-service.js",
+    "app/scripts/collectioneditor/service/popup-service.js",
+    "app/scripts/collectioneditor/service/telemetry-service.js",
+    "app/scripts/collectioneditor/dispatcher/idispatcher.js",
+    "app/scripts/collectioneditor/dispatcher/console-dispatcher.js",
+    "app/scripts/collectioneditor/dispatcher/local-dispatcher.js",
+    "app/scripts/collectioneditor/dispatcher/piwik-dispatcher.js",
     "app/scripts/angular/controller/main.js",
     "app/scripts/angular/controller/popup-controller.js"
 ];
@@ -154,13 +154,6 @@ gulp.task('copyFiles', function() {
         .pipe(gulp.dest('collection-editor'));
 });
 
-// gulp.task('copydeploydependencies', function() {
-//     return gulp.src(['deploy/gulpfile.js', 'deploy/package.json'], {
-//             base: ''
-//         })
-//         .pipe(gulp.dest('content-editor'));
-// });
-
 gulp.task('minify', ['minifyCE', 'minifyCSS', 'minifyJsBower', 'minifyCssBower', 'copyfonts', 'copyfontawsomefonts', 'copyFiles']);
 
 gulp.task('inject', ['minify'], function() {
@@ -176,128 +169,17 @@ gulp.task('inject', ['minify'], function() {
         .pipe(gulp.dest('./collection-editor'));
 });
 
-gulp.task('zip', ['minify', 'inject'], function() {
+gulp.task('replace', ['inject'], function() {
+    var replacefontspath = gulp.src(["collection-editor/styles/external.min.css"]).pipe(replace('../fonts', 'fonts')).pipe(gulp.dest('collection-editor/styles'));
+    var replacepluginspath = gulp.src(["collection-editor/scripts/collectioneditor.min.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(gulp.dest('collection-editor/scripts/'));
+    var replaceBase = gulp.src("collection-editor/scripts/collectioneditor.min.js").pipe(replace('https://dev.ekstep.in', '')).pipe(gulp.dest('collection-editor/scripts/'));
+    return merge(replacefontspath, replacepluginspath, replaceBase);
+});
+
+gulp.task('zip', ['minify', 'inject', 'replace'], function() {
     return gulp.src('collection-editor/**')
         .pipe(zip('collection-editor.zip'))
         .pipe(gulp.dest(''));
 });
 
-gulp.task('replacefontspath', ['minify', 'inject'], function() {
-  gulp.src(["collection-editor/styles/external.min.css"]) // Every file allown. 
-    .pipe(replace('../fonts', 'fonts'))
-    .pipe(gulp.dest('collection-editor/styles'))
-});
-
-gulp.task('replacepluginspath', ['replacefontspath'], function() {
-  gulp.src(["collection-editor/scripts/collectioneditor.min.js"])
-    .pipe(replace('/plugins', '/content-plugins'))
-    .pipe(gulp.dest('collection-editor/scripts/'))
-});
-
-gulp.task('replacebaseurl', ['minify'], function() {
-  gulp.src(["collection-editor/scripts/collectioneditor.min.js"])
-    .pipe(replace('https://dev.ekstep.in', ''))
-    .pipe(gulp.dest('collection-editor/scripts/'))
-});
-
-gulp.task('build', ['minify', 'replacebaseurl','inject', 'replacefontspath', 'replacepluginspath', 'zip']);
-
-var corePlugins = [
-    "org.ekstep.lessonbrowser-1.0",
-    "org.ekstep.textbookmeta-1.0",
-    "org.ekstep.unitmeta-1.0",
-    "org.ekstep.contentmeta-1.0",
-    "org.ekstep.telemetry-1.0",
-    "org.ekstep.collectionheader-1.0"
-]
-
-gulp.task('minifyCorePlugins', function() {
-    var tasks = [];
-    corePlugins.forEach(function(plugin) {
-        tasks.push(
-            gulp.src('plugins/' + plugin + '/editor/plugin.js')
-            .pipe(minify({
-                minify: true,
-                collapseWhitespace: true,
-                conservativeCollapse: true,
-                minifyJS: true,
-                minifyCSS: true,
-                mangle: false
-            }))
-            .pipe(rename('plugin.min.js'))
-            .pipe(gulp.dest('plugins/' + plugin + '/editor'))
-        );
-    });
-    return mergeStream(tasks);
-});
-
-gulp.task('packageCorePluginsDev', ["minifyCorePlugins"], function() {
-    var fs = require('fs');
-    var _ = require('lodash');
-    var jsDependencies = [];
-    var cssDependencies = [];
-    if (fs.existsSync('app/scripts/coreplugins.js')) {
-        fs.unlinkSync('app/scripts/coreplugins.js');
-    }
-    corePlugins.forEach(function(plugin) {
-        var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
-        if (manifest.editor.dependencies) {
-            manifest.editor.dependencies.forEach(function(dependency) {
-                var resource = '/plugins/' + plugin + '/' + dependency.src;
-                if (dependency.type == 'js') {
-                    fs.appendFile('app/scripts/coreplugins.js', 'org.ekstep.contenteditor.jQuery("body").append($("<script type=\'text/javascript\' src=\'' + resource + '\'>"))' + '\n');
-                } else if (dependency.type == 'css') {
-                    fs.appendFile('app/scripts/coreplugins.js', 'org.ekstep.contenteditor.jQuery("head").append("<link rel=\'stylesheet\' type=\'text/css\' href=\'' + resource + '\'>")' + '\n');
-                }
-            });
-        }
-        var plugin = fs.readFileSync('plugins/' + plugin + '/editor/plugin.min.js', 'utf8');
-        fs.appendFile('app/scripts/coreplugins.js', 'org.ekstep.pluginframework.pluginManager.registerPlugin(' + JSON.stringify(manifest) + ',eval(\'' + plugin.replace(/'/g, "\\'") + '\'))' + '\n');
-    });
-    return gulp.src('plugins/**/plugin.min.js', {
-        read: false
-    }).pipe(clean());
-});
-
-gulp.task('packageCorePlugins', ["minify", "minifyCorePlugins"], function() {
-    var fs = require('fs');
-    var _ = require('lodash');
-    var jsDependencies = [];
-    var cssDependencies = [];
-    if (fs.existsSync('collection-editor/scripts/coreplugins.js')) {
-        fs.unlinkSync('collection-editor/scripts/coreplugins.js');
-    }
-    corePlugins.forEach(function(plugin) {
-        var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
-        if (manifest.editor.dependencies) {
-            manifest.editor.dependencies.forEach(function(dependency) {
-                var resource = '/content-plugins/' + plugin + '/' + dependency.src;
-                if (dependency.type == 'js') {
-                    fs.appendFile('collection-editor/scripts/coreplugins.js', 'org.ekstep.contenteditor.jQuery("body").append($("<script type=\'text/javascript\' src=\'' + resource + '\'>"))' + '\n');
-                } else if (dependency.type == 'css') {
-                    fs.appendFile('collection-editor/scripts/coreplugins.js', 'org.ekstep.contenteditor.jQuery("head").append("<link rel=\'stylesheet\' type=\'text/css\' href=\'' + resource + '\'>")' + '\n');
-                }
-            });
-        }
-        var plugin = fs.readFileSync('plugins/' + plugin + '/editor/plugin.min.js', 'utf8');
-        fs.appendFile('collection-editor/scripts/coreplugins.js', 'org.ekstep.pluginframework.pluginManager.registerPlugin(' + JSON.stringify(manifest) + ',eval(\'' + plugin.replace(/'/g, "\\'") + '\'))' + '\n');
-    });
-    return gulp.src('plugins/**/plugin.min.js', {
-        read: false
-    }).pipe(clean());
-});
-//Minification for dev End
-
-//edited by Anshu <anshu.mishra@goodworklabs.com>
-gulp.task('sassToCSS', function() {
-    return gulp.src('app/styles/sass/**/*.sass')
-        .pipe(sass().on('error', sass.logError))
-        // .pipe(cleanCSS())
-        .pipe(gulp.dest('app/styles/css'))
-
-});
-
-gulp.task('watch', function() {
-    gulp.watch('app/styles/sass/**/*.sass', ['sassToCSS']);
-
-});
+gulp.task('build', ['minify','inject', 'replace', 'zip']);
