@@ -40,8 +40,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         node.folder = (objectType.childrenTypes.length > 0);
         node.icon = objectType.iconClass;
         node.metadata = data || {};
-        if (node.folder) { selectedNode.addChildren(node).setActive(); }
-        else { selectedNode.addChildren(node) };
+        if (node.folder) { selectedNode.addChildren(node).setActive(); } else { selectedNode.addChildren(node) };
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
         org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
@@ -131,10 +130,10 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                     if (data.hitMode === "before" || data.hitMode === "after") return false;
                     if (instance.config.rules && instance.config.rules.levels) {
                         if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
-                            ecEditor.getService('popup').open({
-                                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;This operation is not allowed! Maximum collection level reached (' + instance.config.rules.levels + ')</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"></div></div></div>',
-                                plain: true,
-                                showClose: false
+                            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
+                                title: 'This operation is not allowed!',
+                                position: 'topCenter',
+                                icon: 'fa fa-warning'
                             });
                             return false;
                         }
@@ -145,7 +144,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
                             data.otherNode.moveTo(node, data.hitMode);
                             org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
                         } else {
-                            alert(data.otherNode.title + " cannot be added to " + data.node.title);
+                            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
+                                title: "\"" + data.otherNode.title + "\"" + " cannot be added to " + "\"" + data.node.title + "\"",
+                                position: 'topCenter',
+                                icon: 'fa fa-warning'
+                            });                            
                         }
                     }
                 },
