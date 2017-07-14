@@ -185,7 +185,7 @@ gulp.task('zip', ['minify', 'inject', 'replace'], function() {
 
 gulp.task('renamezip', function() {
     gulp.src("collection-editor.zip")
-      .pipe(rename('collection-editor'+json.version+'.zip'))
+      .pipe(rename('collection-editor-'+json.version+'.zip'))
       .pipe(gulp.dest("collection-editor"));
 });
 
