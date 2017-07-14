@@ -16,6 +16,9 @@ var replace = require('gulp-string-replace');
 var cachebust = new CacheBuster();
 const zip = require('gulp-zip');
 
+var fs = require('fs');
+var json = JSON.parse(fs.readFileSync('package.json'));
+
 var bower_components = [
     "app/bower_components/jquery/dist/jquery.js",
     "app/bower_components/async/dist/async.min.js",
@@ -178,6 +181,12 @@ gulp.task('zip', ['minify', 'inject', 'replace'], function() {
     return gulp.src('collection-editor/**')
         .pipe(zip('collection-editor.zip'))
         .pipe(gulp.dest(''));
+});
+
+gulp.task('renamezip', function() {
+    gulp.src("collection-editor.zip")
+      .pipe(rename('collection-editor'+json.version+'.zip'))
+      .pipe(gulp.dest("collection-editor"));
 });
 
 gulp.task('build', ['minify','inject', 'replace', 'zip']);
