@@ -177,16 +177,16 @@ gulp.task('replace', ['inject'], function() {
     return merge(replacefontspath, replacepluginspath, replaceBase);
 });
 
-gulp.task('zip', ['minify', 'inject', 'replace'], function() {
+gulp.task('zip', ['minify', 'inject', 'replace', 'zip_version'], function() {
     return gulp.src('collection-editor/**')
         .pipe(zip('collection-editor.zip'))
         .pipe(gulp.dest(''));
 });
 
-gulp.task('renamezip', function() {
-    gulp.src("collection-editor.zip")
-      .pipe(rename('collection-editor-'+json.version+'.zip'))
-      .pipe(gulp.dest("collection-editor"));
+gulp.task('zip_version', ['minify', 'inject', 'replace'], function() {
+    return gulp.src('collection-editor/**')
+        .pipe(zip('collection-editor-'+json.version+'.zip'))
+        .pipe(gulp.dest('collection-editor'));
 });
 
-gulp.task('build', ['minify','inject', 'replace', 'zip']);
+gulp.task('build', ['minify','inject', 'replace', 'zip_version', 'zip']);
