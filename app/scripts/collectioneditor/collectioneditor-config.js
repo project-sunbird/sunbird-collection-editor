@@ -6,7 +6,8 @@ org.ekstep.collectioneditor.config = {
       { "id": "org.ekstep.contentmeta", "ver": "1.0", "type": "plugin" },
       { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
       { "id": "org.ekstep.collectionheader", "ver": "1.0", "type": "plugin" },
-      { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" }
+      { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
+      { "id": "org.ekstep.collectioneditorfunctions", "ver": "1.0", "type": "plugin" }
     ],
     dispatcher: "local"
 }
