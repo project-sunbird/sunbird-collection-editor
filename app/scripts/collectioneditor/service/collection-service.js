@@ -39,8 +39,14 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         node.root = false;
         node.folder = (objectType.childrenTypes.length > 0);
         node.icon = objectType.iconClass;
-        node.metadata = data || {};
-        if (node.folder) { selectedNode.addChildren(node).setActive(); } else { selectedNode.addChildren(node) };
+        node.metadata = data;
+        if (node.folder) { 
+            if (selectedNode.getLevel() === this.config.rules.levels - 1) return;
+            selectedNode.addChildren(node).setActive();
+            org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { name: node.title, contentType: node.objectType } };
+        } else { 
+            selectedNode.addChildren(node) 
+        };
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
         org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
@@ -62,15 +68,15 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             });
         }
     },
-    getContextMenuTemplate: function(objectType) {
+    getContextMenuTemplate: function(node) {
         var instance = this;
-        var childrenTypes = this.getObjectType(objectType).childrenTypes;
+        var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         var contextMenu = "";
-        if (childrenTypes && childrenTypes.length === 0) return undefined;
+        if (childrenTypes && childrenTypes.length === 0) return;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            } else {
+            } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             }
         });
@@ -178,10 +184,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         var node = data.node;
         var $nodeSpan = $(node.span);
         var config = this.config;
+        var objectType = this.getObjectType(data.node.data.objectType);
         // for read mode do not add context menu on node
-        if (config.mode === "Read") return;
+        if (config.mode === "Read" || _.isEmpty(objectType)) return;
         // limit adding nodes depending on config levels for nested stucture
-        if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && this.getObjectType(data.node.data.objectType).childrenTypes.length == 0)) {
+        if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && objectType.childrenTypes.length == 0)) {
             var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>');
             $nodeSpan.append(contextButton);
             contextButton.hide();
@@ -189,9 +196,9 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             $nodeSpan.data('rendered', true);
         }
 
-        if ((!$nodeSpan.data('rendered') || force) && (this.getObjectType(data.node.data.objectType).childrenTypes.length > 0)) {
-            if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType)) {
-                var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node.data.objectType));
+        if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
+            if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node)) {
+                var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node));
                 $nodeSpan.append(contextButton);
                 $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
                 $nodeSpan.data('rendered', true);
@@ -293,5 +300,11 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
             current = buffer.pop();
         }
         return max;
+    },
+    clearCache: function() {
+        org.ekstep.collectioneditor.cache = {
+            hierarchy: {},
+            nodesModified: {}
+        }
     }
 }));
