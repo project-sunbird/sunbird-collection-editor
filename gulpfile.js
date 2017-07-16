@@ -40,6 +40,7 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js",
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
+    "app/bower_components/pluginframework/index.js",
     "app/scripts/collectioneditor/md5.js"
 ];
 
