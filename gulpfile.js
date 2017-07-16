@@ -155,11 +155,26 @@ gulp.task('copyFiles', function() {
         .pipe(gulp.dest('collection-editor'));
 });
 
-gulp.task('minify', ['minifyCE', 'minifyCSS', 'minifyJsBower', 'minifyCssBower', 'copyfonts', 'copyfontawsomefonts', 'copyFiles']);
+gulp.task('copydeploydependencies', function() {
+    return gulp.src(['deploy/gulpfile.js', 'deploy/package.json'], {
+            base: ''
+        })
+        .pipe(gulp.dest('collection-editor'));
+});
+
+gulp.task('copyPluginFramework', function() {
+    return gulp.src(['app/scripts/plugin-framework.min.js'], {
+            base: 'app/scripts'
+        })
+        .pipe(gulp.dest('collection-editor/scripts'));
+});
+
+
+gulp.task('minify', ['minifyCE', 'minifyCSS', 'minifyJsBower', 'minifyCssBower', 'copyfonts', 'copyfontawsomefonts', 'copyFiles', 'copyPluginFramework','copydeploydependencies']);
 
 gulp.task('inject', ['minify'], function() {
     var target = gulp.src('collection-editor/index.html');
-    var sources = gulp.src(['collection-editor/scripts/external.min.js', 'collection-editor/scripts/collectioneditor.min.js', 'collection-editor/styles/*.css'], {
+    var sources = gulp.src(['collection-editor/scripts/external.min.js', 'collection-editor/scripts/plugin-framework.min.js', 'collection-editor/scripts/collectioneditor.min.js', 'collection-editor/styles/*.css'], {
         read: false
     });
     return target
@@ -171,22 +186,16 @@ gulp.task('inject', ['minify'], function() {
 });
 
 gulp.task('replace', ['inject'], function() {
-    var replacefontspath = gulp.src(["collection-editor/styles/external.min.css"]).pipe(replace('../fonts', 'fonts')).pipe(gulp.dest('collection-editor/styles'));
-    var replacepluginspath = gulp.src(["collection-editor/scripts/collectioneditor.min.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(gulp.dest('collection-editor/scripts/'));
-    var replaceBase = gulp.src("collection-editor/scripts/collectioneditor.min.js").pipe(replace('https://dev.ekstep.in', '')).pipe(gulp.dest('collection-editor/scripts/'));
-    return merge(replacefontspath, replacepluginspath, replaceBase);
+    return mergeStream([
+        gulp.src(["collection-editor/styles/external.min.css"]).pipe(replace('../fonts', 'fonts')).pipe(gulp.dest('collection-editor/styles')),
+        gulp.src(["collection-editor/scripts/collectioneditor.min.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(replace("'https://dev.ekstep.in'", "''")).pipe(replace('dispatcher: "local"', 'dispatcher: "console"')).pipe(gulp.dest('collection-editor/scripts/'));
+    ]);
 });
 
-gulp.task('zip', ['minify', 'inject', 'replace', 'zip_version'], function() {
+gulp.task('zip', ['minify', 'inject', 'replace'], function() {
     return gulp.src('collection-editor/**')
         .pipe(zip('collection-editor.zip'))
         .pipe(gulp.dest(''));
 });
 
-gulp.task('zip_version', ['minify', 'inject', 'replace'], function() {
-    return gulp.src('collection-editor/**')
-        .pipe(zip('collection-editor-'+json.version+'.zip'))
-        .pipe(gulp.dest('collection-editor'));
-});
-
-gulp.task('build', ['minify','inject', 'replace', 'zip_version', 'zip']);
+gulp.task('build', ['minify','inject', 'replace', 'zip']);
