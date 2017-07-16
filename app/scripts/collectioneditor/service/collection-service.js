@@ -43,7 +43,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         if (node.folder) { 
             if (selectedNode.getLevel() === this.config.rules.levels - 1) return;
             selectedNode.addChildren(node).setActive();
-            org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { name: node.title, contentType: node.objectType } };
+            org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { name: node.title, contentType: node.objectType, mimeType: "application/vnd.ekstep.content-collection" } };
         } else { 
             selectedNode.addChildren(node) 
         };
