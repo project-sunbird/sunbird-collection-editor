@@ -40,7 +40,6 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js",
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
-    "app/bower_components/pluginframework/index.js",
     "app/scripts/collectioneditor/md5.js"
 ];
 
@@ -52,25 +51,16 @@ var bower_css = [
 ];
 
 var scriptfiles = [
+    "app/bower_components/contenteditor/index.js",
     "app/scripts/collectioneditor/bootstrap-editor.js",
-    "app/scripts/collectioneditor/ce-config.js",
     "app/scripts/collectioneditor/collectioneditor-config.js",
-    "app/scripts/collectioneditor/content-editor.js",
-    "app/scripts/collectioneditor/content-editor-api.js",
     "app/scripts/collectioneditor/collection-editor-api.js",
-    "app/scripts/collectioneditor/base-plugin.js",
-    "app/scripts/collectioneditor/manager/header-manager.js",
+    "app/scripts/collectioneditor/collectioneditor-base-plugin.js",
     "app/scripts/collectioneditor/manager/container-manager.js",
     "app/scripts/collectioneditor/manager/metapage-manager.js",
     "app/scripts/collectioneditor/service/collection-service.js",
-    "app/scripts/collectioneditor/service/popup-service.js",
-    "app/scripts/collectioneditor/service/telemetry-service.js",
-    "app/scripts/collectioneditor/dispatcher/idispatcher.js",
-    "app/scripts/collectioneditor/dispatcher/console-dispatcher.js",
-    "app/scripts/collectioneditor/dispatcher/local-dispatcher.js",
-    "app/scripts/collectioneditor/dispatcher/piwik-dispatcher.js",
     "app/scripts/angular/controller/main.js",
-    "app/scripts/angular/controller/popup-controller.js"
+    "app/scripts/angular/directive/template-compiler-directive.js",
 ];
 
 gulp.task('setup', function() {
