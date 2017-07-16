@@ -1,4 +1,4 @@
-org.ekstep.collectioneditor.collectionService = new(Class.extend({
+org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
     initialize: function(config) {
@@ -75,7 +75,7 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         if (childrenTypes && childrenTypes.length === 0) return;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             }
@@ -197,8 +197,8 @@ org.ekstep.collectioneditor.collectionService = new(Class.extend({
         }
 
         if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
-            if (org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node)) {
-                var contextButton = $(org.ekstep.collectioneditor.collectionService.getContextMenuTemplate(data.node));
+            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
+                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
                 $nodeSpan.append(contextButton);
                 $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
                 $nodeSpan.data('rendered', true);
