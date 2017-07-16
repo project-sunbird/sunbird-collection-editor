@@ -40,6 +40,7 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js",
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
+    "app/bower_components/pluginframework/index.js",
     "app/scripts/collectioneditor/md5.js"
 ];
 
@@ -188,7 +189,7 @@ gulp.task('inject', ['minify'], function() {
 gulp.task('replace', ['inject'], function() {
     return mergeStream([
         gulp.src(["collection-editor/styles/external.min.css"]).pipe(replace('../fonts', 'fonts')).pipe(gulp.dest('collection-editor/styles')),
-        gulp.src(["collection-editor/scripts/collectioneditor.min.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(replace("'https://dev.ekstep.in'", "''")).pipe(replace('dispatcher: "local"', 'dispatcher: "console"')).pipe(gulp.dest('collection-editor/scripts/'));
+        gulp.src(["collection-editor/scripts/collectioneditor.min.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(replace("'https://dev.ekstep.in'", "''")).pipe(replace('dispatcher: "local"', 'dispatcher: "console"')).pipe(gulp.dest('collection-editor/scripts/'))
     ]);
 });
 
