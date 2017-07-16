@@ -18,7 +18,7 @@
         "oclazyload": "^1.0.9",
         "ngSafeApply": "./libs/Scope.SafeApply.js",
         "izitoast": "^1.1.3",
-        "pluginframework": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/plugin-framework.min.js"
+        "contenteditor": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/contenteditor.min.js"
     },
     "appPath": "app",
     "moduleName": "editorApp",

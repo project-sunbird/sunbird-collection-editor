@@ -1,4 +1,4 @@
-org.ekstep.collectioneditor.api = {
+window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, {
     initEditor: function(config, cb) {
         var startTime = Date.now();
         if (config) org.ekstep.collectioneditor.collectionService.initialize(config);
@@ -16,13 +16,15 @@ org.ekstep.collectioneditor.api = {
         });        
     },
     getService: function(service) {
-    	switch (service) {
-    		case "collection":
-    			return org.ekstep.collectioneditor.collectionService
-    			break;
-    	}
+        switch (service) {
+            case "collection":
+                return org.ekstep.collectioneditor.collectionService
+                break;
+        }
     },
     registerMetaPage: function(config) {
         if(config) org.ekstep.collectioneditor.metaPageManager.register(config);
     }
-}
+});
+
+window.ecEditor = window.org.ekstep.collectioneditor.api;
