@@ -11,13 +11,10 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).conf
 }]);
 angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad', function(ngDialog, $ocLazyLoad) {
     function loadNgModules(templatePath, controllerPath) {
-        
-        var ret = $ocLazyLoad.load([
+        return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath }
-        ])
-        console.log(templatePath, ret);
-        return ret;
+        ]);
     };
 
     function openModal(config, callback) {
