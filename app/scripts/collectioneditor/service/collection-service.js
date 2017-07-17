@@ -82,26 +82,18 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
     },
     getContextMenuTemplate: function(node) {
-        var instance = this;
+        var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
-        var contextMenu = "";
+        if (!node.data.root) removeTemplate = '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i>';
         if (childrenTypes && childrenTypes.length === 0) return;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            }
-        });
-
-        return '<span style="padding-left: 20px;left: 65%;">' +
-            '<div class="ui inline dropdown">' +
-            '<i class="add square icon"></i>' +
-            '<div class="menu">' +
-            contextMenu +
-            '</div>' +
-            '</div>' +
-            '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>'
+            }            
+        });        
+        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="add square icon"></i>' + '<div class="menu">' + contextMenu + '</div>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
