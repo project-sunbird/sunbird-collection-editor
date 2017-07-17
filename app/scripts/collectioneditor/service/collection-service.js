@@ -13,6 +13,13 @@ org.ekstep.services.collectionService = new(Class.extend({
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
+    getNodeById: function(id) {
+        var _node;
+        ecEditor.jQuery('#collection-tree').fancytree('getTree').visit(function(node){
+            if (node.data.id === id) _node = node;
+        });
+        return _node;
+    },
     setNodeTitle: function(title) {
         var instance = this;
         if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
