@@ -36,6 +36,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         if (text) ecEditor.jQuery("#collection-tree").fancytree("getTree").filterNodes(text, { autoExpand: true });
     },
     addNode: function(objectType, data) {
+        var newNode;
         data = data || {};
         var selectedNode = this.getActiveNode();
         objectType = this.getObjectType(objectType);
@@ -49,14 +50,15 @@ org.ekstep.services.collectionService = new(Class.extend({
         node.metadata = data;
         if (node.folder) { 
             if (selectedNode.getLevel() === this.config.rules.levels - 1) return;
-            selectedNode.addChildren(node).setActive();
+            newNode = selectedNode.addChildren(node);
+            newNode.setActive();
             org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { name: node.title, contentType: node.objectType, mimeType: "application/vnd.ekstep.content-collection" } };
         } else { 
-            selectedNode.addChildren(node) 
+            newNode = selectedNode.addChildren(node); 
         };
         selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
-        org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'add', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": node.id, "stage": node.id });
+        ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -68,6 +70,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                         selectedNode.remove();
                         $scope.closeThisDialog();
                         delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
+                        ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
                     };
                 }],
                 plain: true,
@@ -84,7 +87,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             if (instance.getObjectType(types).addType === "Browser") {
                 contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             }
         });
 
@@ -95,7 +98,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             contextMenu +
             '</div>' +
             '</div>' +
-            '<i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>'
+            '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>'
     },
     addLesson: function(type) {
         var instance = this;
@@ -196,7 +199,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         if (config.mode === "Read" || _.isEmpty(objectType)) return;
         // limit adding nodes depending on config levels for nested stucture
         if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && objectType.childrenTypes.length == 0)) {
-            var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.collectioneditor.api.getService(\'collection\').removeNode()"></i></span>');
+            var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>');
             $nodeSpan.append(contextButton);
             contextButton.hide();
             $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
