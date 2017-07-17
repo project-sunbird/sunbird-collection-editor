@@ -84,13 +84,13 @@ org.ekstep.services.collectionService = new(Class.extend({
     getContextMenuTemplate: function(node) {
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
-        if (!node.data.root) removeTemplate = '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i>';
+        if (!node.data.root) removeTemplate = '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
         if (childrenTypes && childrenTypes.length === 0) return;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addLesson\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\')"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
+                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addNode\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
             }            
         });        
         return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="add square icon"></i>' + '<div class="menu">' + contextMenu + '</div>' + '</div>' + removeTemplate + '</span>'
@@ -311,5 +311,8 @@ org.ekstep.services.collectionService = new(Class.extend({
             hierarchy: {},
             nodesModified: {}
         }
+    },
+    __telemetry: function(data) {
+        org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": data.subtype, "target": data.target, "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": ecEditor.getCurrentStage().id, "stage": ecEditor.getCurrentStage().id });
     }
 }));
