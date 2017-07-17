@@ -5,6 +5,8 @@ org.ekstep.contenteditor.config = _.assign(org.ekstep.contenteditor.config, {
         { "id": "org.ekstep.textbookmeta", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.unitmeta", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.contentmeta", "ver": "1.0", "type": "plugin" },
+        { "id": "org.ekstep.coursemeta", "ver": "1.0", "type": "plugin" },
+        { "id": "org.ekstep.courseunitmeta", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.telemetry", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.sunbirdcollectionheader", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.toaster", "ver": "1.0", "type": "plugin" },
