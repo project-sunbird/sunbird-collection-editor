@@ -10,6 +10,9 @@ org.ekstep.services.collectionService = new(Class.extend({
     getTreeObject: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").toDict(true);
     },
+    expandAll: function(flag) {
+        ecEditor.jQuery('#collection-tree').fancytree('getTree').visit(function(node){node.setExpanded(flag);});
+    },
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
