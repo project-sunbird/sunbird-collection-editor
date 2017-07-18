@@ -154,6 +154,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                         if (dropAllowed) {
                             data.otherNode.moveTo(node, data.hitMode);
                             org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+                            ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:reorder", { src: data.otherNode.data.id, dst: data.node.data.id });
                         } else {
                             ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
                                 title: "\"" + data.otherNode.title + "\"" + " cannot be added to " + "\"" + data.node.title + "\"",
