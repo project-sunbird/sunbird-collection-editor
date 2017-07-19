@@ -192,6 +192,8 @@ gulp.task('zip', ['minify', 'inject', 'replace', 'packageCorePlugins'], function
 gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
 
 var corePlugins = [
+    "org.ekstep.conceptselector-1.0",
+    "org.ekstep.assetbrowser-1.0",
     "org.ekstep.collectioneditorfunctions-1.0",
     "org.ekstep.lessonbrowser-1.0",
     "org.ekstep.textbookmeta-1.0",
@@ -201,9 +203,7 @@ var corePlugins = [
     "org.ekstep.courseunitmeta-1.0",
     "org.ekstep.preview-1.0",
     "org.ekstep.telemetry-1.0",
-    "org.ekstep.toaster-1.0",
-    "org.ekstep.assetbrowser-1.0",
-    "org.ekstep.conceptselector-1.0"
+    "org.ekstep.toaster-1.0"   
 ]
 
 gulp.task('minifyCorePlugins', function() {
