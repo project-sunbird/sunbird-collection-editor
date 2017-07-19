@@ -10,7 +10,7 @@ window.context = {
 
 window.config = {
     baseURL: "https://dev.ekstep.in",
-    corePluginsPackaged: false,
+    corePluginsPackaged: true,
     pluginRepo: "/plugins",
     dispatcher: 'console',
     apislug: '/api',

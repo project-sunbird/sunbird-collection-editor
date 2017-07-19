@@ -24,27 +24,7 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     org.ekstep.contenteditor.api.getService('popup').initService(loadNgModules, openModal);
 }]);
 angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location',
-    function($scope, $ocLazyLoad, $location) {
-        
-        /** Initialize base editor */
-        var context = org.ekstep.contenteditor.getWindowContext();
-        context.uid = context.user ? context.user.id : context.uid;
-        context.etags = context.etags || {};
-        context.etags.app = context.app || context.etags.app || [];
-        context.etags.partner = context.partner || context.etags.partner || [];
-        context.etags.dims = context.dims || context.etags.dims || [];
-        
-        var config = org.ekstep.contenteditor.getWindowConfig();
-        config.absURL = $location.protocol() + '://' + $location.host() + ':' + $location.port() // Required
-
-        config.collectionEditorPlugins = config.plugins || org.ekstep.contenteditor.config.plugins;
-        config.plugins = [        
-            { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" }
-        ]
-        org.ekstep.contenteditor.init(context, config, $scope, undefined, function() {
-            $scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE);            
-            $scope.popupService = org.ekstep.contenteditor.api.getService(ServiceConstants.POPUP_SERVICE);            
-        });    
+    function($scope, $ocLazyLoad, $location) { 
 
         $scope.loadNgModules = function(templatePath, controllerPath) {
             var files = [];
@@ -64,6 +44,26 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
         }
         // container scope ends
 
-        document.title = 'Collection-Editor';        
+        document.title = 'Collection-Editor';
+
+        /** Initialize base editor */
+        var context = org.ekstep.contenteditor.getWindowContext();
+        context.uid = context.user ? context.user.id : context.uid;
+        context.etags = context.etags || {};
+        context.etags.app = context.app || context.etags.app || [];
+        context.etags.partner = context.partner || context.etags.partner || [];
+        context.etags.dims = context.dims || context.etags.dims || [];
+        
+        var config = org.ekstep.contenteditor.getWindowConfig();
+        config.absURL = $location.protocol() + '://' + $location.host() + ':' + $location.port() // Required
+
+        config.collectionEditorPlugins = config.plugins || org.ekstep.contenteditor.config.plugins;
+        config.plugins = [        
+            { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" }
+        ]
+        org.ekstep.contenteditor.init(context, config, $scope, undefined, function() {
+            $scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE);            
+            $scope.popupService = org.ekstep.contenteditor.api.getService(ServiceConstants.POPUP_SERVICE);            
+        });           
     }
 ]);
