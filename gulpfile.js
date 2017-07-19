@@ -201,7 +201,9 @@ var corePlugins = [
     "org.ekstep.courseunitmeta-1.0",
     "org.ekstep.preview-1.0",
     "org.ekstep.telemetry-1.0",
-    "org.ekstep.toaster-1.0"
+    "org.ekstep.toaster-1.0",
+    "org.ekstep.assetbrowser-1.0",
+    "org.ekstep.conceptselector-1.0"
 ]
 
 gulp.task('minifyCorePlugins', function() {
