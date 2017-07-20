@@ -25,7 +25,7 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     setNodeTitle: function(title) {
         var instance = this;
-        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
+        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': (title.length > 22) ? title.substring(0,22)+'...' : title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
     },
@@ -228,7 +228,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this;
         this.addTree([{
             "id": data.identifier || UUID(),
-            "title": data.name,
+            "title": (data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name,
             "objectType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
             "folder": true,
@@ -246,7 +246,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             if (objectType) {
                 tree.push({
                     "id": child.identifier || UUID(),
-                    "title": child.name,
+                    "title": (child.name.length > 22) ? child.name.substring(0,22)+'...' : child.name,
                     "objectType": child.contentType,
                     "metadata": _.omit(child, ["children", "collections"]),
                     "folder": (objectType.childrenTypes.length > 0),
