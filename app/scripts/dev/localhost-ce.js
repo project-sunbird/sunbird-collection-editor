@@ -9,11 +9,11 @@ window.context = {
 };
 
 window.config = {
-    baseURL: "https://dev.ekstep.in",
+    baseURL: "",
     corePluginsPackaged: true,
     pluginRepo: "/plugins",
     dispatcher: 'console',
-    apislug: '/api',
+    apislug: '/action',
     editorConfig: {
         "mode": "Edit",
         "contentStatus": "draft",
