@@ -59,7 +59,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         } else { 
             newNode = selectedNode.addChildren(node); 
         };
-        selectedNode.sortChildren(null, true);
+        //selectedNode.sortChildren(null, true);
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
@@ -138,31 +138,8 @@ org.ekstep.services.collectionService = new(Class.extend({
                     return true;
                 },
                 dragDrop: function(node, data) {
-                    if (data.hitMode === "before" || data.hitMode === "after") return false;
-                    if (instance.config.rules && instance.config.rules.levels) {
-                        if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
-                            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
-                                title: 'This operation is not allowed!',
-                                position: 'topCenter',
-                                icon: 'fa fa-warning'
-                            });
-                            return false;
-                        }
-                    }
-                    if (node.data && node.data.objectType) {
-                        var dropAllowed = _.includes(instance.getObjectType(node.data.objectType).childrenTypes, data.otherNode.data.objectType);
-                        if (dropAllowed) {
-                            data.otherNode.moveTo(node, data.hitMode);
-                            org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
-                            ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:reorder", { src: data.otherNode.data.id, dst: data.node.data.id });
-                        } else {
-                            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
-                                title: "\"" + data.otherNode.title + "\"" + " cannot be added to " + "\"" + data.node.title + "\"",
-                                position: 'topCenter',
-                                icon: 'fa fa-warning'
-                            });                            
-                        }
-                    }
+                    if ((data.hitMode === "before" || data.hitMode === "after") && data.node.data.root) return false;
+                    if (instance.config.rules && instance.config.rules.levels) return instance._dropNode(node, data);
                 },
                 filter: {
                     autoApply: true,
@@ -182,8 +159,48 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
-        node.sortChildren(null, true);
+        //node.sortChildren(null, true);
         node.getFirstChild().setActive(); //select the first node by default
+    },
+    _dropNode: function(node, data) {
+        var instance = this,
+            objectType;
+        if ((data.otherNode.getLevel() === node.getLevel()) && data.hitMode === "over") {
+            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
+                title: 'This operation is not allowed!',
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+            return false;
+        } else if (data.otherNode.getLevel() === node.getLevel()) {
+            objectType = node.getParent().data.objectType;
+        } else if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
+            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
+                title: 'This operation is not allowed!',
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+            return false;
+        } else if (data.hitMode === "before" || data.hitMode === "after") {
+            objectType = node.getParent().data.objectType;
+        } else {
+            objectType = node.data.objectType;
+        };
+
+        var dropAllowed = _.includes(instance.getObjectType(objectType).childrenTypes, data.otherNode.data.objectType);
+        if (dropAllowed) {
+            data.otherNode.moveTo(node, data.hitMode);
+            org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+            ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:reorder", { src: data.otherNode.data.id, dst: data.node.data.id });
+            return true;
+        } else {
+            ecEditor.dispatchEvent("org.ekstep.toaster:warning", {
+                title: "\"" + data.otherNode.title + "\"" + " cannot be added to " + "\"" + data.node.title + "\"",
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+            return false;
+        }
     },
     onRenderNode: function(event, data, force) {
         var instance = this;
@@ -240,6 +257,7 @@ org.ekstep.services.collectionService = new(Class.extend({
     _buildTree: function(data, tree) {
         var instance = this,
             tree = tree || [];
+        if (data.children) data.children = _.sortBy(data.children, ['index']);
         _.forEach(data.children, function(child) {
             var objectType = instance.getObjectType(child.contentType);
             var childTree = [];
