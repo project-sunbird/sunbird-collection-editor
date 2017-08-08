@@ -10,7 +10,8 @@
     "gulp-sass": "^3.1.0",
     "lodash": "^4.16.6",
     "request": "*",
-    "xmlbuilder": "*"
+    "xmlbuilder": "*",
+    "express-http-proxy": "*"
   },
   "devDependencies": {
     "bluebird": "^3.4.6",
