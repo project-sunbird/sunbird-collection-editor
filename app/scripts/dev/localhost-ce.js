@@ -34,7 +34,7 @@ window.config = {
                 "editable": true,
                 "childrenTypes": ["TextBookUnit", "Collection", "Content"],
                 "addType": "Editor",
-                "iconClass": "fa fa-folder"
+                "iconClass": "fa fa-folder-o"
             }, {
                 "type": "Collection",
                 "label": "Collection",
@@ -42,7 +42,7 @@ window.config = {
                 "editable": false,
                 "childrenTypes": [],
                 "addType": "Browser",
-                "iconClass": "fa fa-file"
+                "iconClass": "fa fa-file-o"
             }, {
                 "type": "Content",
                 "label": "Content",
@@ -50,7 +50,7 @@ window.config = {
                 "editable": false,
                 "childrenTypes": [],
                 "addType": "Browser",
-                "iconClass": "fa fa-file"
+                "iconClass": "fa fa-file-o"
             }]
         },
         "defaultTemplate": {}
