@@ -290,24 +290,21 @@ org.ekstep.services.collectionService = new(Class.extend({
         };
     },
     _toFlatObj: function(data) {
-        var instance = this;        
-
-        if (data.children && data.children.length > 0) {
+        var instance = this;                
+        if (data && data.data) {
             instance.data[data.data.id] = {
                 "name": data.title,
                 "contentType": data.data.objectType,
-                "children": [],
+                "children": ecEditor._.map(data.children, function(child) {
+                    return child.data.id
+                }),
                 "root": data.data.root
             }
 
-            instance.data[data.data.id].children = ecEditor._.map(data.children, function(child) {
-                return child.data.id
+            ecEditor._.forEach(data.children, function(collection) {
+                instance._toFlatObj(collection);
             });
         }
-
-        ecEditor._.forEach(data.children, function(collection) {
-            instance._toFlatObj(collection);
-        });
 
         return instance.data;
     },
