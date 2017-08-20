@@ -84,7 +84,7 @@ org.ekstep.services.collectionService = new(Class.extend({
     getContextMenuTemplate: function(node) {
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
-        if (!node.data.root) removeTemplate = '<i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
+        if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
         if (childrenTypes && childrenTypes.length === 0) return;
         ecEditor._.forEach(childrenTypes, function(types) {
             if (instance.getObjectType(types).addType === "Browser") {
@@ -212,7 +212,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         if (config.mode === "Read" || _.isEmpty(objectType)) return;
         // limit adding nodes depending on config levels for nested stucture
         if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && objectType.childrenTypes.length == 0)) {
-            var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="remove icon" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>');
+            var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>');
             $nodeSpan.append(contextButton);
             contextButton.hide();
             $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
@@ -290,24 +290,21 @@ org.ekstep.services.collectionService = new(Class.extend({
         };
     },
     _toFlatObj: function(data) {
-        var instance = this;        
-
-        if (data.children && data.children.length > 0) {
+        var instance = this;                
+        if (data && data.data) {
             instance.data[data.data.id] = {
                 "name": data.title,
                 "contentType": data.data.objectType,
-                "children": [],
+                "children": ecEditor._.map(data.children, function(child) {
+                    return child.data.id
+                }),
                 "root": data.data.root
             }
 
-            instance.data[data.data.id].children = ecEditor._.map(data.children, function(child) {
-                return child.data.id
+            ecEditor._.forEach(data.children, function(collection) {
+                instance._toFlatObj(collection);
             });
         }
-
-        ecEditor._.forEach(data.children, function(collection) {
-            instance._toFlatObj(collection);
-        });
 
         return instance.data;
     },
