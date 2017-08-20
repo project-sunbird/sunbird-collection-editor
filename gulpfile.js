@@ -201,6 +201,8 @@ var corePlugins = [
     "org.ekstep.contentmeta-1.0",
     "org.ekstep.coursemeta-1.0",
     "org.ekstep.courseunitmeta-1.0",
+    "org.ekstep.lessonplanmeta-1.0",
+    "org.ekstep.lessonplanunitmeta-1.0",
     "org.ekstep.preview-1.0",
     "org.ekstep.telemetry-1.0",
     "org.ekstep.toaster-1.0"   
