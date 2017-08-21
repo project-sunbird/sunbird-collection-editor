@@ -20,6 +20,7 @@ var fs = require('fs');
 var json = JSON.parse(fs.readFileSync('package.json'));
 
 var bower_components = [
+    "app/libs/please-wait.min.js",
     "app/bower_components/jquery/dist/jquery.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
@@ -47,7 +48,9 @@ var bower_css = [
     "app/bower_components/font-awesome/css/font-awesome.css",
     "app/bower_components/ng-dialog/css/ngDialog.min.css",
     "app/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css",
-    "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css"
+    "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css",
+    "app/libs/spinkit.css",
+    "app/libs/please-wait.css"
 ];
 
 var scriptfiles = [
