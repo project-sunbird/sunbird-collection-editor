@@ -9,3 +9,4 @@ Collection Editor to support content types like Book, Collection, Course, Lesson
 for windows:
 `F:\Ekstep\Content-Editor>mklink /d plugins ..\Content-Plugins`
 `symbolic link created for plugins <<===>> ..\Content-Plugins`
+6. Run `gulp build` in root directory.
