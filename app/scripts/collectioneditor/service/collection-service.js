@@ -44,7 +44,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         objectType = this.getObjectType(objectType);
         var node = {};
-        node.title = data.name ? data.name : 'Untitled ' + objectType.label;
+        node.title = data.name ? ((data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name) : 'Untitled ' + objectType.label;
+        node.tooltip = data.name;
         node.objectType = data.contentType || objectType.type;
         node.id = data.identifier ? data.identifier : UUID();
         node.root = false;
@@ -246,6 +247,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         this.addTree([{
             "id": data.identifier || UUID(),
             "title": (data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name,
+            "tooltip": data.name,
             "objectType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
             "folder": true,
@@ -265,6 +267,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 tree.push({
                     "id": child.identifier || UUID(),
                     "title": (child.name.length > 22) ? child.name.substring(0,22)+'...' : child.name,
+                    "tooltip": child.name,
                     "objectType": child.contentType,
                     "metadata": _.omit(child, ["children", "collections"]),
                     "folder": (objectType.childrenTypes.length > 0),
