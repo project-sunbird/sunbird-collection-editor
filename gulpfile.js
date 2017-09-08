@@ -24,6 +24,7 @@ var bower_components = [
     "app/bower_components/jquery/dist/jquery.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
+    "app/libs/tokens.js",
     "app/bower_components/angular/angular.js",
     "app/bower_components/lodash/lodash.js",
     "app/bower_components/x2js/index.js",
@@ -50,7 +51,8 @@ var bower_css = [
     "app/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css",
     "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css",
     "app/libs/spinkit.css",
-    "app/libs/please-wait.css"
+    "app/libs/please-wait.css",
+    "app/libs/tokens.css"
 ];
 
 var scriptfiles = [
