@@ -132,8 +132,6 @@ angular.module('ngTokenField', []).directive('ngTokenField', ["$parse", "$timeou
                         }
                         tokenWrapper.insertBefore(_input);
 
-                        // Resize input field accordingly
-                        resizeInput(tokenWrapper);
                     }
                 }
 
