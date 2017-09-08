@@ -61,6 +61,11 @@
 
 i.remove.icon.custom-cursor{
     cursor: pointer;
+    opacity: 0.5;
+}
+
+i.remove.icon.custom-cursor:hover{
+    opacity: 1;
 }
 
 .ng-token-field .token {
