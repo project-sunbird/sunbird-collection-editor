@@ -20,6 +20,7 @@ var fs = require('fs');
 var json = JSON.parse(fs.readFileSync('package.json'));
 
 var bower_components = [
+    "app/libs/please-wait.min.js",
     "app/bower_components/jquery/dist/jquery.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
@@ -47,7 +48,9 @@ var bower_css = [
     "app/bower_components/font-awesome/css/font-awesome.css",
     "app/bower_components/ng-dialog/css/ngDialog.min.css",
     "app/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css",
-    "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css"
+    "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css",
+    "app/libs/spinkit.css",
+    "app/libs/please-wait.css"
 ];
 
 var scriptfiles = [
@@ -194,7 +197,7 @@ gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
 var corePlugins = [
     "org.ekstep.conceptselector-1.0",
     "org.ekstep.assetbrowser-1.0",
-    "org.ekstep.collectioneditorfunctions-1.0",
+    "org.ekstep.contenteditorfunctions-1.0",
     "org.ekstep.lessonbrowser-1.0",
     "org.ekstep.textbookmeta-1.0",
     "org.ekstep.unitmeta-1.0",
@@ -205,7 +208,8 @@ var corePlugins = [
     "org.ekstep.lessonplanunitmeta-1.0",
     "org.ekstep.preview-1.0",
     "org.ekstep.telemetry-1.0",
-    "org.ekstep.toaster-1.0"   
+    "org.ekstep.toaster-1.0",
+    "org.ekstep.editcontentmeta-1.0"   
 ]
 
 gulp.task('minifyCorePlugins', function() {
