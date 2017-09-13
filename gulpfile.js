@@ -24,7 +24,6 @@ var bower_components = [
     "app/bower_components/jquery/dist/jquery.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
-    "app/libs/tokens.js",
     "app/bower_components/angular/angular.js",
     "app/bower_components/lodash/lodash.js",
     "app/bower_components/x2js/index.js",
@@ -42,7 +41,8 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.loaders.templatesLoader.js",
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
-    "app/scripts/collectioneditor/md5.js"
+    "app/scripts/collectioneditor/md5.js",
+    "app/libs/tokens.js"
 ];
 
 var bower_css = [
