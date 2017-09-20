@@ -26,7 +26,7 @@ angular.module('ngTokenField', []).directive('ngTokenField', ["$parse", "$timeou
                     togglePlaceholder();
             }, true);
 
-            _tokenField = $('#' + scope.id);
+            _tokenField = element;
             _input = _tokenField.find('input');
 
             ////////////////////////////////////////////////
