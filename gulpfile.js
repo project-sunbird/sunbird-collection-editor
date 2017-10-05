@@ -198,20 +198,20 @@ gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
 
 var corePlugins = [
     "org.ekstep.conceptselector-1.0",
-    "org.ekstep.assetbrowser-1.0",
+    "org.ekstep.assetbrowser-1.1",
     "org.ekstep.contenteditorfunctions-1.0",
-    "org.ekstep.lessonbrowser-1.0",
-    "org.ekstep.textbookmeta-1.0",
-    "org.ekstep.unitmeta-1.0",
-    "org.ekstep.contentmeta-1.0",
-    "org.ekstep.coursemeta-1.0",
-    "org.ekstep.courseunitmeta-1.0",
-    "org.ekstep.lessonplanmeta-1.0",
-    "org.ekstep.lessonplanunitmeta-1.0",
-    "org.ekstep.preview-1.0",
+    "org.ekstep.lessonbrowser-1.1",
+    "org.ekstep.textbookmeta-1.1",
+    "org.ekstep.unitmeta-1.1",
+    "org.ekstep.contentmeta-1.1",
+    "org.ekstep.coursemeta-1.1",
+    "org.ekstep.courseunitmeta-1.1",
+    "org.ekstep.lessonplanmeta-1.1",
+    "org.ekstep.lessonplanunitmeta-1.1",
+    "org.ekstep.preview-1.1",
     "org.ekstep.telemetry-1.0",
     "org.ekstep.toaster-1.0",
-    "org.ekstep.editcontentmeta-1.0"   
+    "org.ekstep.editcontentmeta-1.1"   
 ]
 
 gulp.task('minifyCorePlugins', function() {
