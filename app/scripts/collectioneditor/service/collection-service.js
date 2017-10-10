@@ -215,8 +215,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         if (((!$nodeSpan.data('rendered') || force) && data.node.getLevel() >= config.rules.levels) || (!$nodeSpan.data('rendered') && objectType.childrenTypes.length == 0)) {
             var contextButton = $('<span style="padding-left: 20px;left: 65%;"><i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode()"></i></span>');
             $nodeSpan.append(contextButton);
-            contextButton.hide();
-            $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
+            contextButton.css('visibility', 'hidden');
+            $nodeSpan.hover(function() { contextButton.css('visibility', 'visible'); }, function() { contextButton.css('visibility', 'hidden'); });
             $nodeSpan.data('rendered', true);
         }
 
@@ -224,9 +224,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                 var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
                 $nodeSpan.append(contextButton);
-                $nodeSpan.hover(function() { contextButton.show(); }, function() { contextButton.hide(); });
+                $nodeSpan.hover(function() { contextButton.css('visibility', 'visible'); }, function() { contextButton.css('visibility', 'hidden'); });
                 $nodeSpan.data('rendered', true);
-                contextButton.hide();
+                contextButton.css('visibility', 'hidden');
                 instance.initContextMenuDropDown();
             }
         }
