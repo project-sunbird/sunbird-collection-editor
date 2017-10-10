@@ -50,7 +50,9 @@
     "merge-stream": "1.0.1",
     "phantomjs": "2.1.7"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "karma start karmaconf.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ekstep/Collection-Editor.git"
