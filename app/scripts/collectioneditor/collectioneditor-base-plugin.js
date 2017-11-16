@@ -3,7 +3,7 @@
  * Plugins can override specific methods to change the behavior.
  *
  * @class org.ekstep.collectioneditor.basePlugin
- * @author Santhosh Vasabhaktula <sunils@ilimi.in>
+ * @author Sunil A S <sunils@ilimi.in>
  */
 org.ekstep.collectioneditor.basePlugin = Class.extend({
     id: undefined,

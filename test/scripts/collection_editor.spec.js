@@ -3,6 +3,7 @@ describe("content editor integration test: ", function() {
     beforeAll(function(done) {
         org.ekstep.contenteditor.globalContext = {};
         var corePlugins = [
+            { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" },
             { "id": "org.ekstep.download", "ver": "1.0", "type": "plugin" }
         ];
         

@@ -50,13 +50,8 @@ module.exports = function(config) {
             "app/scripts/angular/controller/main.js",
             "app/scripts/angular/directive/template-compiler-directive.js",
             "test/baseSpec.js",
-            'test/scripts/*.js',
             'test/scripts/**/*.js',
-            { pattern: 'plugins/org.ekstep.collectioneditor-1.0/**/*.json', watched: true, served: true, included: false },
-            // fixtures
-            //{ pattern: 'test/**/*.json', watched: true, served: true, included: false },
-            //{ pattern: 'plugins/org.ekstep.stage-1.0/**/*.json', watched: true, served: true, included: false },
-            //{ pattern: 'test/data/**/*.html', watched: true, served: true, included: false }
+            { pattern: 'plugins/org.ekstep.collectioneditor-1.0/**/*.json', watched: true, served: true, included: false }
         ],
 
         plugins: [
