@@ -42,15 +42,16 @@ module.exports = function(config) {
             "app/scripts/collectioneditor/bootstrap-editor.js",
             "app/scripts/collectioneditor/collectioneditor-config.js",
             "app/scripts/collectioneditor/collection-editor-api.js",
-            "app/scripts/collectioneditor/collectioneditor-base-plugin.js",
             "app/scripts/collectioneditor/manager/container-manager.js",
             "app/scripts/collectioneditor/manager/metapage-manager.js",
+            "app/scripts/collectioneditor/collectioneditor-base-plugin.js",
             "app/scripts/collectioneditor/service/collection-service.js",    
             "app/scripts/collectioneditor/md5.js",
             "app/scripts/angular/controller/main.js",
             "app/scripts/angular/directive/template-compiler-directive.js",
             "test/baseSpec.js",
-            'test/**/*.js',
+            'test/scripts/*.js',
+            'test/scripts/**/*.js',
             { pattern: 'plugins/org.ekstep.collectioneditor-1.0/**/*.json', watched: true, served: true, included: false },
             // fixtures
             //{ pattern: 'test/**/*.json', watched: true, served: true, included: false },
@@ -68,7 +69,10 @@ module.exports = function(config) {
 
 
         // list of files to exclude
-        exclude: [],
+        exclude: [
+            'app/scripts/collectioneditor/collectioneditor-base-plugin.js',
+            'app/scripts/collectioneditor/md5.js',
+        ],
 
         client: {
             captureConsole: false
@@ -79,6 +83,7 @@ module.exports = function(config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {             
             'app/scripts/!(directive|controller|libs)/*.js': ['coverage'],
+            //'!app/scripts/collectioneditor/collectioneditor-base-plugin.js': ['coverage'],
             'app/scripts/collectioneditor/!(directive|controller|libs)/*.js': ['coverage'],
             'plugins/org.ekstep.collectioneditor-1.0/**/*.js': ['coverage']
         },
