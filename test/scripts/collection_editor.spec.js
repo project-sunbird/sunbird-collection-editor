@@ -8,6 +8,7 @@ describe("content editor integration test: ", function() {
         ];
         
         org.ekstep.contenteditor.config.useProxyForURL = false;
+        org.ekstep.contenteditor.config.corePluginsPackaged = false;
         org.ekstep.contenteditor.config.editorConfig= {
                 "mode": "Edit",
                 "contentStatus": "draft",
