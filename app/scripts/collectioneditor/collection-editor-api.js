@@ -11,7 +11,8 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
                 channel: ecEditor.getContext('channel')  || "",
                 pdata: ecEditor.getContext('pdata') || {}
             }, ecEditor.getConfig('dispatcher'));
-            org.ekstep.services.telemetryService.startEvent(true).append("loadtimes", { plugins: (Date.now() - startTime) });        
+            //org.ekstep.services.telemetryService.startEvent(true).append("loadtimes", { plugins: (Date.now() - startTime) });        
+            org.ekstep.services.telemetryService.startEvent(true).duration((new Date()).getTime() - startTime);
             if (cb) cb();    
         });        
     },
