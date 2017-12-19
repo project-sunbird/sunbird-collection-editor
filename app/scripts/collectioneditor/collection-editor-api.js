@@ -3,16 +3,7 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
         var startTime = Date.now();
         if (config) org.ekstep.services.collectionService.initialize(config);
         org.ekstep.pluginframework.pluginManager.loadAllPlugins(ecEditor.getConfig('collectionEditorPlugins'), undefined, function () {
-            org.ekstep.services.telemetryService.initialize({
-                uid: ecEditor.getContext('uid'),
-                sid: ecEditor.getContext('sid'),
-                content_id: ecEditor.getContext('contentId'),
-                etags: ecEditor.getContext('etags') || {},
-                channel: ecEditor.getContext('channel')  || "",
-                pdata: ecEditor.getContext('pdata') || {}
-            }, ecEditor.getConfig('dispatcher'));
-            //org.ekstep.services.telemetryService.startEvent(true).append("loadtimes", { plugins: (Date.now() - startTime) });        
-            org.ekstep.services.telemetryService.startEvent(true).duration((new Date()).getTime() - startTime);
+            org.ekstep.services.telemetryService.start((new Date()).getTime() - startTime);
             if (cb) cb();    
         });        
     },
