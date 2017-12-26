@@ -112,8 +112,48 @@ org.ekstep.services.collectionService = new(Class.extend({
     addTree: function(tree) {
         var instance = this;
         ecEditor.jQuery("#collection-tree").fancytree({
-            extensions: ["dnd", "filter"],
+            extensions: ["dnd", "filter", "edit"],
             source: tree,
+            edit: {
+                adjustWidthOfs: null,
+                inputCss: { minWidth: "2em", color: "#000" },
+                triggerStart: ["clickActive", "f2", "dblclick", "shift+click", "mac+enter"],
+                edit: function(event, data) {
+                    var inputNode = document.getElementsByClassName("fancytree-edit-input")[0];
+                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("maxlength", "100");
+                    inputNode.addEventListener("keyup", function() {
+                        ecEditor.dispatchEvent("org.ekstep.collectioneditor:title:update:" + instance.getActiveNode().data.objectType, inputNode.value, this);
+                    });
+                },
+                close: function(event, data) {
+                    if (instance.getContextMenuTemplate(data.node)) {
+                        var contextButton = $(instance.getContextMenuTemplate(data.node));
+                        var $nodeSpan = $(data.node.span);
+                        $nodeSpan.append(contextButton);
+                        $nodeSpan.hover(function() { contextButton.css('visibility', 'visible'); }, function() { contextButton.css('visibility', 'hidden'); });
+                        $nodeSpan.data('rendered', true);
+                        contextButton.css('visibility', 'hidden');
+                        instance.initContextMenuDropDown();
+                        if (data.node.title.length > 22) {
+                            ecEditor.jQuery(data.node.span)
+                            .find('span.fancytree-title')
+                            .css({
+                                'width':'10em',
+                                'text-overflow':'ellipsis',
+                                'white-space':'nowrap',
+                                'overflow':'hidden'
+                            });
+                        }
+                        ecEditor.dispatchEvent("org.ekstep.collectioneditor:title:update:" + instance.getActiveNode().data.objectType, data.node.title, this );
+                    }
+                },
+                beforeEdit: function(event, data) {
+                    if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
+                        ecEditor.dispatchEvent("org.ekstep.collectioneditor:title:update:" + instance.getActiveNode().data.objectType, data.orgTitle, this );
+                    }
+                    return instance.getObjectType(instance.getActiveNode().data.objectType).editable;
+                  },
+              },
             modifyChild: function(event, data) {
                 if (data && data.operation === "remove") {
                     org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'remove', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
