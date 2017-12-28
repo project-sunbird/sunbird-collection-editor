@@ -360,4 +360,16 @@ body {
 .ui.popup.inverted:before{
     background: #4a4a4a!important;
 }
+.ui-menu {
+    width: 200px;
+    font-size: 0.8em !important;
+    left: 128px !important;
+}
+.ui-menu kbd { /* Keyboard shortcuts for ui-contextmenu titles */
+    float: right;
+}
+.ui-state-active{
+    background: #2e9fd9 !important;
+    border: 1px solid #2e9fd9 !important;
+}
 /* specify size for tooltips */

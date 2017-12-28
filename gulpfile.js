@@ -22,6 +22,8 @@ var json = JSON.parse(fs.readFileSync('package.json'));
 var bower_components = [
     "app/libs/please-wait.min.js",
     "app/bower_components/jquery/dist/jquery.js",
+    "app/libs/jquery-ui.min.js",
+    "app/libs/contextmenu.min.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
     "app/bower_components/angular/angular.js",
@@ -52,7 +54,8 @@ var bower_css = [
     "app/bower_components/ng-dialog/css/ngDialog-theme-default.min.css",
     "app/libs/spinkit.css",
     "app/libs/please-wait.css",
-    "app/libs/tokens.css"
+    "app/libs/tokens.css",
+    "app/styles/jquery-ui.css"
 ];
 
 var scriptfiles = [
@@ -133,7 +136,7 @@ gulp.task('minifyCssBower', function() {
 
 
 gulp.task('copyfonts', function() {
-    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/*'], {
+    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/*', 'app/styles/images/*'], {
             base: 'app/styles/'
         })
         .pipe(gulp.dest('collection-editor/styles'));

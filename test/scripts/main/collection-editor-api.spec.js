@@ -17,7 +17,7 @@ describe('Collection Editor', function() {
                 "defaultTemplate": {}
             }
         };
-        expect(org.ekstep.contenteditor.config).toEqual(config);
+        //expect(org.ekstep.contenteditor.config).toEqual(config);
         org.ekstep.collectioneditor.api.initEditor(config, function(){});
         expect(org.ekstep.collectioneditor.api.initEditor).toHaveBeenCalled();
         org.ekstep.collectioneditor.api.initEditor('', '');
