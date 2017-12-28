@@ -25,7 +25,8 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     setNodeTitle: function(title) {
         var instance = this;
-        if (title) ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': (title.length > 22) ? title.substring(0,22)+'...' : title }).done(function(a, b) {
+        if(!title) title = 'Untitled';
+        ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': (title.length > 22) ? title.substring(0,22)+'...' : title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
     },
@@ -334,5 +335,21 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     __telemetry: function(data) {
         org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": data.subtype, "target": data.target, "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": ecEditor.getCurrentStage().id, "stage": ecEditor.getCurrentStage().id });
+    },
+
+    highlightNode:function(nodeId){
+        var nodeElem = org.ekstep.services.collectionService.getNodeById(nodeId)
+           if(nodeElem){
+                nodeElem.span.childNodes[1].style.color = 'red'
+                nodeElem.span.childNodes[2].style.color = 'red'
+           }
+    },
+    lowLightNode: function(nodeId) {
+        var nodeElem = org.ekstep.services.collectionService.getNodeById(nodeId)
+        if (nodeElem) {
+            nodeElem.span.childNodes[1].style.color = 'black'
+            nodeElem.span.childNodes[2].style.color = 'black'
+        }
     }
+
 }));

@@ -199,7 +199,7 @@ gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
 var corePlugins = [
     "org.ekstep.conceptselector-1.0",
     "org.ekstep.assetbrowser-1.1",
-    "org.ekstep.contenteditorfunctions-1.0",
+    "org.ekstep.contenteditorfunctions-1.1",
     "org.ekstep.lessonbrowser-1.1",
     "org.ekstep.textbookmeta-1.1",
     "org.ekstep.unitmeta-1.1",
