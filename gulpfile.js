@@ -22,6 +22,8 @@ var json = JSON.parse(fs.readFileSync('package.json'));
 var bower_components = [
     "app/libs/please-wait.min.js",
     "app/bower_components/jquery/dist/jquery.js",
+    "app/libs/jquery-ui.min.js",
+    "app/libs/contextmenu.min.js",
     "app/bower_components/async/dist/async.min.js",
     "app/libs/semantic.min.js",
     "app/bower_components/angular/angular.js",
