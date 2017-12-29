@@ -215,7 +215,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "remove":
                     if (!node.data.root) {
                         org.ekstep.services.collectionService.removeNode();
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, delete is not allowed.",
                             position: 'topCenter',
@@ -226,7 +226,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "addLesson":
                     if(instance.getObjectType(node.data.objectType).editable) {
                         org.ekstep.services.collectionService.addLesson("Resource");
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.",
                             position: 'topCenter',
