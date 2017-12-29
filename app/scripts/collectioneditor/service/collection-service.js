@@ -29,6 +29,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     setActiveNode: function(key) {
         if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
@@ -143,14 +144,6 @@ org.ekstep.services.collectionService = new(Class.extend({
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
                 org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'select', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
-                ecEditor.jQuery(data.node.span)
-                .find('span.fancytree-title')
-                .css({
-                    'width':'10em',
-                    'text-overflow':'ellipsis',
-                    'white-space':'nowrap',
-                    'overflow':'hidden'
-                });
             },
             dnd: {
                 autoExpandMS: 400,
@@ -184,29 +177,20 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             edit: {
                 triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
-                inputCss: { minWidth: "2em", color: "#000", width:"12em" },
-                 edit: function(event, data){
+                inputCss: { minWidth: "2em", color: "#000", width:"15em" },
+                edit: function(event, data){
                     var inputNode = document.getElementsByClassName("fancytree-edit-input")[0];
                     ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("maxlength", "100");
-                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("size", "10");
+                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("size", "15");
                 },
                 close: function(event, data) {
-                    if (data.node.title && data.node.title.length > 22) {
-                        ecEditor.jQuery(data.node.span)
-                        .find('span.fancytree-title')
-                        .css({
-                            'width':'10em',
-                            'text-overflow':'ellipsis',
-                            'white-space':'nowrap',
-                            'overflow':'hidden'
-                        });
-                    }
+                    ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
                         ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.orgTitle, this );
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.(You can only edit content created by you.)",
                             position: 'topCenter',
