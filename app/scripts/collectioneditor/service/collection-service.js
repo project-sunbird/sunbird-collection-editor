@@ -182,6 +182,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     var inputNode = document.getElementsByClassName("fancytree-edit-input")[0];
                     ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("maxlength", "100");
                     ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("size", "15");
+                    ecEditor.jQuery('span.fancytree-title').attr('style','background:none;');
                 },
                 close: function(event, data) {
                     ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
