@@ -99,6 +99,7 @@ gulp.task('minifyCSS', function() {
     return gulp.src([
             'app/styles/semantic.min.css',
             'app/styles/content-editor.css',
+            'app/styles/metaform.css',
             'app/styles/MyFontsWebfontsKit.css',
             'app/styles/iconfont.css',
             'app/styles/noto.css',
