@@ -26,9 +26,10 @@ org.ekstep.services.collectionService = new(Class.extend({
     setNodeTitle: function(title) {
         var instance = this;
         if(!title) title = 'Untitled';
-        ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': (title.length > 22) ? title.substring(0,22)+'...' : title }).done(function(a, b) {
+        ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     setActiveNode: function(key) {
         if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
@@ -176,31 +177,21 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             edit: {
                 triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
-                inputCss: { minWidth: "2em", color: "#000" },
+                inputCss: { minWidth: "2em", color: "#000", width:"15em" },
                 edit: function(event, data){
                     var inputNode = document.getElementsByClassName("fancytree-edit-input")[0];
                     ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("maxlength", "100");
-                    inputNode.addEventListener("keyup", function() {
-                        ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), inputNode.value, this);
-                    });
+                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("size", "15");
+                    ecEditor.jQuery('span.fancytree-title').attr('style','background:none;');
                 },
                 close: function(event, data) {
-                    if (data.node.title && data.node.title.length > 22) {
-                        ecEditor.jQuery(data.node.span)
-                        .find('span.fancytree-title')
-                        .css({
-                            'width':'10em',
-                            'text-overflow':'ellipsis',
-                            'white-space':'nowrap',
-                            'overflow':'hidden'
-                        });
-                    }
+                    ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
                         ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.orgTitle, this );
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.(You can only edit content created by you.)",
                             position: 'topCenter',
@@ -225,7 +216,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "remove":
                     if (!node.data.root) {
                         org.ekstep.services.collectionService.removeNode();
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, delete is not allowed.",
                             position: 'topCenter',
@@ -236,7 +227,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "addLesson":
                     if(instance.getObjectType(node.data.objectType).editable) {
                         org.ekstep.services.collectionService.addLesson("Resource");
-                    }else{
+                    } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.",
                             position: 'topCenter',
