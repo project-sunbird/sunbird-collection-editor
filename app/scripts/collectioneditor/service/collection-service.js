@@ -178,15 +178,21 @@ org.ekstep.services.collectionService = new(Class.extend({
             edit: {
                 triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
                 inputCss: { minWidth: "2em", color: "#000", width:"15em" },
-                edit: function(event, data){
-                    var inputNode = document.getElementsByClassName("fancytree-edit-input")[0];
-                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("maxlength", "100");
-                    ecEditor.jQuery(data.node.span).find('.fancytree-edit-input').attr("size", "15");
+                edit: function(event, data) {
+                    var inputNode = ecEditor.jQuery(data.node.span).find('.fancytree-edit-input');
+                    inputNode.attr("maxlength", "100");
+                    inputNode.attr("size", "15");
                     ecEditor.jQuery('span.fancytree-title').attr('style','background:none;');
+                    inputNode.focus();
+                    var currentValue = inputNode.val();
+                    inputNode.val('');
+                    inputNode.val(currentValue);
+                    inputNode[0].scrollLeft = inputNode[0].scrollWidth;
                 },
                 close: function(event, data) {
                     ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
+                    ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
