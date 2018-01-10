@@ -7,6 +7,9 @@
     border-radius: 0;
     padding-left: 0!important;
 }
+#contents-data-form .dropdown input {
+    padding-left: 1em !important;
+}
 
 #contents-data-form input:focus {
     border-bottom: 1px solid #009FDA;
@@ -205,4 +208,9 @@
 
 .left-margin-9px{
     margin-left: -9px !important;
+}
+
+.meta-keywords .ng-token-field input{
+    position: absolute;
+    width: 25% !important;
 }
