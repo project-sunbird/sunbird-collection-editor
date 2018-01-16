@@ -223,7 +223,7 @@
 }
 
 .ui.selection.dropdown {
-    border: 1px solid #e0e1e2;
+    border: 1px solid #979797;
 }
 
 .ui.form .fields.form-fields-overflow {
@@ -250,4 +250,16 @@
  .ui.breadcrumb .divider {
     color:#007aff;
     font-size: 1rem;
+ }
+
+ .padding-none {
+    padding:0 !important;    
+ }
+
+ .margin-bottom-0 {
+    margin-bottom: 0px !important;
+ }
+
+ .margin-left {
+    margin-left:0.88rem !important;
  }
