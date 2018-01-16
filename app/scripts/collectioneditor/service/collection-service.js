@@ -69,12 +69,20 @@ org.ekstep.services.collectionService = new(Class.extend({
         node.icon = objectType.iconClass;
         node.metadata = data;
         if (node.folder) { 
-            if (selectedNode.getLevel() === this.config.rules.levels - 1) return;
-            newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
+            // to check child node should not be created more than the set configlevel
+            if ((selectedNode.getLevel() >= this.config.rules.levels - 1) && createType === 'child'){
+                ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                    message: "Sorry, this operation is not allowed.",
+                    position: 'topCenter',
+                    icon: 'fa fa-warning'
+                });
+                return;
+            }   
+            newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
             newNode.setActive();
             org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { mimeType: "application/vnd.ekstep.content-collection" } };
         } else { 
-            newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
+            newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
         //selectedNode.sortChildren(null, true);
         ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
@@ -184,7 +192,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 }
             },
             edit: {
-                triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
+                triggerStart: ["f2"],
                 inputCss: { minWidth: "2em", color: "#000", width:"11em" },
                 edit: function(event, data) {
                     var inputNode = ecEditor.jQuery(data.node.span).find('.fancytree-edit-input');
@@ -275,7 +283,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "addSibling":
                     if (!node.data.root) {
                         var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
-                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'after');
+                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'sibling');
                     }else{
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.",
@@ -407,6 +415,9 @@ org.ekstep.services.collectionService = new(Class.extend({
                 $("#collection-tree").contextmenu("enableEntry", "rename", nodeType.editable);
                 $("#collection-tree").contextmenu("enableEntry", "remove", !node.data.root);
                 $("#collection-tree").contextmenu("enableEntry", "addChild", (nodeType.addType === "Editor") ? true : false );
+                if(node.getLevel() >= config.rules.levels - 1){
+                    $("#collection-tree").contextmenu("enableEntry", "addChild", false);
+                }
                 $("#collection-tree").contextmenu("enableEntry", "addSibling", (!node.data.root && nodeType.addType === "Editor" ? true : false));
                 $("#collection-tree").contextmenu("enableEntry", "addLesson", nodeType.editable);
                 return node.setActive();
