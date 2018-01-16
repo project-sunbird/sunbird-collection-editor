@@ -269,28 +269,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                     }
                     break;
                 case "addChild":
-                    if(instance.getObjectType(node.data.objectType).editable) {
-                        var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
-                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child');
-                    }else{
-                        ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                            message: "Sorry, this operation is not allowed.",
-                            position: 'topCenter',
-                            icon: 'fa fa-warning'
-                        });
-                    }
+                    org.ekstep.services.collectionService.addChild()
                     break;
                 case "addSibling":
-                    if (!node.data.root) {
-                        var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
-                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'sibling');
-                    }else{
-                        ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                            message: "Sorry, this operation is not allowed.",
-                            position: 'topCenter',
-                            icon: 'fa fa-warning'
-                        });
-                    }
+                    org.ekstep.services.collectionService.addSibling()
                     break;
                 case "showMenu":
                     $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
@@ -559,6 +541,41 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     showMenu:function(){
        $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
-   }
+    },
 
+    addChild: function() {
+        var instance = this;
+        var refNode, moveMode,
+            tree =  ecEditor.jQuery('#collection-tree').fancytree('getTree'),
+            rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild(),
+            node = tree.getActiveNode();
+        if (this.getObjectType(node.data.objectType).editable) {
+            var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
+            org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child');
+        } else {
+            ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                message: "Sorry, this operation is not allowed.",
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+        }
+    },
+
+    addSibling: function() {
+        var instance = this;
+        var refNode, moveMode,
+            tree =  ecEditor.jQuery('#collection-tree').fancytree('getTree'),
+            rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild(),
+            node = tree.getActiveNode();
+        if (!node.data.root) {
+            var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
+            org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'sibling');
+        } else {
+            ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                message: "Sorry, this operation is not allowed.",
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+        }
+    }
 }));
