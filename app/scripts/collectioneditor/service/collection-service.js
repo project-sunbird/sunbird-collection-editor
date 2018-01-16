@@ -43,7 +43,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
-        ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     setActiveNode: function(key) {
         if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
@@ -121,14 +121,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
         if (childrenTypes && childrenTypes.length === 0) return;
-        ecEditor._.forEach(childrenTypes, function(types) {
-            if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addLesson\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addNode\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            }            
-        });        
-        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="add square icon"></i>' + '<div class="menu">' + contextMenu + '</div>' + '</div>' + removeTemplate + '</span>'
+        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
@@ -192,7 +185,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             edit: {
                 triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
-                inputCss: { minWidth: "2em", color: "#000", width:"15em" },
+                inputCss: { minWidth: "2em", color: "#000", width:"11em" },
                 edit: function(event, data) {
                     var inputNode = ecEditor.jQuery(data.node.span).find('.fancytree-edit-input');
                     inputNode.attr("maxlength", "100");
@@ -205,7 +198,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     inputNode[0].scrollLeft = inputNode[0].scrollWidth;
                 },
                 close: function(event, data) {
-                    ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
+                    ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                     ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
                     if(data.node.title.length > 23) {
@@ -380,6 +373,20 @@ org.ekstep.services.collectionService = new(Class.extend({
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
 
+        if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
+           if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
+               var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
+               $nodeSpan.append(contextButton);
+               contextButton.hide();
+               $nodeSpan[0].onmouseover = function() {
+                   contextButton.show();
+               };
+               $nodeSpan[0].onmouseout = function() {
+                   contextButton.hide();
+               }
+               $nodeSpan.data('rendered', true)
+           }
+       }
         if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
         }
@@ -538,6 +545,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             nodeElem.span.childNodes[1].style.color = 'black'
             nodeElem.span.childNodes[2].style.color = 'black'
         }
-    }
+    },
+    showMenu:function(){
+       $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
+   }
 
 }));
