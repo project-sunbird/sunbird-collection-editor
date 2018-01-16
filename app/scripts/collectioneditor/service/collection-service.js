@@ -76,11 +76,10 @@ org.ekstep.services.collectionService = new(Class.extend({
         } else { 
             newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
-        selectedNode.sortChildren(null, true);
+        //selectedNode.sortChildren(null, true);
         ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
-
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
