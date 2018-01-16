@@ -1,5 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), src:url('webfonts/OpenSans-Regular.ttf') format('truetype');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
 #contents-data-form input,
 #contents-data-form textarea {
     background: none;
@@ -35,7 +44,7 @@
 }
 
 .ui.form .field>label {
-    font-size: .92857143em;
+    font-size: .82857143em;
     font-weight: bold;
     text-transform: uppercase;
     margin: 0 0 .28571429rem 0;
@@ -132,10 +141,12 @@
 
 #headerSegment .ui.breadcrumb {
     /*background: #f5f5f5;*/
+    font-weight: 600;
     padding: 12px;
     padding-left: 1.2em;
     width: 100%;
-    font-family: 'Open Sans' !important;
+    font-family: 'Open Sans';
+    font-size: 0.9rem;
 }
 
 #headerSegment .ui.breadcrumb>.active.section {
