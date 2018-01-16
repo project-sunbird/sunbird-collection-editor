@@ -13,6 +13,20 @@ org.ekstep.services.collectionService = new(Class.extend({
     expandAll: function(flag) {
         ecEditor.jQuery('#collection-tree').fancytree('getTree').visit(function(node){node.setExpanded(flag);});
     },
+    collapseAllChildrens: function(flag) {
+        var rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild();
+        ecEditor._.forEach(rootNode.children, function(child) {
+            child.setExpanded(flag);
+        });
+    },
+    addTooltip: function(title) {
+        return {
+            class: "fancytree-title popup-item",
+            'data-content': title,
+            'data-variation': "wide",
+            'data-position': "bottom left"
+        }
+    },
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
@@ -63,6 +77,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
         //selectedNode.sortChildren(null, true);
+        ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
@@ -193,6 +208,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                     ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                     ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
+                    if(data.node.title.length > 23) {
+                        ecEditor.jQuery(data.node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(data.node.title));
+                        ecEditor.jQuery('.popup-item').popup();
+                    }
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
@@ -209,6 +228,13 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
+            },
+            loadChildren: function(event, data) {
+                data.node.visit(function(subNode) {
+                    if( subNode.key === "_1" && !subNode.isExpanded() ) {
+                        subNode.setExpanded(true);
+                    }
+                });
             }
         }).on("nodeCommand", function(event, data){
             var refNode, moveMode,
@@ -353,6 +379,14 @@ org.ekstep.services.collectionService = new(Class.extend({
         var $nodeSpan = $(node.span);
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
+
+        if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
+            ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
+        }
+        if(node.span.childNodes[2].hasAttribute("data-variation")) {
+            ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
+        }
+
         // for read mode do not add context menu on node
         if (config.mode === "Read" || _.isEmpty(objectType)) return;
         $("#collection-tree").contextmenu({
@@ -408,6 +442,8 @@ org.ekstep.services.collectionService = new(Class.extend({
             "root": true,
             "icon": instance.getObjectType(data.contentType).iconClass
         }]);
+        org.ekstep.services.collectionService.expandAll(true);
+        org.ekstep.services.collectionService.collapseAllChildrens(false);
     },
     _buildTree: function(data, tree) {
         var instance = this,
