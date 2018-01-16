@@ -19,6 +19,14 @@ org.ekstep.services.collectionService = new(Class.extend({
             child.setExpanded(flag);
         });
     },
+    addTooltip: function(title) {
+        return {
+            class: "fancytree-title popup-item",
+            'data-content': title,
+            'data-variation': "wide",
+            'data-position': "bottom left"
+        }
+    },
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
@@ -68,13 +76,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         } else { 
             newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
-        //selectedNode.sortChildren(null, true);
-        ecEditor.jQuery(newNode.span.childNodes[2]).attr({
-            class: "fancytree-title popup-item",
-            'data-content': node.title,
-            'data-variation': "wide",
-            'data-position': "bottom left"
-        });
+        selectedNode.sortChildren(null, true);
+        ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
 
@@ -206,13 +209,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                     ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                     ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
-                    ecEditor.jQuery(data.node.span.childNodes[2]).attr({
-                        class: "fancytree-title popup-item",
-                        'data-content': data.node.title,
-                        'data-variation': "wide",
-                        'data-position': "bottom left"
-                    });
-                    ecEditor.jQuery('.popup-item').popup();
+                    if(data.node.title.length > 23) {
+                        ecEditor.jQuery(data.node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(data.node.title));
+                        ecEditor.jQuery('.popup-item').popup();
+                    }
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
@@ -382,12 +382,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var objectType = this.getObjectType(data.node.data.objectType);
 
         if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
-            ecEditor.jQuery(node.span.childNodes[2]).attr({
-                class: "fancytree-title popup-item",
-                'data-content': node.tooltip,
-                'data-variation': "wide",
-                'data-position': "bottom center"
-            });
+            ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
         }
         if(node.span.childNodes[2].hasAttribute("data-variation")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
