@@ -13,6 +13,20 @@ org.ekstep.services.collectionService = new(Class.extend({
     expandAll: function(flag) {
         ecEditor.jQuery('#collection-tree').fancytree('getTree').visit(function(node){node.setExpanded(flag);});
     },
+    collapseAllChildrens: function(flag) {
+        var rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild();
+        ecEditor._.forEach(rootNode.children, function(child) {
+            child.setExpanded(flag);
+        });
+    },
+    addTooltip: function(title) {
+        return {
+            class: "fancytree-title popup-item",
+            'data-content': title,
+            'data-variation': "wide",
+            'data-position': "bottom left"
+        }
+    },
     getActiveNode: function() {
         return ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode();
     },
@@ -29,7 +43,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode().applyPatch({ 'title': title }).done(function(a, b) {
             instance.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
         });
-        ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     setActiveNode: function(key) {
         if (key) ecEditor.jQuery("#collection-tree").fancytree("getTree").getNodeByKey(key).setActive();
@@ -55,14 +69,23 @@ org.ekstep.services.collectionService = new(Class.extend({
         node.icon = objectType.iconClass;
         node.metadata = data;
         if (node.folder) { 
-            if (selectedNode.getLevel() === this.config.rules.levels - 1) return;
-            newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
+            // to check child node should not be created more than the set configlevel
+            if ((selectedNode.getLevel() >= this.config.rules.levels - 1) && createType === 'child'){
+                ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                    message: "Sorry, this operation is not allowed.",
+                    position: 'topCenter',
+                    icon: 'fa fa-warning'
+                });
+                return;
+            }   
+            newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
             newNode.setActive();
             org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { mimeType: "application/vnd.ekstep.content-collection" } };
         } else { 
-            newNode = (createType === 'after') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
+            newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
         //selectedNode.sortChildren(null, true);
+        ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
@@ -107,14 +130,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
         if (childrenTypes && childrenTypes.length === 0) return;
-        ecEditor._.forEach(childrenTypes, function(types) {
-            if (instance.getObjectType(types).addType === "Browser") {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addLesson(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addLesson\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            } else if (node.getLevel() !== (instance.config.rules.levels - 1)) {
-                contextMenu = contextMenu + '<div class="item" onclick="org.ekstep.services.collectionService.addNode(\'' + types + '\'); org.ekstep.services.collectionService.__telemetry({ subtype: \'addNode\', target: \''+ types + '\' });"><i class="' + instance.getObjectType(types).iconClass + '"></i>&nbsp;' + instance.getObjectType(types).label + '</div>';
-            }            
-        });        
-        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="add square icon"></i>' + '<div class="menu">' + contextMenu + '</div>' + '</div>' + removeTemplate + '</span>'
+        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
@@ -177,8 +193,8 @@ org.ekstep.services.collectionService = new(Class.extend({
                 }
             },
             edit: {
-                triggerStart: ["clickActive", "f2", "dblclick", "mac+enter", "shift+click"],
-                inputCss: { minWidth: "2em", color: "#000", width:"15em" },
+                triggerStart: ["f2"],
+                inputCss: { minWidth: "2em", color: "#000", width:"11em" },
                 edit: function(event, data) {
                     var inputNode = ecEditor.jQuery(data.node.span).find('.fancytree-edit-input');
                     inputNode.attr("maxlength", "100");
@@ -191,9 +207,13 @@ org.ekstep.services.collectionService = new(Class.extend({
                     inputNode[0].scrollLeft = inputNode[0].scrollWidth;
                 },
                 close: function(event, data) {
-                    ecEditor.jQuery('span.fancytree-title').attr('style','width:15em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
+                    ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                     ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
+                    if(data.node.title.length > 23) {
+                        ecEditor.jQuery(data.node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(data.node.title));
+                        ecEditor.jQuery('.popup-item').popup();
+                    }
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
@@ -210,6 +230,13 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
+            },
+            loadChildren: function(event, data) {
+                data.node.visit(function(subNode) {
+                    if( subNode.key === "_1" && !subNode.isExpanded() ) {
+                        subNode.setExpanded(true);
+                    }
+                });
             }
         }).on("nodeCommand", function(event, data){
             var refNode, moveMode,
@@ -243,28 +270,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                     }
                     break;
                 case "addChild":
-                    if(instance.getObjectType(node.data.objectType).editable) {
-                        var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
-                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child');
-                    }else{
-                        ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                            message: "Sorry, this operation is not allowed.",
-                            position: 'topCenter',
-                            icon: 'fa fa-warning'
-                        });
-                    }
+                    org.ekstep.services.collectionService.addChild()
                     break;
                 case "addSibling":
-                    if (!node.data.root) {
-                        var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
-                        org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'after');
-                    }else{
-                        ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                            message: "Sorry, this operation is not allowed.",
-                            position: 'topCenter',
-                            icon: 'fa fa-warning'
-                        });
-                    }
+                    org.ekstep.services.collectionService.addSibling()
                     break;
                 case "showMenu":
                     $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
@@ -354,6 +363,28 @@ org.ekstep.services.collectionService = new(Class.extend({
         var $nodeSpan = $(node.span);
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
+
+        if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
+           if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
+               var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
+               $nodeSpan.append(contextButton);
+               contextButton.hide();
+               $nodeSpan[0].onmouseover = function() {
+                   contextButton.show();
+               };
+               $nodeSpan[0].onmouseout = function() {
+                   contextButton.hide();
+               }
+               $nodeSpan.data('rendered', true)
+           }
+       }
+        if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
+            ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
+        }
+        if(node.span.childNodes[2].hasAttribute("data-variation")) {
+            ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
+        }
+
         // for read mode do not add context menu on node
         if (config.mode === "Read" || _.isEmpty(objectType)) return;
         $("#collection-tree").contextmenu({
@@ -367,6 +398,9 @@ org.ekstep.services.collectionService = new(Class.extend({
                 $("#collection-tree").contextmenu("enableEntry", "rename", nodeType.editable);
                 $("#collection-tree").contextmenu("enableEntry", "remove", !node.data.root);
                 $("#collection-tree").contextmenu("enableEntry", "addChild", (nodeType.addType === "Editor") ? true : false );
+                if(node.getLevel() >= config.rules.levels - 1){
+                    $("#collection-tree").contextmenu("enableEntry", "addChild", false);
+                }
                 $("#collection-tree").contextmenu("enableEntry", "addSibling", (!node.data.root && nodeType.addType === "Editor" ? true : false));
                 $("#collection-tree").contextmenu("enableEntry", "addLesson", nodeType.editable);
                 return node.setActive();
@@ -409,6 +443,8 @@ org.ekstep.services.collectionService = new(Class.extend({
             "root": true,
             "icon": instance.getObjectType(data.contentType).iconClass
         }]);
+        org.ekstep.services.collectionService.expandAll(true);
+        org.ekstep.services.collectionService.collapseAllChildrens(false);
     },
     _buildTree: function(data, tree) {
         var instance = this,
@@ -502,6 +538,45 @@ org.ekstep.services.collectionService = new(Class.extend({
         if (nodeElem) {
             nodeElem.span.childNodes[1].style.color = 'black'
             nodeElem.span.childNodes[2].style.color = 'black'
+        }
+    },
+    showMenu:function(){
+       $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
+    },
+
+    addChild: function() {
+        var instance = this;
+        var refNode, moveMode,
+            tree =  ecEditor.jQuery('#collection-tree').fancytree('getTree'),
+            rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild(),
+            node = tree.getActiveNode();
+        if (this.getObjectType(node.data.objectType).editable) {
+            var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
+            org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child');
+        } else {
+            ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                message: "Sorry, this operation is not allowed.",
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
+        }
+    },
+
+    addSibling: function() {
+        var instance = this;
+        var refNode, moveMode,
+            tree =  ecEditor.jQuery('#collection-tree').fancytree('getTree'),
+            rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild(),
+            node = tree.getActiveNode();
+        if (!node.data.root) {
+            var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes;
+            org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'sibling');
+        } else {
+            ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                message: "Sorry, this operation is not allowed.",
+                position: 'topCenter',
+                icon: 'fa fa-warning'
+            });
         }
     },
     removeSpecialChars: function(text) {
