@@ -1,10 +1,16 @@
 
 /* cyrillic-ext */
+
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: url('./webfonts/OpenSans-Regular.ttf') format('truetype');
+  src: url('webfonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+html,
+body {
+    font-family: 'Open Sans', sans-serif !important;
 }
 
 #contents-data-form input,
@@ -38,7 +44,7 @@
 .ui.form .field>label,
 .form-fields-except-image .field input,
 .form-fields-except-image .field textarea {
-    font-family: 'Open Sans' !important;
+    
 }
 
 .ui.form .field>label {
@@ -143,7 +149,6 @@
     padding: 12px;
     padding-left: 1.2em;
     width: 100%;
-    font-family: 'Open Sans';
     font-size: 0.9rem;
 }
 
@@ -154,13 +159,11 @@
 
 #headerSegment h3 {
     color: rgba(0, 0, 0, 0.7)!important;
-    font-family: 'Open Sans' !important;
     left: 0;
     padding-left: 1vw;
 }
 
-.button-overrides {
-    font-family: 'Open Sans' !important;
+.button-overrides {   
     padding: 0.85em 1.5em!important;
     text-transform: none!important;
     border-radius: .25rem!important;
@@ -185,7 +188,7 @@
 #read-metadata-wrapper .ui.items {
     height: 30%!important;
     margin-bottom: 0!important;
-    font-family: 'Open Sans' !important;
+    
 }
 
 #read-metadata-wrapper .item,
@@ -209,21 +212,9 @@
     padding-right: 2vw;
 }
 
-.ui.form .error {
-    border-color: red !important;
-}
-
-.left-margin-9px{
-    margin-left: -9px !important;
-}
-
 .meta-keywords .ng-token-field input{
     position: absolute;
     width: 25% !important;
-}
-
-.ui.selection.dropdown {
-    border: 1px solid #e0e1e2;
 }
 
 .ui.form .fields.form-fields-overflow {
@@ -235,6 +226,10 @@
 .ui.breadcrumb a{
     color: #007aff;
  }
+
+.ui.selection.dropdown {
+    border: 1px solid #979797;
+}
 
  .ui.multiple.search.dropdown.border-bottom-only {
     border-radius: 0;
@@ -250,4 +245,25 @@
  .ui.breadcrumb .divider {
     color:#007aff;
     font-size: 1rem;
+    vertical-align: middle;
  }
+
+ .padding-none {
+    padding:0 !important;    
+ }
+
+ .margin-bottom-0 {
+    margin-bottom: 0 !important;
+ }
+
+ .margin-left {
+    margin-left: 0.88rem !important;
+ }
+
+.ui.form .error {
+    border-color: red !important;
+}
+
+.left-margin-9px{
+    margin-left: -9px !important;
+}
