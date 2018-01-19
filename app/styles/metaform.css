@@ -23,6 +23,9 @@ body {
     padding-left: 0;
 }
 
+#contents-data-form .ui.search.dropdown.placeholder-padding input {
+     padding-left: 1em;
+}
 #contents-data-form input:focus {
     border-bottom: 1px solid #007AFF;
 }

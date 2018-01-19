@@ -115,12 +115,12 @@ org.ekstep.services.collectionService = new(Class.extend({
             {title: "Delete <kbd>[Del]</kbd>", cmd: "remove", uiIcon: "ui-icon-trash", disabled: node.data.root ? true : false}
         ];
         if(nodeType.childrenTypes && nodeType.childrenTypes.length > 0){
-            var ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl';
+            //var ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl';
             var menu = [{title: "----"},
-                {title: "New sibling <kbd>[" + ctrl + "+N]</kbd>", cmd: "addSibling", uiIcon: "ui-icon-plus", disabled: node.data.root ? true : false},
-                {title: "New child <kbd>[" + ctrl + "+Shift+N]</kbd>", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e"},
+                {title: "New sibling <kbd>[Ctrl+N]</kbd>", cmd: "addSibling", uiIcon: "ui-icon-plus", disabled: node.data.root ? true : false},
+                {title: "New child <kbd>[Ctrl+Shift+N]</kbd>", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e"},
                 {title: "----"},
-                {title: "Add Resource <kbd>[" + ctrl + "+Shift+R]</kbd>",  cmd: "addLesson", uiIcon: "ui-icon-plus"}];
+                {title: "Add Resource <kbd>[Ctrl+Shift+R]</kbd>",  cmd: "addLesson", uiIcon: "ui-icon-plus"}];
             contextMenu = contextMenu.concat(menu);
         }
         return contextMenu;
@@ -580,7 +580,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
     },
     removeSpecialChars: function(text) {
-        var iChars = "!@#$%^&*()+=-[]\\\';,/{}|\":<>?";
+        var iChars = "@#$^*()+=-[]\\\';,/{}|\":<>";
         for (var i = 0; i < text.length; i++) {
             if (iChars.indexOf(text.charAt(i)) != -1) {
                 ecEditor.dispatchEvent("org.ekstep.toaster:error", {
