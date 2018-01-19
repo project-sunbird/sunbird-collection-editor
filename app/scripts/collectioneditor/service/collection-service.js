@@ -288,15 +288,15 @@ org.ekstep.services.collectionService = new(Class.extend({
             var cmd = null;
             console.log($.ui.fancytree.eventToString(e));
             switch( $.ui.fancytree.eventToString(e) ) {
-                case "ctrl+alt+shift+n":
+                case "alt+ctrl+shift+n":
                 case "alt+meta+shift+n": // mac: cmd+shift+n
                     cmd = "addChild";
                     break;
-                case "ctrl+alt+a":
+                case "alt+ctrl+a":
                 case "alt+meta+a": // mac: cmd+shift+n
                     cmd = "addLesson";
                     break;
-                case "ctrl+alt+n":
+                case "alt+ctrl+n":
                 case "alt+meta+`": // mac
                     cmd = "addSibling";
                     break;
