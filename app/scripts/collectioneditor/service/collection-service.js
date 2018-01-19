@@ -580,5 +580,19 @@ org.ekstep.services.collectionService = new(Class.extend({
                 icon: 'fa fa-warning'
             });
         }
+    },
+    removeSpecialChars: function(text) {
+        var iChars = "@#$^*()+=-[]\\\';,/{}|\":<>";
+        for (var i = 0; i < text.length; i++) {
+            if (iChars.indexOf(text.charAt(i)) != -1) {
+                ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                    message: "Special characters are not allowed",
+                    position: 'topCenter',
+                    icon: 'fa fa-warning'
+                });
+                text = text.replace(/[^a-zA-Z ]/g, "")
+            }
+        }
+        return text;
     }
 }));
