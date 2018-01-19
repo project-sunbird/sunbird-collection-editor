@@ -44,7 +44,8 @@ var bower_components = [
     "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
     "app/bower_components/oclazyload/dist/ocLazyLoad.js",
     "app/scripts/collectioneditor/md5.js",
-    "app/libs/tokens.js"
+    "app/libs/tokens.js",
+    "app/libs/ng-tags-input.js"
 ];
 
 var bower_css = [
@@ -55,6 +56,7 @@ var bower_css = [
     "app/libs/spinkit.css",
     "app/libs/please-wait.css",
     "app/libs/tokens.css",
+    "app/libs/ng-tags-input.css",
     "app/styles/jquery-ui.css"
 ];
 
