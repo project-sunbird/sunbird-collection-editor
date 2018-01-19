@@ -110,17 +110,19 @@ org.ekstep.services.collectionService = new(Class.extend({
     getContextMenu: function(node){
         var instance = this, contextMenu = [];
         var nodeType = instance.getObjectType(node.data.objectType);
+        var ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl';
+        var del = (ctrl === 'Cmd') ? "Cmd+Del" : "Del";
+        var alt = (ctrl === 'Cmd') ? "Opt" : "Alt";
         contextMenu = [
             {title: "Edit <kbd>[F2]</kbd>", cmd: "rename",  uiIcon: "ui-icon-pencil"},
-            {title: "Delete <kbd>[Del]</kbd>", cmd: "remove", uiIcon: "ui-icon-trash", disabled: node.data.root ? true : false}
+            {title: "Delete <kbd>[" + del + "]</kbd>", cmd: "remove", uiIcon: "ui-icon-trash", disabled: node.data.root ? true : false}
         ];
         if(nodeType.childrenTypes && nodeType.childrenTypes.length > 0){
-            //var ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl';
             var menu = [{title: "----"},
-                {title: "New sibling <kbd>[Ctrl+N]</kbd>", cmd: "addSibling", uiIcon: "ui-icon-plus", disabled: node.data.root ? true : false},
-                {title: "New child <kbd>[Ctrl+Shift+N]</kbd>", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e"},
+                {title: "New sibling <kbd>[" + ctrl + "+" + alt +"+Shift+N]</kbd>", cmd: "addSibling", uiIcon: "ui-icon-plus", disabled: node.data.root ? true : false},
+                {title: "New child <kbd>[" + ctrl + "+" + alt + "+N]</kbd>", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e"},
                 {title: "----"},
-                {title: "Add Resource <kbd>[Ctrl+Shift+R]</kbd>",  cmd: "addLesson", uiIcon: "ui-icon-plus"}];
+                {title: "Add Resource <kbd>[" + ctrl + "+" + alt + "+A]</kbd>",  cmd: "addLesson", uiIcon: "ui-icon-plus"}];
             contextMenu = contextMenu.concat(menu);
         }
         return contextMenu;
@@ -286,16 +288,16 @@ org.ekstep.services.collectionService = new(Class.extend({
             var cmd = null;
             console.log($.ui.fancytree.eventToString(e));
             switch( $.ui.fancytree.eventToString(e) ) {
-                case "ctrl+shift+n":
-                case "meta+shift+n": // mac: cmd+shift+n
+                case "ctrl+alt+shift+n":
+                case "alt+meta+shift+n": // mac: cmd+shift+n
                     cmd = "addChild";
                     break;
-                case "ctrl+shift+r":
-                case "meta+shift+r": // mac: cmd+shift+n
+                case "ctrl+alt+a":
+                case "alt+meta+a": // mac: cmd+shift+n
                     cmd = "addLesson";
                     break;
-                case "ctrl+n":
-                case "meta+n": // mac
+                case "ctrl+alt+n":
+                case "alt+meta+`": // mac
                     cmd = "addSibling";
                     break;
                 case "del":
