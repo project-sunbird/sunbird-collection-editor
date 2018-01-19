@@ -201,7 +201,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     var inputNode = ecEditor.jQuery(data.node.span).find('.fancytree-edit-input');
                     inputNode.attr("maxlength", "100");
                     inputNode.attr("size", "15");
-                    ecEditor.jQuery('span.fancytree-title').attr('style','background:none;');
+                    ecEditor.jQuery(data.node.span.childNodes[2]).attr('style','background:none;');
                     inputNode.focus();
                     var currentValue = inputNode.val();
                     inputNode.val('');
