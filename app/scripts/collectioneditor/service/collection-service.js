@@ -594,5 +594,14 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         }
         return text;
+    },
+    getObjectTypeByAddType: function (addType) {
+        var categoryList = [];
+        _.find(this.config.rules.objectTypes, function (obj) {
+            if(obj.addType === addType){
+                categoryList.push(obj.type);
+            }
+        });
+        return categoryList;
     }
 }));
