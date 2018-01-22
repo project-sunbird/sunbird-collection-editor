@@ -212,10 +212,13 @@ org.ekstep.services.collectionService = new(Class.extend({
                     ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
                     ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this );
                     ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title);
+
                     if(data.node.title.length > 23) {
                         ecEditor.jQuery(data.node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(data.node.title));
                         ecEditor.jQuery('.popup-item').popup();
                     }
+                    org.ekstep.services.collectionService.onRenderNode(undefined, { node: ecEditor.jQuery("#collection-tree").fancytree("getTree").getActiveNode() }, true);
+
                 },
                 beforeEdit: function(event, data) {
                     if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
