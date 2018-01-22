@@ -646,12 +646,6 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
         instance.inMemory['collection_editor'] = data;
     },
-
-    clearInMemory:function(){
-
-       delete this.inMemory[collection_editor];
-    },
-
     isKeywordPresent :function($query) {
         var instance = this;
         var keywords = {}
