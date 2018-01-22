@@ -50,10 +50,7 @@ tags-input .tags .tag-item {
   border: 0 solid transparent;
   border-radius: .28571429rem;
 }
-tags-input .tags .tag-item.selected {
-  background: -webkit-linear-gradient(top, #febbbb 0%, #fe9090 45%, #ff5c5c 100%);
-  background: linear-gradient(to bottom, #febbbb 0%, #fe9090 45%, #ff5c5c 100%);
-}
+
 tags-input .tags .tag-item .remove-button {
   margin: 0 0 0 5px;
   padding: 0;
@@ -64,9 +61,7 @@ tags-input .tags .tag-item .remove-button {
   font: bold 16px Arial, sans-serif;
   color: #585858;
 }
-tags-input .tags .tag-item .remove-button:active {
-  color: #ff0000;
-}
+
 tags-input .tags .input {
   border: 0;
   outline: none;
