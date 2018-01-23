@@ -374,7 +374,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var $nodeSpan = $(node.span);
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
-
+        if(data.node.span) data.node.span.childNodes[2].title = "";
         if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
