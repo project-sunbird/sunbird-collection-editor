@@ -1,6 +1,7 @@
 org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
+    categoryList: {},
     inMemory:{},
     suggestVocabularyRequest: {
         request: {
