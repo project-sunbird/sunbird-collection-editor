@@ -1,6 +1,12 @@
 org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
+    inMemory:{},
+    suggestVocabularyRequest: {
+        request: {
+            text:""
+        }
+    },
     initialize: function(config) {
         if (config) this.config = config;
     },
@@ -606,5 +612,55 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         });
         return categoryList;
+    },
+    fetchKeywords: function($query) {
+        return new Promise(function(resolve, reject) {
+            var keyword = org.ekstep.services.collectionService.isKeywordPresent($query);
+            if (!keyword.isPresent) {
+                org.ekstep.services.collectionService.suggestVocabularyRequest.request.text = $query;
+                org.ekstep.services.metaService.suggestVocabulary(org.ekstep.services.collectionService.suggestVocabularyRequest, function(err, resp) {
+                    if (resp) {
+                        if (resp.data.result.terms) {
+                            var result = {};
+                            result[$query] = _.uniqBy(resp.data.result.terms,'lemma');
+                            org.ekstep.services.collectionService.storeKeywordsInMemory(result);
+                            resolve(result[$query]);
+                        }
+                    } else {
+                        reject(false)
+                    }
+                })
+            } else {
+                resolve(keyword.value);
+            }
+        });
+    },
+
+    storeKeywordsInMemory: function(data) {
+        var instance = this;
+        var items = instance.inMemory['collection_editor']
+        if (items) {
+            _.forEach(items, function(value, key) {
+                data[key] = value;
+            })
+        }
+        instance.inMemory['collection_editor'] = data;
+    },
+    isKeywordPresent :function($query) {
+        var instance = this;
+        var keywords = {}
+        var obj = instance.inMemory['collection_editor'];
+        if (obj) {
+            _.forEach(obj, function(value, key) {
+                if (_.includes(key, $query)) {
+                    keywords.isPresent = true;
+                    keywords.value = value;
+                }
+            });
+        }
+        return keywords
     }
+
+
+
 }));
