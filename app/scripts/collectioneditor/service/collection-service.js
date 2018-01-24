@@ -139,7 +139,6 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
-        if (childrenTypes && childrenTypes.length === 0) return;
         return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
@@ -390,8 +389,9 @@ org.ekstep.services.collectionService = new(Class.extend({
         var $nodeSpan = $(node.span);
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
+
         if(data.node.span) data.node.span.childNodes[2].title = "";
-        if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
+        if ((!$nodeSpan.data('rendered') || force)) {
            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
                $nodeSpan.append(contextButton);
