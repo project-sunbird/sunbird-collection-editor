@@ -93,7 +93,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
         //selectedNode.sortChildren(null, true);
-        ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
+        if(newNode.span) ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
@@ -390,7 +390,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var $nodeSpan = $(node.span);
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
-
+        if(data.node.span) data.node.span.childNodes[2].title = "";
         if ((!$nodeSpan.data('rendered') || force) && (objectType.childrenTypes.length > 0)) {
            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
@@ -405,10 +405,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                $nodeSpan.data('rendered', true)
            }
        }
-        if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
+        if(node.tooltip && node.tooltip.length > 23 && node.span && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
         }
-        if(node.span.childNodes[2].hasAttribute("data-variation")) {
+        if(node.span && node.span.childNodes[2].hasAttribute("data-variation")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
         }
 
