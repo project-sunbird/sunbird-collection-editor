@@ -68,7 +68,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         objectType = this.getObjectType(objectType);
         var node = {};
-        node.title = data.name ? ((data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name) : 'Untitled ' + objectType.label;
+        node.title = data.name ? (data.name) : 'Untitled ' + objectType.label;
         node.tooltip = data.name;
         node.objectType = data.contentType || objectType.type;
         node.id = data.identifier ? data.identifier : UUID();
@@ -96,6 +96,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         if(newNode.span) ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
+        if(node.title.length > 22) ecEditor.jQuery('.popup-item').popup();
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
