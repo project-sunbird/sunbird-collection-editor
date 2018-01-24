@@ -288,7 +288,21 @@ org.ekstep.services.collectionService = new(Class.extend({
                     org.ekstep.services.collectionService.addSibling()
                     break;
                 case "showMenu":
-                    $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
+                    ecEditor.getService('popup').open({
+                        template: '<div class="ui large modal active" style="top: 5% !important"><div class="header"><div class="ui grid"><div class="fourteen column row"><div class="left floated five wide column"><i class="file code outline icon"></i><label><b>Keyboard ShortCuts</b></label></div><div><span class="right floated column"><i class="remove link icon" ng-click="closeThisDialog()"></i></span></div></div></div></div><div class="content"><div class="ui grid shortcut-popup"> <pre class="line-numbers language-markup shortcut-popup`" id="shortCut"> <table class="shortcut-table"> <tr> <th colspan="2">ShortCuts(Windows)</th> <th colspan="2">ShortCuts(Mac)</th> <th colspan="6">Details</th> </tr><tr> <td colspan="2">Ctrl + Del</td><td colspan="2">Command + Del</td><td colspan="6">Delete the selected node</td></tr><tr> <td colspan="2">F2</td><td colspan="2">F2</td><td colspan="6">Edit the selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + Shift + N</td><td colspan="2">Command + Alt + Shift + N</td><td colspan="6">Add new Sibling to selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + N</td><td colspan="2">Command + Alt + N</td><td colspan="6">Add new Child to selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + A</td><td colspan="2">Command + Alt + A</td><td colspan="6">Add Resource to selected node</td></tr><tr> <td colspan="2">+</td><td colspan="2">+</td><td colspan="6">Expand the selected node</td></tr><tr> <td colspan="2">-</td><td colspan="2">-</td><td colspan="6">Collapse the selected node</td></tr></table> </pre> </div></div></div>',
+                        controller: ["$scope", function($scope) {
+                            $scope.confirm = function() {
+                                selectedNode.remove();
+                                $scope.closeThisDialog();
+                                delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
+                                ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
+                            };
+                        }],
+                        width: 900,
+                        plain: true,
+                        showClose: true,
+                        className: 'ngdialog-theme-default'
+                    });
                     break;
                 default:
                     alert("Unhandled command: " + data.cmd);

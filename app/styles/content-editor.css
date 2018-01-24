@@ -372,4 +372,16 @@ body {
     background: #2e9fd9 !important;
     border: 1px solid #2e9fd9 !important;
 }
+#shortCut {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.shortcut-table {
+    width: 100%;
+    margin-left: 3.6em;
+}
+.shortcut-popup {
+    height: auto !important;
+}
 /* specify size for tooltips */
