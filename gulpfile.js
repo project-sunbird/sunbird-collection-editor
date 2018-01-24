@@ -57,6 +57,7 @@ var bower_css = [
     "app/libs/please-wait.css",
     "app/libs/tokens.css",
     "app/libs/ng-tags-input.css",
+    "app/libs/prism.css",
     "app/styles/jquery-ui.css"
 ];
 
@@ -217,7 +218,7 @@ var corePlugins = [
     "org.ekstep.preview-1.1",
     "org.ekstep.telemetry-1.0",
     "org.ekstep.toaster-1.0",
-    "org.ekstep.editcontentmeta-1.1"   
+    "org.ekstep.editcontentmeta-1.2"   
 ]
 
 gulp.task('minifyCorePlugins', function() {
