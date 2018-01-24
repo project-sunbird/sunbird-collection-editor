@@ -1,6 +1,8 @@
 org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
+    defaultFramwork: "NCF",
+    categoryList: {},
     inMemory:{},
     suggestVocabularyRequest: {
         request: {
@@ -91,7 +93,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
         //selectedNode.sortChildren(null, true);
-        ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
+        if(newNode.span) ecEditor.jQuery(newNode.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         selectedNode.setExpanded();
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
     },
@@ -99,7 +101,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
             ecEditor.getService('popup').open({
-                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this?</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
+                template: '<div class="ui mini modal active" id="deletePopup"> <div class="content"> <div class="ui grid"> <div class="ten wide column"> <span class="custom-modal-heading">Are you sure you want to delete this content?</span> </div><div class="two wide column"> <i class="close large icon four wide column floatContentRight" ng-click="closeThisDialog()"></i></div></div><p class="custom-modal-content">All content within this folder will also be deleted from this textbook.</p><button class="ui red button" ng-click="confirm()">YES, DELETE</button> </div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
                         selectedNode.remove();
@@ -286,7 +288,21 @@ org.ekstep.services.collectionService = new(Class.extend({
                     org.ekstep.services.collectionService.addSibling()
                     break;
                 case "showMenu":
-                    $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
+                    ecEditor.getService('popup').open({
+                        template: '<div class="ui large modal active" style="top: 5% !important"><div class="header"><div class="ui grid"><div class="fourteen column row"><div class="left floated five wide column"><i class="file code outline icon"></i><label><b>Keyboard ShortCuts</b></label></div><div><span class="right floated column"><i class="remove link icon" ng-click="closeThisDialog()"></i></span></div></div></div></div><div class="content"><div class="ui grid shortcut-popup"> <pre class="line-numbers language-markup shortcut-popup`" id="shortCut"> <table class="shortcut-table"> <tr> <th colspan="2">ShortCuts(Windows)</th> <th colspan="2">ShortCuts(Mac)</th> <th colspan="6">Details</th> </tr><tr> <td colspan="2">Ctrl + Del</td><td colspan="2">Command + Del</td><td colspan="6">Delete the selected node</td></tr><tr> <td colspan="2">F2</td><td colspan="2">F2</td><td colspan="6">Edit the selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + Shift + N</td><td colspan="2">Command + Alt + Shift + N</td><td colspan="6">Add new Sibling to selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + N</td><td colspan="2">Command + Alt + N</td><td colspan="6">Add new Child to selected node</td></tr><tr> <td colspan="2">Ctrl + Alt + A</td><td colspan="2">Command + Alt + A</td><td colspan="6">Add Resource to selected node</td></tr><tr> <td colspan="2">+</td><td colspan="2">+</td><td colspan="6">Expand the selected node</td></tr><tr> <td colspan="2">-</td><td colspan="2">-</td><td colspan="6">Collapse the selected node</td></tr></table> </pre> </div></div></div>',
+                        controller: ["$scope", function($scope) {
+                            $scope.confirm = function() {
+                                selectedNode.remove();
+                                $scope.closeThisDialog();
+                                delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
+                                ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
+                            };
+                        }],
+                        width: 900,
+                        plain: true,
+                        showClose: true,
+                        className: 'ngdialog-theme-default'
+                    });
                     break;
                 default:
                     alert("Unhandled command: " + data.cmd);
@@ -374,6 +390,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var config = this.config;
         var objectType = this.getObjectType(data.node.data.objectType);
 
+        if(data.node.span) data.node.span.childNodes[2].title = "";
         if ((!$nodeSpan.data('rendered') || force)) {
            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
@@ -388,10 +405,10 @@ org.ekstep.services.collectionService = new(Class.extend({
                $nodeSpan.data('rendered', true)
            }
        }
-        if(node.tooltip && node.tooltip.length > 23 && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
+        if(node.tooltip && node.tooltip.length > 23 && node.span && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
         }
-        if(node.span.childNodes[2].hasAttribute("data-variation")) {
+        if(node.span && node.span.childNodes[2].hasAttribute("data-variation")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
         }
 
