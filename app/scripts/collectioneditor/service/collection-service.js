@@ -316,7 +316,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             switch( $.ui.fancytree.eventToString(e) ) {
                 case "alt+ctrl+shift+n":
                 case "alt+meta+shift+n": // mac: cmd+shift+n
-                    cmd = "addChild";
+                    cmd = "addSibling";
                     break;
                 case "alt+ctrl+a":
                 case "alt+meta+a": // mac: cmd+shift+n
@@ -324,7 +324,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     break;
                 case "alt+ctrl+n":
                 case "alt+meta+`": // mac
-                    cmd = "addSibling";
+                    cmd = "addChild";
                     break;
                 case "del":
                 case "ctrl+backspace":
