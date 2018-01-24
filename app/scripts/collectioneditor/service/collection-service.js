@@ -407,8 +407,8 @@ org.ekstep.services.collectionService = new(Class.extend({
                $nodeSpan.data('rendered', true)
            }
        }
-        if(node.tooltip && node.tooltip.length > 23 && node.span && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
-            ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.tooltip));
+        if(node.title && node.title.length > 23 && node.span && !ecEditor.jQuery(node.span.childNodes[2]).hasClass("popup-item")) {
+            ecEditor.jQuery(node.span.childNodes[2]).attr(org.ekstep.services.collectionService.addTooltip(node.title));
         }
         if(node.span && node.span.childNodes[2].hasAttribute("data-variation")) {
             ecEditor.jQuery(node.span.childNodes[2]).attr("data-variation","wide");
