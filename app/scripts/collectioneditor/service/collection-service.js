@@ -463,7 +463,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this;
         this.addTree([{
             "id": data.identifier || UUID(),
-            "title": (data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name,
+            "title": data.name,
             "tooltip": data.name,
             "objectType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
@@ -474,6 +474,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         }]);
         org.ekstep.services.collectionService.expandAll(true);
         org.ekstep.services.collectionService.collapseAllChildrens(false);
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     _buildTree: function(data, tree) {
         var instance = this,
@@ -485,7 +486,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             if (objectType) {
                 tree.push({
                     "id": child.identifier || UUID(),
-                    "title": (child.name.length > 22) ? child.name.substring(0,22)+'...' : child.name,
+                    "title": child.name,
                     "tooltip": child.name,
                     "objectType": child.contentType,
                     "metadata": _.omit(child, ["children", "collections"]),
