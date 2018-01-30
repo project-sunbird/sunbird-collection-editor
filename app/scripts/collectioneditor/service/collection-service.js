@@ -6,7 +6,8 @@ org.ekstep.services.collectionService = new(Class.extend({
     inMemory:{},
     suggestVocabularyRequest: {
         request: {
-            text:""
+            text:"",
+            limit:""
         }
     },
     initialize: function(config) {

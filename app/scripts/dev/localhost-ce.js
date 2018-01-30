@@ -5,7 +5,8 @@ window.context = {
         "id": "390",
         "name": "Santhosh Vasabhaktula",
         "email": "santhosh@ilimi.in"
-    }
+    },
+    "framework":'NCERT'
 };
 
 window.config = {
@@ -14,6 +15,7 @@ window.config = {
     pluginRepo: "/plugins",
     dispatcher: 'console',
     apislug: '/action',
+    keywordsLimit:500,
     editorConfig: {
         "mode": "Edit",
         "contentStatus": "draft",
