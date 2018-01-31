@@ -500,7 +500,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     "root": false,
                     "icon": child.visibility === 'Default' ? 'fa fa-file-o' : instance.getObjectType(child.contentType).iconClass
                 });
-                if (objectType.childrenTypes.length > 0) {
+                if (child.visibility === 'Parent') {
                     instance._buildTree(child, childTree);
                 }
             }
