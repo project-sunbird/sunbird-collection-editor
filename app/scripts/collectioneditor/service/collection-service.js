@@ -328,6 +328,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     cmd = "addChild";
                     break;
                 case "del":
+                case "ctrl+del":
                 case "ctrl+backspace":
                 case "meta+backspace": // mac
                     cmd = "remove";
