@@ -11,6 +11,7 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     initialize: function(config) {
         if (config) this.config = config;
+        org.ekstep.contenteditor.api.addEventListener("org.ekstep.collectioneditor:addContent", this.addSuggestedContent, this);
     },
     getConfig: function() {
         return this.config;
@@ -155,6 +156,15 @@ org.ekstep.services.collectionService = new(Class.extend({
                 }
             }
         });
+    },
+    addSuggestedContent: function(event, lessonList) {
+        var instance = this;
+        console.log("in the colletionTree addSuggestedContent", lessonList);
+        if (lessonList) {
+            _.forEach(lessonList, function(obj) {
+                instance.addNode(obj.contentType, obj);
+            });
+        }
     },
     addTree: function(tree) {
         var instance = this;
