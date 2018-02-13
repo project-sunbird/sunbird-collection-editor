@@ -100,9 +100,10 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
         ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
         if(node.title.length > 22) ecEditor.jQuery('.popup-item').popup();
-        this.AutoHorizantalScroll();
-        this.AutoVerticalScroll();
-
+        var value =  $('.fancytree-lastsib').width();
+        $('#collection-tree').scrollLeft(value);
+        var value =  $('.fancytree-lastsib').height();
+        $('#collection-tree').scrollTop(value);
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -688,16 +689,6 @@ org.ekstep.services.collectionService = new(Class.extend({
             });
         }
         return keywords
-    },
-
-    AutoHorizantalScroll: function() {
-         var value =  $('.fancytree-lastsib').width();
-         $('#collection-tree').scrollLeft(value);
-    },
-
-    AutoVerticalScroll: function() {
-        var value =  $('.fancytree-lastsib').height();
-        $('#collection-tree').scrollTop(value);
     }
 
 
