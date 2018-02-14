@@ -90,6 +90,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
             org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { mimeType: "application/vnd.ekstep.content-collection" } };
             newNode.setActive();
+
         } else { 
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
@@ -99,6 +100,10 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
         ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
         if(node.title.length > 22) ecEditor.jQuery('.popup-item').popup();
+        var value =  $('.fancytree-lastsib').width();
+        $('#collection-tree').scrollLeft(value);
+        var value =  $('.fancytree-lastsib').height();
+        $('#collection-tree').scrollTop(value);
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -141,7 +146,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
-        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
+        return '<span>' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
