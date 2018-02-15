@@ -639,6 +639,9 @@ org.ekstep.services.collectionService = new(Class.extend({
                         "text": $query
                     }   
                 }
+                if(ecEditor.getConfig('keywordsLimit')){
+                    requestData.request.limit = ecEditor.getConfig('keywordsLimit');
+                }
                 org.ekstep.services.metaService.suggestVocabulary(requestData, function(err, resp) {
                     if (resp) {
                         if (resp.data.result.terms) {
