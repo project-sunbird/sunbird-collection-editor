@@ -1,14 +1,9 @@
 org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
-    defaultFramwork: "NCF",
+    framework: "NCF",
     categoryList: {},
-    inMemory:{},
-    suggestVocabularyRequest: {
-        request: {
-            text:""
-        }
-    },
+    cacheKeywords: {},
     initialize: function(config) {
         if (config) this.config = config;
         org.ekstep.contenteditor.api.addEventListener("org.ekstep.collectioneditor:addContent", this.addSuggestedContent, this);
@@ -74,8 +69,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         node.objectType = data.contentType || objectType.type;
         node.id = data.identifier ? data.identifier : UUID();
         node.root = false;
-        node.folder = (objectType.childrenTypes.length > 0);
-        node.icon = objectType.iconClass;
+        node.folder = (data.visibility && data.visibility === 'Default') ? false : (objectType.childrenTypes.length > 0);
+        node.icon = (data.visibility && data.visibility === 'Default') ? 'fa fa-file-o' : objectType.iconClass;
         node.metadata = data;
         if (node.folder) { 
             // to check child node should not be created more than the set configlevel
@@ -88,8 +83,9 @@ org.ekstep.services.collectionService = new(Class.extend({
                 return;
             }   
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
-            newNode.setActive();
             org.ekstep.collectioneditor.cache.nodesModified[node.id] = { isNew: true, root: false, metadata: { mimeType: "application/vnd.ekstep.content-collection" } };
+            newNode.setActive();
+
         } else { 
             newNode = (createType === 'sibling') ? selectedNode.appendSibling(node) : selectedNode.addChildren(node);
         };
@@ -99,6 +95,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:added", newNode);
         ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
         if(node.title.length > 22) ecEditor.jQuery('.popup-item').popup();
+        ecEditor.jQuery('#collection-tree').scrollLeft(ecEditor.jQuery('.fancytree-lastsib').width());
+        ecEditor.jQuery('#collection-tree').scrollTop(ecEditor.jQuery('.fancytree-lastsib').height());
     },
     removeNode: function() {
         var selectedNode = this.getActiveNode();
@@ -119,16 +117,15 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
     },
     getContextMenu: function(node){
-        var instance = this, contextMenu = [];
-        var nodeType = instance.getObjectType(node.data.objectType);
-        var ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl';
-        var del = (ctrl === 'Cmd') ? "Cmd+Del" : "Del";
-        var alt = (ctrl === 'Cmd') ? "Opt" : "Alt";
+        var contextMenu = [],
+            ctrl = (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) ? 'Cmd' : 'Ctrl',
+            del = (ctrl === 'Cmd') ? "Cmd+Del" : "Del",
+            alt = (ctrl === 'Cmd') ? "Opt" : "Alt";
         contextMenu = [
             {title: "Edit <kbd>[F2]</kbd>", cmd: "rename",  uiIcon: "ui-icon-pencil"},
             {title: "Delete <kbd>[" + del + "]</kbd>", cmd: "remove", uiIcon: "ui-icon-trash", disabled: node.data.root ? true : false}
         ];
-        if(nodeType.childrenTypes && nodeType.childrenTypes.length > 0){
+        if((node.data.metadata.visibility === 'Default' && node.data.root) || (node.data.metadata.visibility === 'Parent') || _.isUndefined(node.data.metadata.visibility) ){
             var menu = [{title: "----"},
                 {title: "New sibling <kbd>[" + ctrl + "+" + alt +"+Shift+N]</kbd>", cmd: "addSibling", uiIcon: "ui-icon-plus", disabled: node.data.root ? true : false},
                 {title: "New child <kbd>[" + ctrl + "+" + alt + "+N]</kbd>", cmd: "addChild", uiIcon: "ui-icon-arrowreturn-1-e"},
@@ -142,7 +139,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
-        return '<span style="padding-left: 20px;left: 65%;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
+        return '<span>' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
@@ -240,16 +237,17 @@ org.ekstep.services.collectionService = new(Class.extend({
 
                 },
                 beforeEdit: function(event, data) {
-                    if(instance.getObjectType(instance.getActiveNode().data.objectType).editable) {
+                    if((data.node.data.metadata.visibility === 'Default' && data.node.data.root) || data.node.data.metadata.visibility === 'Parent' || _.isUndefined(data.node.data.metadata.visibility)) {
                         ecEditor.dispatchEvent("title:update:" + instance.getActiveNode().data.objectType.toLowerCase(), data.orgTitle, this );
+                        return true;
                     } else {
                         ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                             message: "Sorry, this operation is not allowed.(You can only edit content created by you.)",
                             position: 'topCenter',
                             icon: 'fa fa-warning'
                         });
+                        return false;
                     }
-                    return instance.getObjectType(instance.getActiveNode().data.objectType).editable;
                 },
             },
             renderNode: function(event, data) {
@@ -264,7 +262,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         }).on("nodeCommand", function(event, data){
             var refNode, moveMode,
-            tree = $(this).fancytree("getTree"),
+            tree = ecEditor.jQuery(this).fancytree("getTree"),
             rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild(),
             node = tree.getActiveNode();
             switch( data.cmd ) {
@@ -322,8 +320,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         }).on("keydown", function(e){
             var cmd = null;
-            console.log($.ui.fancytree.eventToString(e));
-            switch( $.ui.fancytree.eventToString(e) ) {
+            switch( ecEditor.jQuery.ui.fancytree.eventToString(e) ) {
                 case "alt+ctrl+shift+n":
                 case "alt+meta+shift+n": // mac: cmd+shift+n
                     cmd = "addSibling";
@@ -337,6 +334,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     cmd = "addChild";
                     break;
                 case "del":
+                case "ctrl+del":
                 case "ctrl+backspace":
                 case "meta+backspace": // mac
                     cmd = "remove";
@@ -346,9 +344,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     cmd = "showMenu";
             }
             if( cmd ){
-              $(this).trigger("nodeCommand", {cmd: cmd});
-              // e.preventDefault();
-              // e.stopPropagation();
+              ecEditor.jQuery(this).trigger("nodeCommand", {cmd: cmd});
               return false;
             }
         });
@@ -426,22 +422,26 @@ org.ekstep.services.collectionService = new(Class.extend({
 
         // for read mode do not add context menu on node
         if (config.mode === "Read" || _.isEmpty(objectType)) return;
-        $("#collection-tree").contextmenu({
+        ecEditor.jQuery("#collection-tree").contextmenu({
             delegate: "span.fancytree-node",
             autoFocus: true,
             menu: [],
             beforeOpen: function(event, ui) {
-                var node = $.ui.fancytree.getNode(ui.target);
-                $("#collection-tree").contextmenu("replaceMenu", org.ekstep.services.collectionService.getContextMenu(node));
+                var node = ecEditor.jQuery.ui.fancytree.getNode(ui.target);
+                ecEditor.jQuery("#collection-tree").contextmenu("replaceMenu", org.ekstep.services.collectionService.getContextMenu(node));
                 var nodeType = instance.getObjectType(node.data.objectType);
-                $("#collection-tree").contextmenu("enableEntry", "rename", nodeType.editable);
-                $("#collection-tree").contextmenu("enableEntry", "remove", !node.data.root);
-                $("#collection-tree").contextmenu("enableEntry", "addChild", (nodeType.addType === "Editor") ? true : false );
-                if(node.getLevel() >= config.rules.levels - 1){
-                    $("#collection-tree").contextmenu("enableEntry", "addChild", false);
+                ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "remove", !node.data.root);
+                if(node.data.metadata.visibility === 'Default' && !node.data.root){
+                    ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "rename", false);
+                }else{
+                    ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "rename", nodeType.editable); 
+                    ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "addChild", (nodeType.addType === "Editor") ? true : false );
+                    if(node.getLevel() >= config.rules.levels - 1){
+                        ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "addChild", false);
+                    }
+                    ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "addSibling", (!node.data.root && nodeType.addType === "Editor" ? true : false));
+                    ecEditor.jQuery("#collection-tree").contextmenu("enableEntry", "addLesson", nodeType.editable);
                 }
-                $("#collection-tree").contextmenu("enableEntry", "addSibling", (!node.data.root && nodeType.addType === "Editor" ? true : false));
-                $("#collection-tree").contextmenu("enableEntry", "addLesson", nodeType.editable);
                 return node.setActive();
             },
             select: function(event, ui) {
@@ -449,11 +449,11 @@ org.ekstep.services.collectionService = new(Class.extend({
                 // delay the event, so the menu can close and the click event does
                 // not interfere with the edit control
                 setTimeout(function(){
-                    $(that).trigger("nodeCommand", {cmd: ui.cmd});
+                    ecEditor.jQuery(that).trigger("nodeCommand", {cmd: ui.cmd});
                 }, 100);
             },
             close: function(event, ui){
-                var node = $.ui.fancytree.getNode(ui.target);
+                var node = ecEditor.jQuery.ui.fancytree.getNode(ui.target);
                 node.setFocus();
             }
         });
@@ -473,7 +473,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this;
         this.addTree([{
             "id": data.identifier || UUID(),
-            "title": (data.name.length > 22) ? data.name.substring(0,22)+'...' : data.name,
+            "title": data.name,
             "tooltip": data.name,
             "objectType": data.contentType,
             "metadata": _.omit(data, ["children", "collections"]),
@@ -484,6 +484,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         }]);
         org.ekstep.services.collectionService.expandAll(true);
         org.ekstep.services.collectionService.collapseAllChildrens(false);
+        ecEditor.jQuery('span.fancytree-title').attr('style','width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden');
     },
     _buildTree: function(data, tree) {
         var instance = this,
@@ -495,16 +496,16 @@ org.ekstep.services.collectionService = new(Class.extend({
             if (objectType) {
                 tree.push({
                     "id": child.identifier || UUID(),
-                    "title": (child.name.length > 22) ? child.name.substring(0,22)+'...' : child.name,
+                    "title": child.name,
                     "tooltip": child.name,
                     "objectType": child.contentType,
                     "metadata": _.omit(child, ["children", "collections"]),
-                    "folder": (objectType.childrenTypes.length > 0),
+                    "folder": child.visibility === 'Default' ? false : (objectType.childrenTypes.length > 0),
                     "children": childTree,
                     "root": false,
-                    "icon": instance.getObjectType(child.contentType).iconClass
+                    "icon": child.visibility === 'Default' ? 'fa fa-file-o' : instance.getObjectType(child.contentType).iconClass
                 });
-                if (objectType.childrenTypes.length > 0) {
+                if (child.visibility === 'Parent') {
                     instance._buildTree(child, childTree);
                 }
             }
@@ -580,9 +581,8 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
     },
     showMenu:function(){
-       $("#collection-tree").contextmenu("open", $("span.fancytree-node.fancytree-active"));
+       ecEditor.jQuery("#collection-tree").contextmenu("open", ecEditor.jQuery("span.fancytree-node.fancytree-active"));
     },
-
     addChild: function() {
         var instance = this;
         var refNode, moveMode,
@@ -600,7 +600,6 @@ org.ekstep.services.collectionService = new(Class.extend({
             });
         }
     },
-
     addSibling: function() {
         var instance = this;
         var refNode, moveMode,
@@ -643,15 +642,22 @@ org.ekstep.services.collectionService = new(Class.extend({
     },
     fetchKeywords: function($query) {
         return new Promise(function(resolve, reject) {
-            var keyword = org.ekstep.services.collectionService.isKeywordPresent($query);
+            var keyword = org.ekstep.services.collectionService.isKeywordExists($query);
             if (!keyword.isPresent) {
-                org.ekstep.services.collectionService.suggestVocabularyRequest.request.text = $query;
-                org.ekstep.services.metaService.suggestVocabulary(org.ekstep.services.collectionService.suggestVocabularyRequest, function(err, resp) {
+                var requestData = {
+                    "request": {
+                        "text": $query
+                    }   
+                }
+                if(ecEditor.getConfig('keywordsLimit')){
+                    requestData.request.limit = ecEditor.getConfig('keywordsLimit');
+                }
+                org.ekstep.services.metaService.suggestVocabulary(requestData, function(err, resp) {
                     if (resp) {
                         if (resp.data.result.terms) {
                             var result = {};
                             result[$query] = _.uniqBy(resp.data.result.terms,'lemma');
-                            org.ekstep.services.collectionService.storeKeywordsInMemory(result);
+                            org.ekstep.services.collectionService.storeKeywords(result);
                             resolve(result[$query]);
                         }
                     } else {
@@ -663,21 +669,20 @@ org.ekstep.services.collectionService = new(Class.extend({
             }
         });
     },
-
-    storeKeywordsInMemory: function(data) {
+    storeKeywords: function(data) {
         var instance = this;
-        var items = instance.inMemory['collection_editor']
+        var items = instance.cacheKeywords['collection_editor']
         if (items) {
             _.forEach(items, function(value, key) {
                 data[key] = value;
             })
         }
-        instance.inMemory['collection_editor'] = data;
+        instance.cacheKeywords['collection_editor'] = data;
     },
-    isKeywordPresent :function($query) {
+    isKeywordExists :function($query) {
         var instance = this;
         var keywords = {}
-        var obj = instance.inMemory['collection_editor'];
+        var obj = instance.cacheKeywords['collection_editor'];
         if (obj) {
             _.forEach(obj, function(value, key) {
                 if (_.includes(key, $query)) {
