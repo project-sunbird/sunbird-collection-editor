@@ -242,6 +242,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
+                if (config.hideContentFromTree && !data.node.folder && data.node.li) {                    
+                    data.node.li.style.display = 'none';
+                }
             },
             loadChildren: function(event, data) {
                 data.node.visit(function(subNode) {
@@ -340,6 +343,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.getFirstChild().setActive(); //select the first node by default
+        ecEditor.jQuery(".fancytree-container").toggleClass("fancytree-connectors");
     },
     _dropNode: function(node, data) {
         var instance = this,
