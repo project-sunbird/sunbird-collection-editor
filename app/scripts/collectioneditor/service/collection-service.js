@@ -138,7 +138,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this, removeTemplate= "", contextMenu = "";
         var childrenTypes = this.getObjectType(node.data.objectType).childrenTypes;
         if (!node.data.root) removeTemplate = '<i class="fa fa-trash-o" onclick="org.ekstep.services.collectionService.removeNode(); org.ekstep.services.collectionService.__telemetry({ subtype: \'remove\', target: \'removeNodeBtn\'});"></i>';
-        return '<span>' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
+        return '<span style="padding-left:45px;">' + '<div class="ui inline dropdown">' + '<i class="ellipsis vertical icon" onclick = "org.ekstep.services.collectionService.showMenu()" ></i>' + '</div>' + removeTemplate + '</span>'
     },
     addLesson: function(type) {
         var instance = this;
