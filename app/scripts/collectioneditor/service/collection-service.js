@@ -104,9 +104,11 @@ org.ekstep.services.collectionService = new(Class.extend({
                 template: '<div class="ui modal active" id="deletePopup" style="top: auto;"> <div class="content"> <div class="ui grid"> <div class="ten wide column"> <span class="custom-modal-heading">Are you sure you want to delete this content?</span> </div><div class="two wide column"> <i class="close large icon four wide column right-float pointer" ng-click="closeThisDialog()"></i></div></div><p class="custom-modal-content">All content within this folder will also be deleted from this textbook.</p><button class="ui red button" ng-click="confirm()">YES, DELETE</button> </div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
+                        var parentNode = selectedNode.getParent();
                         selectedNode.remove();
-                        $scope.closeThisDialog();
                         delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
+                        parentNode.setActive();
+                        $scope.closeThisDialog();
                         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
                     };
                 }],
@@ -254,7 +256,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
-                if (config.hideContentFromTree && !data.node.folder && data.node.li) {                    
+                if (config.showContentInTree == false && !data.node.folder && data.node.li) {                    
                     data.node.li.style.display = 'none';
                 }
             },
