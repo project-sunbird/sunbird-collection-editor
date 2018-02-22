@@ -56,10 +56,6 @@ body {
     width: 100% !important;
 }
 
-.form-field-name {
-    width: 70%;
-}
-
 @media only screen and (max-width: 1048px) {
     #contents-pane>.ui.form .fields>.eight.wide.field {
         width: calc(100% - 120px)!important;
@@ -150,7 +146,7 @@ body {
     /*background: #f5f5f5;*/
     font-weight: 600;
     padding: 12px;
-    padding-left: 1.2em;
+    padding-left: 1.4em;
     width: 100%;
     font-size: 0.9rem;
 }
@@ -273,4 +269,8 @@ body {
 
 .remove-delete .host .tags .tag-list .tag-item .remove-button {
     display: none;
+}
+
+.pointer {
+    cursor: pointer;
 }
