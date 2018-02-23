@@ -101,12 +101,14 @@ org.ekstep.services.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
             ecEditor.getService('popup').open({
-                template: '<div class="ui icon negative message remove-unit-popup"><i class="close icon" ng-click="closeThisDialog()"></i><div class="content"><div class="header"><i class="fa fa-exclamation-triangle"></i> Do you want to remove this?</div><div class="remove-unit-buttons" style="padding-right:0; text-align:right;"><div class="ui red button button-overrides" id="remove-yes-button" ng-click="confirm()">Yes</div><div class="ui basic primary button button-overrides" id="remove-no-button" ng-click="closeThisDialog()">No</div></div></div></div>',
+                template: '<div class="ui modal active" id="deletePopup" style="top: auto;"> <div class="content"> <div class="ui grid"> <div class="ten wide column"> <span class="custom-modal-heading">Are you sure you want to delete this content?</span> </div><div class="two wide column"> <i class="close large icon four wide column right-float pointer" ng-click="closeThisDialog()"></i></div></div><p class="custom-modal-content">All content within this folder will also be deleted from this textbook.</p><button class="ui red button" ng-click="confirm()">YES, DELETE</button> </div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
+                        var parentNode = selectedNode.getParent();
                         selectedNode.remove();
-                        $scope.closeThisDialog();
                         delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
+                        parentNode.setActive();
+                        $scope.closeThisDialog();
                         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
                     };
                 }],
@@ -147,6 +149,18 @@ org.ekstep.services.collectionService = new(Class.extend({
             callback: function(err, res) {
                 if (res) {
                     _.forEach(res, function(obj) {
+                        var activeNode = org.ekstep.services.collectionService.getActiveNode();
+                        var children = activeNode.getChildren();
+                        _.forEach(children, function(child) {
+                            if (child.data.metadata.identifier === obj.identifier) {
+                                ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                                    message: 'Content ' + obj.name +  ' already available',
+                                    position: 'topCenter',
+                                    icon: 'fa fa-warning'
+                                });
+                                return true;        // Returning if content is already available in selected node.
+                            }
+                        });
                         instance.addNode(obj.contentType, obj);
                     });
                 }
@@ -242,6 +256,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
+                if (config.showContentInTree == false && !data.node.folder && data.node.li) {                    
+                    data.node.li.style.display = 'none';
+                }
             },
             loadChildren: function(event, data) {
                 data.node.visit(function(subNode) {
@@ -340,6 +357,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.getFirstChild().setActive(); //select the first node by default
+        ecEditor.jQuery(".fancytree-container").toggleClass("fancytree-connectors");
     },
     _dropNode: function(node, data) {
         var instance = this,
