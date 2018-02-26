@@ -207,7 +207,6 @@ var corePlugins = [
     "org.ekstep.conceptselector-1.1",
     "org.ekstep.assetbrowser-1.1",
     "org.ekstep.contenteditorfunctions-1.1",
-    "org.ekstep.lessonbrowser-1.2",
     "org.ekstep.textbookmeta-1.2",
     "org.ekstep.unitmeta-1.2",
     "org.ekstep.contentmeta-1.2",
