@@ -150,6 +150,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                     _.forEach(res, function(obj) {
                         instance.addNode(obj.contentType, obj);
                     });
+                    ecEditor.dispatchEvent('org.ekstep.collectioneditor:contentchange');
                 }
             }
         });
