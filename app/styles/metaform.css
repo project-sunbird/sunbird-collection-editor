@@ -121,6 +121,7 @@ body {
     box-shadow: none!important;
     /* padding-left: 0!important; */
     overflow-y: auto;
+    overflow-x: hidden;
     margin-top: 0!important;
 }
 
@@ -218,7 +219,6 @@ body {
 
 .ui.form .fields.form-fields-overflow {
     max-height: 82vh;
-    overflow-y: auto;
     padding-bottom: 10px;
 }
 
