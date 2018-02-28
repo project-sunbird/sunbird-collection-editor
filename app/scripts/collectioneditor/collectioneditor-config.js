@@ -5,7 +5,7 @@ org.ekstep.contenteditor.config = _.assign(org.ekstep.contenteditor.config, {
         { "id": "org.ekstep.download", "ver": "1.0", "type": "plugin" },
         { "id": "org.ekstep.collectionwhatsnew", "ver": "1.0", "type": "plugin" }
     ],
-    showContentInTree: false
+    showContentInTree: true
 });
 
 org.ekstep.collectioneditor.cache = {

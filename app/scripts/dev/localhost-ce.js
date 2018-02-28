@@ -15,7 +15,7 @@ window.config = {
     pluginRepo: "/plugins",
     dispatcher: 'console',
     apislug: '/action',
-    showContentInTree : true,
+    showContentInTree : false,
     keywordsLimit:500,
     editorConfig: {
         "mode": "Edit",
