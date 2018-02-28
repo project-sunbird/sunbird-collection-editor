@@ -267,7 +267,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
-                if (config.showContentInTree == false && !data.node.folder && data.node.li) {                    
+                if (ecEditor.getConfig('showContentInTree') == false && !data.node.folder && data.node.li) {                    
                     data.node.li.style.display = 'none';
                 }
             },
