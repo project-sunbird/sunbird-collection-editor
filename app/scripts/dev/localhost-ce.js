@@ -16,6 +16,7 @@ window.config = {
     dispatcher: 'console',
     apislug: '/action',
     showContentInTree : false,
+    suggestedContent: true,
     keywordsLimit:500,
     editorConfig: {
         "mode": "Edit",
