@@ -6,7 +6,6 @@ org.ekstep.services.collectionService = new(Class.extend({
     cacheKeywords: {},
     initialize: function(config) {
         if (config) this.config = config;
-        org.ekstep.contenteditor.api.addEventListener("org.ekstep.collectioneditor:addContent", this.addSuggestedContent, this);
     },
     getConfig: function() {
         return this.config;
@@ -164,19 +163,9 @@ org.ekstep.services.collectionService = new(Class.extend({
                         });
                         instance.addNode(obj.contentType, obj);
                     });
-                    ecEditor.dispatchEvent('org.ekstep.collectioneditor:contentchange');
                 }
             }
         });
-    },
-    addSuggestedContent: function(event, lessonList) {
-        var instance = this;
-        console.log("in the colletionTree addSuggestedContent", lessonList);
-        if (lessonList) {
-            _.forEach(lessonList, function(obj) {
-                instance.addNode(obj.contentType, obj);
-            });
-        }
     },
     addTree: function(tree) {
         var instance = this;
