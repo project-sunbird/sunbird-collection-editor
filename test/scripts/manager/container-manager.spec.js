@@ -18,18 +18,5 @@ describe('container manager', function() {
         var collectionManifest = org.ekstep.contenteditor.config.pluginRepo + "/org.ekstep.collectioneditor-1.0/manifest.json";
         org.ekstep.contenteditor.containerManager.register(container, collectionManifest);
         expect(org.ekstep.contenteditor.containerManager.register.calls.count()).toEqual(1);
-        //spyOn(org.ekstep.contenteditor.containerManager, 'scope.addToContainer');
-        // spyOn(a.scope, 'addToContainer');
-        //expect(org.ekstep.contenteditor.containerManager.scope.addToContainer).toHaveBeenCalled();
-        // setTimeout(function() {
-        // expect(a.scope.addToContainer).toHaveBeenCalled()
-        // callback()
-        // }, 1000)
-        //org.ekstep.contenteditor.containerManager.register({ "id": "tree" }, collectionManifest);
-        // org.ekstep.contenteditor.containerManager.register(
-        //     {"id": "tree", 
-        //     "templateURL": org.ekstep.contenteditor.config.pluginRepo + "/org.ekstep.textbookmeta-1.1/editor/collectiontree.html"},
-        //     collectionManifest);
-        //expect(org.ekstep.contenteditor.containerManager.load.calls.count()).toEqual(2);
     });
 });
