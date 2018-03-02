@@ -35,6 +35,7 @@ module.exports = function(config) {
             "app/bower_components/oclazyload/dist/modules/ocLazyLoad.polyfill.ie8.js",
             "app/bower_components/oclazyload/dist/ocLazyLoad.js",
             "app/bower_components/izitoast/dist/js/iziToast.min.js",
+            "app/bower_components/promise-polyfill/dist/polyfill.min.js",
             "app/libs/semantic.min.js",
             "app/libs/tokens.js",
             "app/scripts/dev/localhost-ce.js",
@@ -45,7 +46,7 @@ module.exports = function(config) {
             "app/scripts/collectioneditor/manager/container-manager.js",
             "app/scripts/collectioneditor/manager/metapage-manager.js",
             "app/scripts/collectioneditor/collectioneditor-base-plugin.js",
-            "app/scripts/collectioneditor/service/collection-service.js",    
+            "app/scripts/collectioneditor/service/collection-service.js",
             "app/scripts/collectioneditor/md5.js",
             "app/scripts/angular/controller/main.js",
             "app/scripts/angular/directive/template-compiler-directive.js",
@@ -76,7 +77,7 @@ module.exports = function(config) {
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {             
+        preprocessors: {
             'app/scripts/!(directive|controller|libs)/*.js': ['coverage'],
             //'!app/scripts/collectioneditor/collectioneditor-base-plugin.js': ['coverage'],
             'app/scripts/collectioneditor/!(directive|controller|libs)/*.js': ['coverage'],
@@ -90,20 +91,20 @@ module.exports = function(config) {
 
         // reporters configuration 
         reporters: ['mocha', 'coverage'],
-     
+
         // reporter options 
         mochaReporter: {
-          colors: {
-            success: 'green',
-            info: 'bgYellow',
-            warning: 'cyan',
-            error: 'bgRed'
-          },
-          symbols: {
-            success: '✔',
-            info: '#',
-            warning: '!',
-            error: 'x'
+            colors: {
+                success: 'green',
+                info: 'bgYellow',
+                warning: 'cyan',
+                error: 'bgRed'
+            },
+            symbols: {
+                success: '✔',
+                info: '#',
+                warning: '!',
+                error: 'x'
             }
         },
 
