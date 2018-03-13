@@ -256,8 +256,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
-                if (ecEditor.getConfig('showContentInTree') == false && !data.node.folder && data.node.li) {                    
-                    data.node.li.style.display = 'none';
+                if (ecEditor.getConfig('nodeDisplayCriterion').contentType.length > 0) {
+                    var nodeTypeIndex = ecEditor._.indexOf(ecEditor.getConfig('nodeDisplayCriterion').contentType, data.node.data.objectType);
+                    nodeTypeIndex < '0' ? (data.node.li ? data.node.li.style.display = 'none' : "") : "";
                 }
             },
             loadChildren: function(event, data) {
@@ -357,7 +358,6 @@ org.ekstep.services.collectionService = new(Class.extend({
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.getFirstChild().setActive(); //select the first node by default
-        ecEditor.jQuery(".fancytree-container").toggleClass("fancytree-connectors");
     },
     _dropNode: function(node, data) {
         var instance = this,
