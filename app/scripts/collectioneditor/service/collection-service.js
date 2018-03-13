@@ -256,7 +256,7 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
-                if (ecEditor.getConfig('nodeDisplayCriterion').contentType.length > 0) {
+                if (ecEditor.getConfig('nodeDisplayCriterion') && ecEditor.getConfig('nodeDisplayCriterion').contentType && ecEditor.getConfig('nodeDisplayCriterion').contentType.length > 0) {
                     var nodeTypeIndex = ecEditor._.indexOf(ecEditor.getConfig('nodeDisplayCriterion').contentType, data.node.data.objectType);
                     nodeTypeIndex < '0' ? (data.node.li ? data.node.li.style.display = 'none' : "") : "";
                 }
