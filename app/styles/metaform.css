@@ -274,3 +274,8 @@ body {
 .pointer {
     cursor: pointer;
 }
+
+.ui.tiny.modal {
+    width: 540px;
+    top: auto;
+}
