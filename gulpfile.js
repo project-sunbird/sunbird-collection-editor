@@ -217,7 +217,8 @@ var corePlugins = [
     "org.ekstep.preview-1.1",
     "org.ekstep.telemetry-1.0",
     "org.ekstep.toaster-1.0",
-    "org.ekstep.editcontentmeta-1.2"   
+    "org.ekstep.editcontentmeta-1.2",
+    "org.ekstep.breadcrumb-1.0"
 ]
 
 gulp.task('minifyCorePlugins', function() {
