@@ -207,17 +207,18 @@ var corePlugins = [
     "org.ekstep.conceptselector-1.1",
     "org.ekstep.assetbrowser-1.1",
     "org.ekstep.contenteditorfunctions-1.1",
-    "org.ekstep.textbookmeta-1.2",
-    "org.ekstep.unitmeta-1.2",
-    "org.ekstep.contentmeta-1.2",
-    "org.ekstep.coursemeta-1.2",
-    "org.ekstep.courseunitmeta-1.2",
-    "org.ekstep.lessonplanmeta-1.2",
-    "org.ekstep.lessonplanunitmeta-1.2",
+    "org.ekstep.textbookmeta-1.3",
+    "org.ekstep.unitmeta-1.3",
+    "org.ekstep.contentmeta-1.3",
+    "org.ekstep.coursemeta-1.3",
+    "org.ekstep.courseunitmeta-1.3",
+    "org.ekstep.lessonplanmeta-1.3",
+    "org.ekstep.lessonplanunitmeta-1.3",
     "org.ekstep.preview-1.1",
     "org.ekstep.telemetry-1.0",
     "org.ekstep.toaster-1.0",
-    "org.ekstep.editcontentmeta-1.2"   
+    "org.ekstep.editcontentmeta-1.2",
+    "org.ekstep.breadcrumb-1.0"
 ]
 
 gulp.task('minifyCorePlugins', function() {

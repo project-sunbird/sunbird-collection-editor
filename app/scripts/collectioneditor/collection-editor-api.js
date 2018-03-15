@@ -68,6 +68,9 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
     },
     registerSidebar: function(config) {
         if(config) org.ekstep.collectioneditor.metaPageManager.registerSidebar(config);
+    },
+    registerBreadcrumb: function (config) {
+        if (config) org.ekstep.collectioneditor.metaPageManager.registerBreadcrumb(config);
     }
 });
 

@@ -101,7 +101,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var selectedNode = this.getActiveNode();
         if (!selectedNode.data.root) {
             ecEditor.getService('popup').open({
-                template: '<div class="ui modal active" id="deletePopup" style="top: auto;"> <div class="content"> <div class="ui grid"> <div class="ten wide column"> <span class="custom-modal-heading">Are you sure you want to delete this content?</span> </div><div class="two wide column"> <i class="close large icon four wide column right-float pointer" ng-click="closeThisDialog()"></i></div></div><p class="custom-modal-content">All content within this folder will also be deleted from this textbook.</p><button class="ui red button" ng-click="confirm()">YES, DELETE</button> </div></div>',
+                template: '<div class="ui tiny modal active" id="deletePopup" style="top: auto;"> <div class="content"> <div class="ui grid"> <div class="ten wide column"> <span class="custom-modal-heading">Are you sure you want to delete this content?</span> </div><div class="two wide column"> <i class="close large icon four wide column right-float pointer" ng-click="closeThisDialog()"></i></div></div><p class="custom-modal-content">All content within this folder will also be deleted from this textbook.</p><button class="ui red button" ng-click="confirm()">YES, DELETE</button> </div></div>',
                 controller: ["$scope", function($scope) {
                     $scope.confirm = function() {
                         var parentNode = selectedNode.getParent();
@@ -256,8 +256,9 @@ org.ekstep.services.collectionService = new(Class.extend({
             },
             renderNode: function(event, data) {
                 instance.onRenderNode(event, data)
-                if (ecEditor.getConfig('showContentInTree') == false && !data.node.folder && data.node.li) {                    
-                    data.node.li.style.display = 'none';
+                if (ecEditor.getConfig('nodeDisplayCriterion') && ecEditor.getConfig('nodeDisplayCriterion').contentType && ecEditor.getConfig('nodeDisplayCriterion').contentType.length > 0) {
+                    var nodeTypeIndex = ecEditor._.indexOf(ecEditor.getConfig('nodeDisplayCriterion').contentType, data.node.data.objectType);
+                    nodeTypeIndex < '0' ? (data.node.li ? data.node.li.style.display = 'none' : "") : "";
                 }
             },
             loadChildren: function(event, data) {
@@ -357,7 +358,6 @@ org.ekstep.services.collectionService = new(Class.extend({
         });
         var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         node.getFirstChild().setActive(); //select the first node by default
-        ecEditor.jQuery(".fancytree-container").toggleClass("fancytree-connectors");
     },
     _dropNode: function(node, data) {
         var instance = this,
