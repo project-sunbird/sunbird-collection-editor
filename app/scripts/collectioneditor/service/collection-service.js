@@ -148,20 +148,22 @@ org.ekstep.services.collectionService = new(Class.extend({
             filters: { lessonType: [type] },
             callback: function(err, res) {
                 if (res) {
-                    _.forEach(res, function(obj) {
+                   ecEditor._.forEach(res, function(obj) {
                         var activeNode = org.ekstep.services.collectionService.getActiveNode();
                         var children = activeNode.getChildren();
-                        _.forEach(children, function(child) {
+                       ecEditor._.forEach(children, function(child, index) {
                             if (child.data.metadata.identifier === obj.identifier) {
                                 ecEditor.dispatchEvent("org.ekstep.toaster:error", {
                                     message: 'Content ' + obj.name +  ' already available',
                                     position: 'topCenter',
                                     icon: 'fa fa-warning'
                                 });
-                                return true;        // Returning if content is already available in selected node.
+                                return false;        // Returning if content is already available in selected node.
+                            }
+                            if (index === children.length-1) {
+                                instance.addNode(obj.contentType, obj);
                             }
                         });
-                        instance.addNode(obj.contentType, obj);
                     });
                 }
             }
