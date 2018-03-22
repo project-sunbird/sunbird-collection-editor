@@ -60,6 +60,9 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
             case ServiceConstants.COLLECTION_SERVICE:
                 service = org.ekstep.services.collectionService;
                 break;
+            case ServiceConstants.DIALCODE_SERVICE:
+                service = org.ekstep.services.dialcodeService;
+                break;
         }
         return service;
     },

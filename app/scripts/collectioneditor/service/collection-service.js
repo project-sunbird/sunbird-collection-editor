@@ -2,7 +2,7 @@ org.ekstep.services.collectionService = new(Class.extend({
     config: undefined,
     data: {},
     framework: "NCF",
-    categoryList: {},
+    dialcodeList: [],
     cacheKeywords: {},
     initialize: function(config) {
         if (config) this.config = config;
