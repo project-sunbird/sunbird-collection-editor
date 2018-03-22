@@ -264,7 +264,11 @@ org.ekstep.services.collectionService = new(Class.extend({
                 instance.onRenderNode(event, data)
                 if (ecEditor.getConfig('nodeDisplayCriteria') && ecEditor.getConfig('nodeDisplayCriteria').contentType && ecEditor.getConfig('nodeDisplayCriteria').contentType.length > 0) {
                     var nodeTypeIndex = ecEditor._.indexOf(ecEditor.getConfig('nodeDisplayCriteria').contentType, data.node.data.objectType);
-                    nodeTypeIndex < '0' ? (data.node.li ? data.node.li.style.display = 'none' : "") : "";
+                    if(data.node.data.root && nodeTypeIndex < 0){
+                        data.node.span.style.display = "none";
+                    }else{
+                        nodeTypeIndex < '0' ? (data.node.li ? data.node.li.style.display = 'none' : "") : "";
+                    }
                 }
             },
             loadChildren: function(event, data) {
