@@ -36,10 +36,10 @@ org.ekstep.services.stateService = new(Class.extend({
             this.state[objectName][key] = value;
         } else {
             this.state[key] = value
-                // NOTE: To support for the backward compatibality.
-                // deprecate `org.ekstep.collectioneditor.cache` object
-            org.ekstep.collectioneditor.cache.nodesModified[key] = value;
         }
+        // NOTE: To support for the backward compatibality.
+        // deprecate `org.ekstep.collectioneditor.cache` object
+        org.ekstep.collectioneditor.cache.nodesModified[key] = value;
     },
 
     /**
