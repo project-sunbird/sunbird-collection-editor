@@ -70,6 +70,7 @@ var scriptfiles = [
     "app/scripts/collectioneditor/manager/container-manager.js",
     "app/scripts/collectioneditor/manager/metapage-manager.js",
     "app/scripts/collectioneditor/service/collection-service.js",
+    "app/scripts/collectioneditor/service/state-service.js",
     "app/scripts/angular/controller/main.js",
     "app/scripts/angular/directive/template-compiler-directive.js",
 ];
