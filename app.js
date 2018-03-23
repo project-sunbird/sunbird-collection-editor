@@ -25,7 +25,6 @@ app.use('/action', proxy('dev.ekstep.in', {
         // you can update headers 
         proxyReqOpts.headers['Content-Type'] = 'application/json';
         proxyReqOpts.headers['user-id'] = 'content-editor';
-        proxyReqOpts.headers['authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYWYyYzg1OWIxMDg0NzhkYjMyNmYwZDQxNjMwZWMzMSJ9.YZjU6kKNg9F5BvS7JrXTfrxyTEULjR49v7wRD-CT9sg';
         return proxyReqOpts;
     }
 }));

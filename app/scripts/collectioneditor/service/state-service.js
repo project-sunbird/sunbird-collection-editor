@@ -23,9 +23,7 @@ org.ekstep.services.stateService = new(Class.extend({
     create: function(name) {
         this.state[name] = {}
     },
-
-
-    /**
+   /**
      * @description - Used to save the state with key-value pair
      * @param {String} key - Name of the Key
      * @param {Object | String} value - Value of the Key
@@ -35,11 +33,11 @@ org.ekstep.services.stateService = new(Class.extend({
         if (objectName) {
             this.state[objectName][key] = value;
         } else {
-            this.state[key] = value
+            this.state[key] = value;
+            // NOTE: To support for the backward compatibality.
+            // deprecate `org.ekstep.collectioneditor.cache` object
+            org.ekstep.collectioneditor.cache.nodesModified[key] = value;
         }
-        // NOTE: To support for the backward compatibality.
-        // deprecate `org.ekstep.collectioneditor.cache` object
-        org.ekstep.collectioneditor.cache.nodesModified[key] = value;
     },
 
     /**

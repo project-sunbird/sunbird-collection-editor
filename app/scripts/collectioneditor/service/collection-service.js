@@ -107,7 +107,12 @@ org.ekstep.services.collectionService = new(Class.extend({
                         var parentNode = selectedNode.getParent();
                         selectedNode.remove();
                         delete org.ekstep.collectioneditor.cache.nodesModified[selectedNode.data.id];
-                        parentNode.setActive();
+                        var rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild();
+                        if(parentNode === rootNode && !ecEditor._.isNull(rootNode.children)){
+                            rootNode.children[0].setActive();
+                        }else{
+                            parentNode.setActive();
+                        }
                         $scope.closeThisDialog();
                         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
                     };
