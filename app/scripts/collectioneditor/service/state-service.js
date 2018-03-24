@@ -23,21 +23,25 @@ org.ekstep.services.stateService = new(Class.extend({
     create: function(name) {
         this.state[name] = {}
     },
-   /**
+    /**
      * @description - Used to save the state with key-value pair
      * @param {String} key - Name of the Key
      * @param {Object | String} value - Value of the Key
      * @deprecated
      */
     setState: function(objectName, key, value) {
+        // NOTE: To support for the backward compatibality.
+        // deprecate `org.ekstep.collectioneditor.cache` object
         if (objectName) {
             this.state[objectName][key] = value;
+            if (objectName === 'nodesModified') {
+                org.ekstep.collectioneditor.cache.nodesModified[key] = value;
+            }
         } else {
             this.state[key] = value;
-            // NOTE: To support for the backward compatibality.
-            // deprecate `org.ekstep.collectioneditor.cache` object
             org.ekstep.collectioneditor.cache.nodesModified[key] = value;
         }
+
     },
 
     /**
