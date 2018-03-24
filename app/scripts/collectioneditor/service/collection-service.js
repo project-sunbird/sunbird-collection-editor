@@ -371,8 +371,9 @@ org.ekstep.services.collectionService = new(Class.extend({
               return false;
             }
         });
-        var node = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
-        node.getFirstChild().setActive(); //select the first node by default
+        var rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
+        var firstChild = rootNode.getFirstChild().getFirstChild(); // rootNode.getFirstChild() will always be available.
+        firstChild ? firstChild.setActive() : rootNode.getFirstChild().setActive(); //select the first children node by default
     },
     _dropNode: function(node, data) {
         var instance = this,
