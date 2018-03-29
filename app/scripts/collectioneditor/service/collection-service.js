@@ -366,7 +366,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                 case "meta+/": // mac
                     cmd = "showMenu";
             }
-            if( cmd ){
+            if( cmd  && instance.config.mode ==='Edit'){
               ecEditor.jQuery(this).trigger("nodeCommand", {cmd: cmd});
               return false;
             }
@@ -423,7 +423,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var objectType = this.getObjectType(data.node.data.objectType);
 
         if(data.node.span) data.node.span.childNodes[2].title = "";
-        if ((!$nodeSpan.data('rendered') || force)) {
+        if ((!$nodeSpan.data('rendered') || force) && config.mode ==='Edit') {
            if (org.ekstep.services.collectionService.getContextMenuTemplate(data.node)) {
                var contextButton = $(org.ekstep.services.collectionService.getContextMenuTemplate(data.node));
                $nodeSpan.append(contextButton);
