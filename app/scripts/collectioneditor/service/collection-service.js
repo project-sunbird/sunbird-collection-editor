@@ -115,6 +115,7 @@ org.ekstep.services.collectionService = new(Class.extend({
                         }
                         $scope.closeThisDialog();
                         ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:removed", selectedNode.data.id);
+                        ecEditor.dispatchEvent('org.ekstep.collectioneditor:breadcrumb');
                     };
                 }],
                 plain: true,
@@ -151,32 +152,33 @@ org.ekstep.services.collectionService = new(Class.extend({
         var instance = this;
         ecEditor.dispatchEvent("org.ekstep.lessonbrowser:show", {
             filters: { lessonType: [type] },
-            callback: function(err, res) {
-                if (res) {
-                   ecEditor._.forEach(res, function(obj) {
-                        var activeNode = org.ekstep.services.collectionService.getActiveNode();
-                        var children = activeNode.getChildren();
-                        if (children && children.length > 0) {
-                            ecEditor._.forEach(children, function(child, index) {
-                                if (child.data.metadata.identifier === obj.identifier) {
-                                    ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                                        message: 'Content ' + obj.name +  ' already available',
-                                        position: 'topCenter',
-                                        icon: 'fa fa-warning'
-                                    });
-                                    return false;        // Returning if content is already available in selected node.
-                                }
-                                if (index === children.length-1) {
-                                    instance.addNode(obj.contentType, obj);
-                                }
+            callback: instance.filterResource
+        });
+    },
+    filterResource: function (err, res) {
+        if (res) {
+            ecEditor._.forEach(res, function (obj) {
+                var activeNode = org.ekstep.services.collectionService.getActiveNode();
+                var children = activeNode.getChildren();
+                if (children && children.length > 0) {
+                    ecEditor._.forEach(children, function (child, index) {
+                        if (child.data.metadata.identifier === obj.identifier) {
+                            ecEditor.dispatchEvent("org.ekstep.toaster:error", {
+                                message: 'Content ' + obj.name + ' already available',
+                                position: 'topCenter',
+                                icon: 'fa fa-warning'
                             });
-                        } else {
-                            instance.addNode(obj.contentType, obj);
+                            return false;        // Returning if content is already available in selected node.
+                        }
+                        if (index === children.length - 1) {
+                            org.ekstep.services.collectionService.addNode(obj.contentType, obj);
                         }
                     });
+                } else {
+                    org.ekstep.services.collectionService.addNode(obj.contentType, obj);
                 }
-            }
-        });
+            });
+        }
     },
     addTree: function(tree) {
         var instance = this;
