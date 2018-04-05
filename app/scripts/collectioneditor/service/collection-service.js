@@ -343,35 +343,6 @@ org.ekstep.services.collectionService = new(Class.extend({
                     alert("Unhandled command: " + data.cmd);
                     return;
             }
-        }).on("keydown", function(e){
-            var cmd = null;
-            switch( ecEditor.jQuery.ui.fancytree.eventToString(e) ) {
-                case "alt+ctrl+shift+n":
-                case "alt+meta+shift+n": // mac: cmd+shift+n
-                    cmd = "addSibling";
-                    break;
-                case "alt+ctrl+a":
-                case "alt+meta+a": // mac: cmd+shift+n
-                    cmd = "addLesson";
-                    break;
-                case "alt+ctrl+n":
-                case "alt+meta+`": // mac
-                    cmd = "addChild";
-                    break;
-                case "del":
-                case "ctrl+del":
-                case "ctrl+backspace":
-                case "meta+backspace": // mac
-                    cmd = "remove";
-                    break;
-                case "ctrl+/":
-                case "meta+/": // mac
-                    cmd = "showMenu";
-            }
-            if( cmd  && instance.config.mode ==='Edit'){
-              ecEditor.jQuery(this).trigger("nodeCommand", {cmd: cmd});
-              return false;
-            }
         });
         var rootNode = ecEditor.jQuery("#collection-tree").fancytree("getRootNode");
         var firstChild = rootNode.getFirstChild().getFirstChild(); // rootNode.getFirstChild() will always be available.
