@@ -4,68 +4,100 @@
  */
 org.ekstep.services.stateService = new(Class.extend({
 
+    /**
+     * @property    -
+     */
+    state: {
+        /**
+         * @property            - Object which contains only modified nodes
+         */
+        nodesModified: {},
+        /**
+         * @property            - Object which contains only dialcode values
+         */
+        dialCodeMap: {},
+
+        /**
+         * @property            - Object which contains only collection of nodes hierarchy
+         */
+        hierarchy: {}
+    },
 
     /**
-     * @property {string} state - Used to hold the state object
+     * @description
      */
-    state: {},
-
-    /**
-     * @description -Intializes the state service instance
-     */
-    initialize: function() {
+    initialize: function(state) {
+        this.state = state || this.state;
         org.ekstep.collectioneditor.cache = {};
     },
 
     /**
-     * @description - Which allows user to create an object inside the state
+     * @description                 - Which is used to set the dial code value
+     * @param {Object} value        
      */
-    create: function(name) {
-        this.state[name] = {}
-    },
-    /**
-     * @description - Used to save the state with key-value pair
-     * @param {String} key - Name of the Key
-     * @param {Object | String} value - Value of the Key
-     * @deprecated
-     */
-    setState: function(objectName, key, value) {
-        // NOTE: To support for the backward compatibality.
-        // deprecate `org.ekstep.collectioneditor.cache` object
-        if (objectName) {
-            this.state[objectName][key] = value;
-            if (objectName === 'nodesModified') {
-                org.ekstep.collectioneditor.cache.nodesModified[key] = value;
-            }
-        } else {
-            this.state[key] = value;
-            org.ekstep.collectioneditor.cache.nodesModified[key] = value;
-        }
-
+    setDialCode: function(key, value) {
+        this.state.dialCodeMap[key] = value;
     },
 
     /**
-     * @description - Which used get the state value by passing refrence key
+     * @description                 - Which is used to get the dial code value
+     * @returns {Object}
+     */
+    getDialCode: function() {
+        return _.cloneDeep(this.state.dialCodeMap);
+    },
+
+    /**
+     * @description                 - Which is used to reset the dialCode object
+     */
+    resetDialcode: function() {
+        this.state.dialCodeMap = {};
+    },
+
+    /**
+     * @description                 - Which is used to set the modified nodes object
+     */
+    setNodesModified: function(key, value) {
+        this.state.nodesModified[key] = value;
+        // For backward compatibility need to remove this
+        org.ekstep.collectioneditor.cache.nodesModified[key] = value;
+    },
+
+    /**
+     * @description                 - Which is used to get the modified nodes 
+     * @returns {Object}
+     */
+    getNodesModified: function() {
+        return _.cloneDeep(this.state.nodesModified);
+    },
+
+    /**
+     * @description                 - Which is used to reset the modified nodes object
+     */
+    resetNodesModified: function() {
+        this.state.nodesModified = {}
+    },
+
+    /**
+     * @description                 - Which is used to set the hierarchy object
+     */
+    setHierarchy: function(key, value) {
+        this.state.hierarchy[key] = value
+    },
+
+    /**
+     * @description                 - Which is used to get the hierarchy object
      * @return {Object}
      */
-    getState: function(key) {
-        return this.state[key] || {}
+    getHierarchy: function() {
+        return _.cloneDeep(this.state.hierarchy);
     },
 
     /**
-     * @description - Which is used to remove the state of particular key or object.
-     * @param {String} key - Name of the key
+     * @description                 - Which is used to reset the hierarchy object
      */
-    removeState: function(key) {
-        delete this.state[key]
-    },
-
-    /**
-     * @description - Which is used to reset the state
-     */
-    resetState: function() {
-        this.state = {}
+    resetHierarchy: function() {
+        this.state.hierarchy = {}
     }
-
 
 }))
