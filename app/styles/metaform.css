@@ -279,3 +279,8 @@ body {
     width: 540px;
     top: auto;
 }
+
+/* for add activity-browser */
+.ui.selection.dropdown .menu>.item {
+    text-transform: capitalize;
+}
