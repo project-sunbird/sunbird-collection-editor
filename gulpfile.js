@@ -298,7 +298,7 @@ gulp.task('packageCorePlugins', ['minify', "minifyCorePlugins"], function() {
     var _ = require('lodash');
     var jsDependencies = [];
     var cssDependencies = [];
-    if (fs.existsSync('collection-editorr/scripts/coreplugins.js')) {
+    if (fs.existsSync('collection-editor/scripts/coreplugins.js')) {
         fs.unlinkSync('collection-editor/scripts/coreplugins.js');
     }
     corePlugins.forEach(function(plugin) {
@@ -307,9 +307,9 @@ gulp.task('packageCorePlugins', ['minify', "minifyCorePlugins"], function() {
             manifest.editor.dependencies.forEach(function(dependency) {
                 var resource = '/content-plugins/' + plugin + '/' + dependency.src;
                 if (dependency.type == 'js') {
-                    fs.appendFile('app/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'js')" + "\n");
+                    fs.appendFile('collection-editor/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'js')" + "\n");
                 } else if (dependency.type == 'css') {
-                    fs.appendFile('app/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'css')" + "\n");
+                    fs.appendFile('collection-editor/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'css')" + "\n");
                 }
             });
         }
