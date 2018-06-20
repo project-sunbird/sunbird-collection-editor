@@ -24,7 +24,7 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     function loadNgModules(templatePath, controllerPath) {
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
-            { type: 'js', path: controllerPath }
+            { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
         ]);
     };
 
