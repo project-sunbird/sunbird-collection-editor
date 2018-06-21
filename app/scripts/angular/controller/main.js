@@ -3,22 +3,22 @@
  */
 'use strict';
 
-angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).config(['$locationProvider', '$httpProvider', function($locationProvider, $httpProvider) {
-
+angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).factory('cacheBustInterceptor', ['$templateCache', function($templateCache) {
+    return {
+        request : function(config) {
+            config.alreadyCached = $templateCache.get(config.url);
+            if (!config.alreadyCached) {
+                config.url = config.url + '?' + ecEditor.getConfig('build_number');
+            }
+            return config;
+        }
+    };
+}]).config(['$locationProvider', '$httpProvider', function($locationProvider, $httpProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
     });
-
-    $httpProvider.interceptors.push(function () {
-        return {
-            request: function (config) {
-                config.url = config.url + '?' + ecEditor.getConfig('build_number');
-                return config;
-            }
-        }
-    });
-
+    $httpProvider.interceptors.push('cacheBustInterceptor');
 }]);
 angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad', function(ngDialog, $ocLazyLoad) {
     function loadNgModules(templatePath, controllerPath) {
