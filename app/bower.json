@@ -19,7 +19,7 @@
         "ngSafeApply": "./libs/Scope.SafeApply.js",
         "izitoast": "^1.1.3",
         "promise-polyfill": "*",
-        "contenteditor": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/contenteditor.min.js"
+        "contenteditor": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/base-editor.min.1.2.js"
     },
     "appPath": "app",
     "moduleName": "editorApp",
