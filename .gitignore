@@ -7,3 +7,5 @@
 /plugins
 coverage
 /content
+collection-editor
+package-lock.json

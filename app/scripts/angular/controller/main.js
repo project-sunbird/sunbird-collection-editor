@@ -3,17 +3,28 @@
  */
 'use strict';
 
-angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).config(['$locationProvider', function($locationProvider) {
+angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).factory('cacheBustInterceptor', ['$templateCache', function($templateCache) {
+    return {
+        request : function(config) {
+            config.alreadyCached = $templateCache.get(config.url);
+            if (!config.alreadyCached) {
+                config.url = config.url + '?' + ecEditor.getConfig('build_number');
+            }
+            return config;
+        }
+    };
+}]).config(['$locationProvider', '$httpProvider', function($locationProvider, $httpProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
     });
+    $httpProvider.interceptors.push('cacheBustInterceptor');
 }]);
 angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad', function(ngDialog, $ocLazyLoad) {
     function loadNgModules(templatePath, controllerPath) {
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
-            { type: 'js', path: controllerPath }
+            { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
         ]);
     };
 
@@ -29,7 +40,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
         $scope.loadNgModules = function(templatePath, controllerPath) {
             var files = [];
             if (templatePath) files.push({ type: 'html', path: templatePath });
-            if (controllerPath) files.push({ type: 'js', path: controllerPath });
+            if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
             if (files.length) return $ocLazyLoad.load(files)
         };  
 
