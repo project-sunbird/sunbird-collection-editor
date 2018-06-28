@@ -78,7 +78,7 @@ var EDITOR_APP = [
     "./app/scripts/angular/directive/template-compiler-directive.js",
 ];
 const APP_STYLE = [
-
+    "./app/styles/jquery-ui.css",
     "./app/styles/semantic.min.css",
     "./app/styles/content-editor.css",
     "./app/styles/metaform.css",
