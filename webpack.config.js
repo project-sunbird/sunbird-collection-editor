@@ -118,7 +118,6 @@ module.exports = {
         alias: {
             'jquery-ui/ui/widgets/menu': path.resolve('./app/bower_components/jquery-ui/ui/widgets/menu.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
-            'jquery-ui': path.resolve('./app/bower_components/jquery-ui/jquery-ui.min.js'),
             'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
 
         }
