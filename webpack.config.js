@@ -48,8 +48,6 @@ const INDEX_HTML = [
  */
 const VENDOR = [
     "./app/libs/please-wait.min.js",
-    "./app/libs/jquery-ui.min.js",
-    "./app/libs/contextmenu.min.js",
     "./app/bower_components/async/dist/async.min.js",
     "./app/bower_components/angular/angular.js",
     "./app/bower_components/lodash/lodash.js",
@@ -80,6 +78,7 @@ var EDITOR_APP = [
     "./app/scripts/angular/directive/template-compiler-directive.js",
 ];
 const APP_STYLE = [
+
     "./app/styles/semantic.min.css",
     "./app/styles/content-editor.css",
     "./app/styles/metaform.css",
@@ -92,7 +91,9 @@ const APP_STYLE = [
     "./app/libs/please-wait.css",
     "./app/libs/tokens.css",
     "./app/libs/ng-tags-input.css",
-    "./app/libs/prism.css"
+    "./app/libs/prism.css",
+    './app/styles/noto.css',
+    './app/styles/iconfont.css'
 
 ];
 
@@ -119,7 +120,6 @@ module.exports = {
             'jquery-ui/ui/widgets/menu': path.resolve('./app/bower_components/jquery-ui/ui/widgets/menu.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
             'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
-
         }
     },
     module: {
@@ -152,7 +152,8 @@ module.exports = {
                     loader: 'expose-loader',
                     options: 'pleaseWait'
                 }]
-            }, {
+            },
+            {
                 test: require.resolve('./app/bower_components/uuid/index.js'),
                 use: [{
                     loader: 'expose-loader',
@@ -223,14 +224,14 @@ module.exports = {
             uglifyOptions: {
                 compress: {
                     dead_code: true,
-                    drop_console: false,
+                    drop_console: true,
                     global_defs: {
                         DEBUG: true
                     },
                     passes: 1,
                 },
                 ecma: 6,
-                mangle: false
+                mangle: true
             },
             sourceMap: true
         }),
@@ -256,6 +257,18 @@ module.exports = {
                 from: './deploy/package.json',
                 to: './'
             },
+            {
+                from: './app/libs/jquery-ui.min.js',
+                to: './'
+            },
+            {
+                from: './app/libs/semantic.min.js',
+                to: './'
+            },
+            {
+                from: './app/libs/contextmenu.min.js',
+                to: './'
+            },
 
         ]),
         new ImageminPlugin({
@@ -274,8 +287,7 @@ module.exports = {
             Ajv: 'ajv',
             $: "jquery",
             jQuery: "jquery",
-            async: 'async',
-            pleaseWait: path.resolve('./app/libs/please-wait.min.js')
+            async: 'async'
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
