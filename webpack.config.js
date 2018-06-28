@@ -2,9 +2,9 @@
 
 
 const ENVIRONMENT = process.env.NODE_ENV;
-const BUILD_NUMBER = process.env.build_number || 1;
-const EDITOR_VER = process.env.editor_version_number || 1;
-const PLUGIN_FRAMEWORK_VER = process.env.framework_version_number || 1;
+const BUILD_NUMBER = process.env.build_number;
+const EDITOR_VER = process.env.editor_version_number;
+const PLUGIN_FRAMEWORK_VER = process.env.framework_version_number;
 
 const CONFIG_STRING_REPLACE = [
     { search: '/plugins', replace: '/content-plugins' },
@@ -47,12 +47,10 @@ const INDEX_HTML = [
  * External files 
  */
 const VENDOR = [
-    // "./app/bower_components/jquery/dist/jquery.min.js",
     "./app/libs/please-wait.min.js",
     "./app/libs/jquery-ui.min.js",
     "./app/libs/contextmenu.min.js",
     "./app/bower_components/async/dist/async.min.js",
-    // "./app/libs/semantic.min.js",
     "./app/bower_components/angular/angular.js",
     "./app/bower_components/lodash/lodash.js",
     "./app/bower_components/x2js/index.js",
@@ -118,7 +116,9 @@ module.exports = {
     },
     resolve: {
         alias: {
+            'jquery-ui/ui/widgets/menu': path.resolve('./app/bower_components/jquery-ui/ui/widgets/menu.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
+            'jquery-ui': path.resolve('./app/bower_components/jquery-ui/jquery-ui.min.js'),
             'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
 
         }
@@ -152,6 +152,12 @@ module.exports = {
                 use: [{
                     loader: 'expose-loader',
                     options: 'pleaseWait'
+                }]
+            }, {
+                test: require.resolve('./app/bower_components/uuid/index.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'UUID'
                 }]
             },
             {
