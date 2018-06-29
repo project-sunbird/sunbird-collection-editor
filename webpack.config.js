@@ -3,8 +3,7 @@
 
 const ENVIRONMENT = process.env.NODE_ENV;
 const BUILD_NUMBER = process.env.build_number;
-const EDITOR_VER = process.env.editor_version_number;
-const PLUGIN_FRAMEWORK_VER = process.env.framework_version_number;
+const EDITOR_VER = process.env.version_number;
 
 const CONFIG_STRING_REPLACE = [
     { search: '/plugins', replace: '/content-plugins' },
@@ -100,8 +99,8 @@ const APP_STYLE = [
 // removing the duplicate files
 const APP_SCRIPT = [...new Set([...VENDOR, ...EDITOR_APP])]
     //APP_SCRIPT.push(getTelemetryLib(ENVIRONMENT));
-if (!BUILD_NUMBER && !EDITOR_VER && !PLUGIN_FRAMEWORK_VER) {
-    console.error('Error!!! Cannot find framework_version_number, editor_version_number and build_number env variables');
+if (!BUILD_NUMBER && !EDITOR_VER) {
+    console.error('Error!!! Cannot find version_number and build_number env variables');
     return process.exit(1)
 }
 const VERSION = EDITOR_VER + '.' + BUILD_NUMBER;

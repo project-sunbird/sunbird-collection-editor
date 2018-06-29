@@ -8,6 +8,9 @@ var replace = require('gulp-string-replace');
 var packageJson = JSON.parse(fs.readFileSync('./package.json'));
 var promise = require("any-promise");
 var rename = require("gulp-rename");
+var concat = require('gulp-concat');
+var minify = require('gulp-minifier');
+var uglify = require('gulp-uglify');
 
 var cachebust = new CacheBuster();
 gulp.task('renameminifiedfiles', function() {
@@ -16,9 +19,22 @@ gulp.task('renameminifiedfiles', function() {
     return mergeStream(js, css);
 });
 
+gulp.task('minifyJs', function() {
+    return gulp.src(['scripts/jquery.min.js', 'scripts/jquery-ui.min.js', 'scripts/contextmenu.min.js', 'scripts/semantic.min.js'])
+        .pipe(concat('external.min.js'))
+        .pipe(minify({
+            minify: true,
+            collapseWhitespace: true,
+            conservativeCollapse: true,
+            minifyJS: true
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('scripts'));
+});
+
 gulp.task('injectrenamedfiles', function() {
     var target = gulp.src('index.html');
-    var sources = gulp.src(['scripts/*.min.*.js', 'styles/*.min.*.css'], { read: false });
+    var sources = gulp.src(['scripts/external.min.js', 'scripts/script.min.*.js', 'styles/*.min.*.css'], { read: false });
     return target.pipe(inject(sources, { ignorePath: '/', addRootSlash: false })).pipe(gulp.dest('./'));
 });
 
@@ -35,8 +51,8 @@ gulp.task('iframe-package', ['bower-package'], function() {
 });
 
 gulp.task('bower-package-transform', ['iframe-package'], function() {
-    return mergeStream(gulp.src('build/index.html').pipe(replace('href="styles', 'href="content-editor-embed/styles')).pipe(replace('src="scripts', 'src="content-editor-embed/scripts')).pipe(replace("'templates", "'content-editor-embed/templates")).pipe(gulp.dest('build/')),
-    gulp.src('build/scripts/script.min.js').pipe(replace("src='scripts", "src='content-editor-embed/scripts")).pipe(gulp.dest('build/scripts/')));
+    return mergeStream(gulp.src('build/index.html').pipe(replace('href="styles', 'href="collection-editor-embed/styles')).pipe(replace('src="scripts', 'src="collection-editor-embed/scripts')).pipe(replace("'templates", "'collection-editor-embed/templates")).pipe(gulp.dest('build/')),
+    gulp.src('build/scripts/script.min.js').pipe(replace("src='scripts", "src='collection-editor-embed/scripts")).pipe(gulp.dest('build/scripts/')));
 });
 
 gulp.task('embed-package', ['bower-package-transform'], function() {
