@@ -11,6 +11,7 @@ var rename = require("gulp-rename");
 var concat = require('gulp-concat');
 var minify = require('gulp-minifier');
 var uglify = require('gulp-uglify');
+var clean = require('gulp-clean');
 
 var cachebust = new CacheBuster();
 gulp.task('renameminifiedfiles', function() {
@@ -30,6 +31,11 @@ gulp.task('minifyJs', function() {
         }))
         .pipe(uglify())
         .pipe(gulp.dest('scripts'));
+});
+
+gulp.task('clean', function() {
+    return gulp.src(['scripts/jquery.min.js', 'scripts/jquery-ui.min.js', 'scripts/contextmenu.min.js', 'scripts/semantic.min.js'], {read: false})
+        .pipe(clean());
 });
 
 gulp.task('injectrenamedfiles', function() {
