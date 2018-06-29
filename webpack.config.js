@@ -317,7 +317,7 @@ module.exports = {
                 }
                 if (assetPath.endsWith('.js'))
                     return path.join(path.dirname(assetPath), 'scripts', path.basename(assetPath));
-                if (assetPath.endsWith('.css') || assetPath.endsWith('.png') || assetPath.endsWith('.svg'))
+                if (assetPath.endsWith('.css'))
                     return path.join(path.dirname(assetPath), 'styles', path.basename(assetPath));
                 if (assetPath.startsWith('fonts')) {
                     return path.join('styles', 'fonts', path.basename(assetPath));

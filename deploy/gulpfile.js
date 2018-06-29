@@ -33,8 +33,15 @@ gulp.task('minifyJs', function() {
         .pipe(gulp.dest('scripts'));
 });
 
+gulp.task('copystyleImages', function() {
+    return gulp.src(['*.svg', '*.png'], {
+            base: './'
+        })
+        .pipe(gulp.dest('styles'));
+});
+
 gulp.task('clean', function() {
-    return gulp.src(['scripts/jquery.min.js', 'scripts/jquery-ui.min.js', 'scripts/contextmenu.min.js', 'scripts/semantic.min.js'], {read: false})
+    return gulp.src(['scripts/jquery.min.js', 'scripts/jquery-ui.min.js', 'scripts/contextmenu.min.js', 'scripts/semantic.min.js', '*.svg', '*.png'], {read: false})
         .pipe(clean());
 });
 
