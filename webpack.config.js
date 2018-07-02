@@ -79,8 +79,8 @@ const APP_STYLE = [
 ];
 
 // removing the duplicate files
-const APP_SCRIPT = [...new Set([...VENDOR, ...EDITOR_APP])]
-    //APP_SCRIPT.push(getTelemetryLib(ENVIRONMENT));
+const APP_SCRIPT = [...new Set([...VENDOR, ...EDITOR_APP])];
+
 if (!BUILD_NUMBER && !EDITOR_VER) {
     console.error('Error!!! Cannot find version_number and build_number env variables');
     return process.exit(1)
@@ -155,17 +155,6 @@ module.exports = {
                                 removeAll: true
                             }
                         }
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: false,
-                            minimize: true,
-                            "preset": "advanced",
-                            discardComments: {
-                                removeAll: true
-                            }
-                        }
                     }
                 ]
             },
@@ -205,13 +194,13 @@ module.exports = {
             uglifyOptions: {
                 compress: {
                     dead_code: true,
-                    drop_console: true,
+                    drop_console: false,
                     global_defs: {
                         DEBUG: true
                     },
                     passes: 1,
                 },
-                ecma: 6,
+                ecma: 5,
                 mangle: true
             },
             sourceMap: true
