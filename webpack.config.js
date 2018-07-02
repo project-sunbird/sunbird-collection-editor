@@ -16,31 +16,13 @@ const BUILD_FOLDER_NAME = 'collection-editor.zip';
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const expose = require('expose-loader');
-const BowerResolvePlugin = require("bower-resolve-webpack-plugin");
-const UglifyJS = require("uglify-es");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const PurifyCSSPlugin = require('purifycss-webpack');
 const glob = require('glob-all');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const FontminPlugin = require('fontmin-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin")
-const BrotliGzipPlugin = require('brotli-gzip-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-//const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-/** 
- *  Core plugins file path, Refer minified file which is already created form the gulp.
- */
-const CORE_PLUGINS = './app/scripts/coreplugins.js';
-
-const INDEX_HTML = [
-    './app/index.html'
-]
 
 /**
  * External files 
