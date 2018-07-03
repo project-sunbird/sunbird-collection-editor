@@ -188,14 +188,14 @@ org.ekstep.services.collectionService = new(Class.extend({
             keyboard: true,
             modifyChild: function(event, data) {
                 if (data && data.operation === "remove") {
-                    org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'remove', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+                    org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'remove', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.3", "objectid": data.node.data.id, "stage": data.node.data.id });
                     ecEditor.jQuery("#collection-tree").fancytree("getRootNode").getFirstChild().setActive();
                 }
             },
             activate: function(event, data) {
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node);
                 ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node);
-                org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'select', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+                org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'select', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.3", "objectid": data.node.data.id, "stage": data.node.data.id });
             },
             dnd: {
                 autoExpandMS: 400,
@@ -376,7 +376,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         var dropAllowed = _.includes(instance.getObjectType(objectType).childrenTypes, data.otherNode.data.objectType);
         if (dropAllowed) {
             data.otherNode.moveTo(node, data.hitMode);
-            org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": data.node.data.id, "stage": data.node.data.id });
+            org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": 'dragndrop', "target": 'node', "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.3", "objectid": data.node.data.id, "stage": data.node.data.id });
             ecEditor.dispatchEvent("org.ekstep.collectioneditor:node:reorder", { src: data.otherNode.data.id, dst: data.node.data.id });
             return true;
         } else {
@@ -560,7 +560,7 @@ org.ekstep.services.collectionService = new(Class.extend({
         }
     },
     __telemetry: function(data) {
-        org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": data.subtype, "target": data.target, "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.0", "objectid": ecEditor.getCurrentStage().id, "stage": ecEditor.getCurrentStage().id });
+        org.ekstep.services.telemetryService.interact({ "type": 'click', "subtype": data.subtype, "target": data.target, "pluginid": "org.ekstep.collectioneditor", "pluginver": "1.3", "objectid": ecEditor.getCurrentStage().id, "stage": ecEditor.getCurrentStage().id });
     },
 
     highlightNode:function(nodeId){
