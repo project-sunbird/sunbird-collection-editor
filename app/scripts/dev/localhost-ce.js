@@ -6,7 +6,7 @@ window.context = {
         "name": "Santhosh Vasabhaktula",
         "email": "santhosh@ilimi.in"
     },
-    "framework":'NCERT'
+    "framework": 'NCERT'
 };
 
 window.config = {
@@ -18,7 +18,7 @@ window.config = {
     nodeDisplayCriterion: {
         contentType: ['TextBook', 'TextBookUnit']
     },
-    keywordsLimit:500,
+    keywordsLimit: 500,
     editorConfig: {
         "mode": "Edit",
         "contentStatus": "draft",

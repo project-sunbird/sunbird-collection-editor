@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog.min.css">
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css">
     <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
-    <link rel="stylesheet" href="bower_components/izitoast/dist/css/iziToast.min.css"/>
+    <link rel="stylesheet" href="bower_components/izitoast/dist/css/iziToast.min.css" />
     <link rel="stylesheet" type="text/css" href="styles/iconfont.css">
     <link rel="stylesheet" type="text/css" href="styles/noto.css">
     <link rel="stylesheet" type="text/css" href="libs/spinkit.css">
@@ -63,8 +63,8 @@
     <script src="scripts/collectioneditor/collectioneditor-base-plugin.js"></script>
     <script src="scripts/collectioneditor/manager/container-manager.js"></script>
     <script src="scripts/collectioneditor/manager/metapage-manager.js"></script>
-    <script src="scripts/collectioneditor/service/collection-service.js"></script> 
-    <script src="scripts/collectioneditor/service/state-service.js"></script>    
+    <script src="scripts/collectioneditor/service/collection-service.js"></script>
+    <script src="scripts/collectioneditor/service/state-service.js"></script>
     <script src="scripts/collectioneditor/md5.js"></script>
 
     <!-- Load Angular Controllers -->
@@ -72,11 +72,20 @@
     <script src="scripts/angular/directive/template-compiler-directive.js"></script>
     <!-- endinject -->
     <script type="text/javascript">
-    window.loading_screen = window.pleaseWait({
-        logo: !ecEditor._.isUndefined(ecEditor.getConfig('loadingImage')) ? ecEditor.getConfig('loadingImage') : '',       
-        backgroundColor: '#bbbbbb',
-        loadingHtml: "<div class='sk-cube-grid'> <div class='sk-cube sk-cube1'></div> <div class='sk-cube sk-cube2'></div> <div class='sk-cube sk-cube3'></div> <div class='sk-cube sk-cube4'></div> <div class='sk-cube sk-cube5'></div> <div class='sk-cube sk-cube6'></div> <div class='sk-cube sk-cube7'></div> <div class='sk-cube sk-cube8'></div> <div class='sk-cube sk-cube9'></div> </div><p class='loading-message'>Loading Editor...</p>"
-    });
+        //TODO: Need to fix this below code ASAP
+        // Currently, Webpack is bundling window object `pleaseWait` into nested format.
+        // Ex: window.pleaseWait.pleaseWait ==> window.pleaseWait 
+        if (typeof window.pleaseWait !== 'function') {
+            if (typeof window.pleaseWait.pleaseWait === 'function') {
+                window.pleaseWait = window.pleaseWait.pleaseWait;
+            }
+        };
+        window.loading_screen = window.pleaseWait({
+            logo: !ecEditor._.isUndefined(ecEditor.getConfig('loadingImage')) ? ecEditor.getConfig('loadingImage') : '',
+            backgroundColor: '#bbbbbb',
+            loadingHtml: "<div class='sk-cube-grid'> <div class='sk-cube sk-cube1'></div> <div class='sk-cube sk-cube2'></div> <div class='sk-cube sk-cube3'></div> <div class='sk-cube sk-cube4'></div> <div class='sk-cube sk-cube5'></div> <div class='sk-cube sk-cube6'></div> <div class='sk-cube sk-cube7'></div> <div class='sk-cube sk-cube8'></div> <div class='sk-cube sk-cube9'></div> </div><p class='loading-message'>Loading Editor...</p>"
+        });
     </script>
 </body>
+
 </html>
