@@ -8,15 +8,16 @@ org.ekstep.contenteditor.containerManager = new(Class.extend({
     	this.registeredContainer.push({ id: manifest.id, container: container });
     	this.load(container, manifest);
     },
-    load: function(container, manifest) {
-        var instance = this;        
+    load: function(container, manifest, allowTemplateCache) {
+        var instance = this;          
         if (container.templateURL) {
             container.templateURL = org.ekstep.contenteditor.api.resolvePluginResource(manifest.id, manifest.ver, container.templateURL);
-            instance.loadNgModules(container.templateURL);
-
+            instance.loadNgModules(container.templateURL, undefined,  allowTemplateCache).then(function(){
+                instance.scope.addToContainer(container.type);
+            });
             if (container.controllerURL) {
                 container.controllerURL = org.ekstep.contenteditor.api.resolvePluginResource(manifest.id, manifest.ver, container.controllerURL);
-                instance.loadNgModules(undefined, container.controllerURL)
+                instance.loadNgModules(undefined, container.controllerURL, allowTemplateCache)
                     .then(function() {
                         instance.scope.addToContainer(container);
                     }, function() {

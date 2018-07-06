@@ -34,15 +34,30 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     };
     org.ekstep.contenteditor.api.getService('popup').initService(loadNgModules, openModal);
 }]);
-angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location',
-    function($scope, $ocLazyLoad, $location) { 
+angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location', '$templateCache',
+    function($scope, $ocLazyLoad, $location, $templateCache) { 
 
-        $scope.loadNgModules = function(templatePath, controllerPath) {
-            var files = [];
-            if (templatePath) files.push({ type: 'html', path: templatePath });
-            if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
-            if (files.length) return $ocLazyLoad.load(files)
+        $scope.loadNgModules = function(templatePath, controllerPath, allowTemplateCache, identifier) {
+            if(!allowTemplateCache){
+                var files = [];
+                if (templatePath) files.push({ type: 'html', path: templatePath });
+                if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
+                if (files.length) return $ocLazyLoad.load(files)
+            }else{
+                    return new Promise(function(resolve, reject){
+                        if (angular.isString(templatePath) && templatePath.length > 0) {
+                            angular.forEach(angular.element(templatePath), function(node) {
+                                resolve($templateCache.put(identifier, node.innerHTML))
+                            });
+                            console.log($templateCache.get('TextBookUnit'));
+
+                        }
+                    })
+                    
+            }
         };  
+
+        
 
         org.ekstep.contenteditor.containerManager.initialize({loadNgModules: $scope.loadNgModules, scope: $scope });
         org.ekstep.collectioneditor.metaPageManager.initialize({loadNgModules: $scope.loadNgModules });

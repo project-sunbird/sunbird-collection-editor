@@ -8,12 +8,13 @@ org.ekstep.collectioneditor.metaPageManager = new(Class.extend({
     register: function(config) {
         var instance = this;
         if (config.templateURL) {
-            instance.loadNgModules(config.templateURL);
+            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache, config.objectType[0]);
             if (config.controllerURL) {
-                instance.loadNgModules(undefined, config.controllerURL)
-                    .then(function() {
+                instance.loadNgModules(undefined, config.controllerURL, config.allowTemplateCache)
+                    .then(function(x) {                        
                         instance.registeredPages.push(config);
-                    }, function() {
+                    }, function(e) {
+                        console.log(e);
                         throw "unable to load controller :" + config.controllerURL;
                     });
             }

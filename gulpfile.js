@@ -14,8 +14,8 @@ var merge = require('merge-stream');
 var replace = require('gulp-string-replace');
 var uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
-var versionNumber = process.env.version_number;
-var buildNumber = process.env.build_number;
+var versionNumber = process.env.version_number || 1;
+var buildNumber = process.env.build_number || 1;
 
 if(!versionNumber && !versionNumber) {
     console.error('Error!!! Cannot find verion_number and build_number env variables');
@@ -234,7 +234,7 @@ var corePlugins = [
     "org.ekstep.conceptselector-1.1",
     "org.ekstep.assetbrowser-1.2",
     "org.ekstep.contenteditorfunctions-1.2",
-    "org.ekstep.unitmeta-1.4",
+    // "org.ekstep.unitmeta-1.4",
     "org.ekstep.contentmeta-1.4",
     "org.ekstep.courseunitmeta-1.4",
     "org.ekstep.lessonplanunitmeta-1.4",
@@ -273,7 +273,7 @@ gulp.task('packageCorePluginsLocal', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function(plugin) {        
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {
@@ -301,11 +301,14 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function(plugin){
+        console.log('plugins/' + plugin + '/manifest.json');
+
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {
-                var resource = '/content-plugins/' + plugin + '/' + dependency.src;
+                // var resource = '/content-plugins/' + plugin + '/' + dependency.src;
+                var resource = '/plugins/' + plugin + '/' + dependency.src;
                 if (dependency.type == 'js') {
                     fs.appendFile('app/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'js')" + "\n");
                 } else if (dependency.type == 'css') {
