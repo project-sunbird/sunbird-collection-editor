@@ -11,18 +11,18 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 var corePlugins = [
-    // "org.ekstep.conceptselector-1.1",
-    // "org.ekstep.assetbrowser-1.2",
-    // "org.ekstep.contenteditorfunctions-1.2",
+     "org.ekstep.conceptselector-1.1",
+     "org.ekstep.assetbrowser-1.2",
+    "org.ekstep.contenteditorfunctions-1.2",
     "org.ekstep.unitmeta-1.4",
-    // "org.ekstep.contentmeta-1.4",
-    // "org.ekstep.courseunitmeta-1.4",
-    // "org.ekstep.lessonplanunitmeta-1.4",
-    // "org.ekstep.preview-1.1",
-    // "org.ekstep.telemetry-1.0",
-    // "org.ekstep.toaster-1.0",
-    // "org.ekstep.breadcrumb-1.0",
-    // "org.ekstep.collectionkeyboardshortcuts-1.0"
+     "org.ekstep.contentmeta-1.4",
+    "org.ekstep.courseunitmeta-1.4",
+    "org.ekstep.lessonplanunitmeta-1.4",
+     "org.ekstep.preview-1.1",
+     "org.ekstep.telemetry-1.0",
+     "org.ekstep.toaster-1.0",
+     "org.ekstep.breadcrumb-1.0",
+     "org.ekstep.collectionkeyboardshortcuts-1.0"
 ]
 
 let entryFiles = []
@@ -61,19 +61,32 @@ function packagePlugins() {
                 templatePathArr[i] = (obj.template) ? 'require("' + obj.template + '")' : undefined;
             });
             var count = 0;
-            console.log(controllerPathArr);
-            
-            // pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function($0) {
-            //     var dash;
-            //     dash = 'loadNgModules(' + templatePathArr[count] + ' , ' + controllerPathArr[count] + ', true)'
-            //     count++;
-            //     return dash;
-            // }))
-
-            pluginContent = uglifyjs.minify(pluginContent);
-
-            // pluginContent = pluginContent.replace(/;\s*$/, "");
-
+            var matchLoadNgModule = pluginContent.match(/\b(loadNgModules)\b.*?\)/g);
+            var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);            
+            if(matchLoadNgModule !== null){
+                console.log("inside if",plugin);
+                pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function($0) {
+                    var dash;
+                    dash = 'loadNgModules(' + templatePathArr[count] + ' , ' + controllerPathArr[count] + ', true)'
+                    count++;
+                    return dash;
+                }))
+            }
+            else if(matchRegisterMeta !== null){
+                console.log("inside else if",plugin);
+                
+                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function($1, $2, $3) {
+                    var dash;
+                    dash = 'registerMetaPage({' + $3 + ', templateURL: ' + templatePathArr[count] + ', controllerURL:'+ controllerPathArr[count] + ', allowTemplateCache: true})'
+                    count++;
+                    return dash;
+                }));
+            }    
+            else {
+                console.log("inside else",plugin);
+                pluginContent = uglifyjs.minify(pluginContent);
+            }
+    
         } 
          
         else {

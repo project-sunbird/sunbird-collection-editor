@@ -20,12 +20,24 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).fact
     });
     $httpProvider.interceptors.push('cacheBustInterceptor');
 }]);
-angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad', function(ngDialog, $ocLazyLoad) {
-    function loadNgModules(templatePath, controllerPath) {
+angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad','$templateCache', function(ngDialog, $ocLazyLoad,$templateCache) {
+    function loadNgModules(templatePath, controllerPath, allowTemplateCache, identifier) {
+        // console.log(allowTemplateCache);
+        
+    // if(!allowTemplateCache){
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
         ]);
+    // }else{
+    //     if (angular.isString(templatePath) && templatePath.length > 0) {
+    //         angular.forEach(angular.element(templatePath), function(node) {
+    //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
+    //                 $templateCache.put(node.id, node.innerHTML);
+    //             }
+    //         });
+    //     }
+    // }
     };
 
     function openModal(config, callback) {
@@ -44,15 +56,13 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
                 if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
                 if (files.length) return $ocLazyLoad.load(files)
             }else{
-                    return new Promise(function(resolve, reject){
-                        if (angular.isString(templatePath) && templatePath.length > 0) {
-                            angular.forEach(angular.element(templatePath), function(node) {
-                                resolve($templateCache.put(identifier, node.innerHTML))
-                            });
-                            console.log($templateCache.get('TextBookUnit'));
-
-                        }
-                    })
+                return new Promise(function(resolve, reject){
+                    if (angular.isString(templatePath) && templatePath.length > 0) {
+                        angular.forEach(angular.element(templatePath), function(node) {                            
+                            resolve($templateCache.put(identifier, node.innerHTML))
+                        });
+                    }
+                })
                     
             }
         };  
