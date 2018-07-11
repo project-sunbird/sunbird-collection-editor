@@ -14,10 +14,10 @@ var corePlugins = [
      "org.ekstep.conceptselector-1.1",
      "org.ekstep.assetbrowser-1.2",
     "org.ekstep.contenteditorfunctions-1.2",
-    "org.ekstep.unitmeta-1.4",
-     "org.ekstep.contentmeta-1.4",
-    "org.ekstep.courseunitmeta-1.4",
-    "org.ekstep.lessonplanunitmeta-1.4",
+    "org.ekstep.unitmeta-1.5",
+     "org.ekstep.contentmeta-1.5",
+    "org.ekstep.courseunitmeta-1.5",
+    "org.ekstep.lessonplanunitmeta-1.5",
      "org.ekstep.preview-1.1",
      "org.ekstep.telemetry-1.0",
      "org.ekstep.toaster-1.0",
@@ -30,12 +30,12 @@ let entryFiles = []
 function getEntryFiles() {
     entryFiles = [{
             entryFiles: packagePlugins(),
-            outputName: 'unitmeta-plugin.js',
+            outputName: 'coreplugins.js',
         },
-        // {
-        //     entryFiles: getVendorCSS(),
-        //     outputName: 'plugin-vendor',
-        // },
+        {
+            entryFiles: getVendorCSS(),
+            outputName: 'plugin-vendor',
+        },
     ];
     return entryPlus(entryFiles);
 }
@@ -132,38 +132,23 @@ module.exports = {
 
     output: {
         filename: '[name]',
-        path: path.resolve(__dirname, './dist/scripts'),
+        path: path.resolve(__dirname, './app/scripts'),
     },
     resolve: {
         alias: {
             'jquery': path.resolve('./node_modules/jquery/dist/jquery.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
-            'clipboard': path.resolve('./node_modules/clipboard/dist/clipboard.min.js'),
-            'E2EConverter': path.resolve('./plugins/org.ekstep.viewecml-1.0/editor/libs/src/converter.js'),
-            'xmlbuilder': path.resolve('./node_modules/xmlbuilder/lib/index.js'),
-            'spectrum': path.resolve('./node_modules/spectrum-colorpicker/spectrum.js'),
-            'X2JS': path.resolve('./plugins/org.ekstep.assessmentbrowser-1.1/editor/libs/xml2json.js')
+            'iziToast': path.resolve('./app/bower_components/izitoast/dist/js/iziToast.min.js'),
         }
     },
     module: {
-        rules: [{
-                test: require.resolve('./plugins/org.ekstep.viewecml-1.0/editor/libs/src/converter.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'E2EConverter'
-                }]
-            }, {
-                test: require.resolve('./plugins/org.ekstep.assessmentbrowser-1.1/editor/libs/xml2json.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'X2JS'
-                }]
-            },
+        rules: [
+            
             {
-                test: require.resolve('./plugins/org.ekstep.colorpicker-1.0/editor/libs/spectrum.js'),
+                test: require.resolve('./app/bower_components/izitoast/dist/js/iziToast.min.js'),
                 use: [{
                     loader: 'expose-loader',
-                    options: 'spectrum'
+                    options: 'iziToast'
                 }]
             },
             {
@@ -223,8 +208,7 @@ module.exports = {
             filename: "[name].min.css",
         }),
         new webpack.ProvidePlugin({
-            E2EConverter: 'E2EConverter',
-            spectrum : 'spectrum'
+            iziToast: 'iziToast'
         }),
         new UglifyJsPlugin({
             cache: false,

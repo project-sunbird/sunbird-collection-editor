@@ -23,13 +23,18 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).fact
 angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad','$templateCache', function(ngDialog, $ocLazyLoad,$templateCache) {
     function loadNgModules(templatePath, controllerPath, allowTemplateCache, identifier) {
         // console.log(allowTemplateCache);
-        
-    // if(!allowTemplateCache){
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
         ]);
-    // }else{
+
+    // if(!allowTemplateCache){
+    //     return $ocLazyLoad.load([
+    //         { type: 'html', path: templatePath },
+    //         { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
+    //     ]);
+    // }
+    // else{
     //     if (angular.isString(templatePath) && templatePath.length > 0) {
     //         angular.forEach(angular.element(templatePath), function(node) {
     //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
@@ -59,7 +64,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
                 return new Promise(function(resolve, reject){
                     if (angular.isString(templatePath) && templatePath.length > 0) {
                         angular.forEach(angular.element(templatePath), function(node) {                            
-                            resolve($templateCache.put(identifier, node.innerHTML))
+                            resolve($templateCache.put(node.id, node.innerHTML))
                         });
                     }
                 })
