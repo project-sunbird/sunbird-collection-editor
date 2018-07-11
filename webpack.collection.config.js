@@ -60,7 +60,7 @@ function packagePlugins() {
                 controllerPathArr[i] = (obj.controller) ? 'require("' + obj.controller + '")' : undefined;
                 templatePathArr[i] = (obj.template) ? 'require("' + obj.template + '")' : undefined;
             });
-            var count = 0;
+            var count = 0;            
             var matchLoadNgModule = pluginContent.match(/\b(loadNgModules)\b.*?\)/g);
             var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);            
             if(matchLoadNgModule !== null){
@@ -132,7 +132,7 @@ module.exports = {
 
     output: {
         filename: '[name]',
-        path: path.resolve(__dirname, './app/scripts'),
+        path: path.resolve(__dirname, './dist/scripts'),
     },
     resolve: {
         alias: {

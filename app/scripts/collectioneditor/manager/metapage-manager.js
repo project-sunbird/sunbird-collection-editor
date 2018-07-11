@@ -2,47 +2,48 @@ org.ekstep.collectioneditor.metaPageManager = new(Class.extend({
     registeredPages: [],
     sidebar: [],
     breadcrumb: [],
-    initialize: function(config) {
+    initialize: function (config) {
         this.loadNgModules = config.loadNgModules;
     },
-    register: function(config) {
+    register: function (config) {
         var instance = this;
-        console.log(config);
-
         if (config.templateURL) {
-            
-            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache, config.objectType[0]);
+
+            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache).then(function (value) {
+                config.identifier = value;
+            });
+
             if (config.controllerURL && _.isString(config.controllerURL)) {
                 instance.loadNgModules(undefined, config.controllerURL, config.allowTemplateCache)
-                    .then(function(x) {                        
+                    .then(function (x) {
                         instance.registeredPages.push(config);
-                    }, function(e) {
+                    }, function (e) {
                         console.error(e);
                         throw "unable to load controller :" + config.controllerURL;
                     });
-            }else{
+            } else {
                 instance.registeredPages.push(config);
             }
         };
     },
-    getPages: function() {
+    getPages: function () {
         return this.registeredPages;
     },
-    registerSidebar: function(config) {
+    registerSidebar: function (config) {
         var instance = this;
         if (config.templateURL) {
             instance.loadNgModules(config.templateURL);
             if (config.controllerURL) {
                 instance.loadNgModules(undefined, config.controllerURL)
-                    .then(function() {
+                    .then(function () {
                         instance.sidebar.push(config);
-                    }, function() {
+                    }, function () {
                         throw "unable to load controller :" + config.controllerURL;
                     });
             }
         };
     },
-    getSidebar: function() {
+    getSidebar: function () {
         return this.sidebar;
     },
     registerBreadcrumb: function (config) {

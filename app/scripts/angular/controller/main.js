@@ -54,7 +54,7 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
 angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location', '$templateCache',
     function($scope, $ocLazyLoad, $location, $templateCache) { 
 
-        $scope.loadNgModules = function(templatePath, controllerPath, allowTemplateCache, identifier) {
+        $scope.loadNgModules = function(templatePath, controllerPath, allowTemplateCache) {
             if(!allowTemplateCache){
                 var files = [];
                 if (templatePath) files.push({ type: 'html', path: templatePath });
@@ -63,9 +63,13 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
             }else{
                 return new Promise(function(resolve, reject){
                     if (angular.isString(templatePath) && templatePath.length > 0) {
-                        angular.forEach(angular.element(templatePath), function(node) {                            
-                            resolve($templateCache.put(node.id, node.innerHTML))
+                        angular.forEach(angular.element(templatePath), function(node) {     
+                            $templateCache.put(node.id, node.innerHTML);                                                                             
+                            resolve(node.id);
                         });
+                    }
+                    else{
+                        reject('Error!');
                     }
                 })
                     
