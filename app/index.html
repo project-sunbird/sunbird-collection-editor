@@ -7,8 +7,23 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- inject:css -->
-    <link rel="stylesheet" href="../dist/style.min.1.1.css">
-    <link rel="stylesheet" href="../dist/scripts/plugin-vendor.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles/semantic.min.css">
+    <link rel="stylesheet" href="styles/content-editor.css" />
+    <link rel="stylesheet" type="text/css" href="styles/metaform.css">
+    <link rel="stylesheet" type="text/css" href="styles/MyFontsWebfontsKit.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog.min.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css">
+    <link rel="stylesheet" href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
+    <link rel="stylesheet" href="bower_components/izitoast/dist/css/iziToast.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="styles/noto.css">
+    <link rel="stylesheet" type="text/css" href="libs/spinkit.css">
+    <link rel="stylesheet" type="text/css" href="libs/please-wait.css">
+    <link rel="stylesheet" type="text/css" href="libs/tokens.css">
+    <link rel="stylesheet" type="text/css" href="libs/ng-tags-input.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="libs/prism.css">
     <!-- endinject -->
 </head>
 
@@ -21,14 +36,39 @@
         </div>
     </div>
     <!-- inject:js -->
-    
+    <script src="libs/please-wait.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="libs/jquery-ui.min.js"></script>
+    <script src="libs/contextmenu.min.js"></script>
+    <script src="bower_components/async/dist/async.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="bower_components/x2js/index.js"></script>
+    <script src="bower_components/eventbus/index.js"></script>
+    <script src="bower_components/uuid/index.js"></script>
+    <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
+    <script src="bower_components/ngSafeApply/index.js"></script>
+    <script src="bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
+    <script src="bower_components/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="libs/semantic.min.js"></script>
+    <script src="libs/tokens.js"></script>
+    <script src="libs/ng-tags-input.js"></script>
+    <script src="scripts/dev/localhost-ce.js"></script>
+    <!-- Load Content Editor -->
+    <script src="bower_components/contenteditor/index.js"></script>
+    <script src="scripts/collectioneditor/bootstrap-editor.js"></script>
+    <script src="scripts/collectioneditor/collectioneditor-config.js"></script>
+    <script src="scripts/collectioneditor/collection-editor-api.js"></script>
+    <script src="scripts/collectioneditor/collectioneditor-base-plugin.js"></script>
+    <script src="scripts/collectioneditor/manager/container-manager.js"></script>
+    <script src="scripts/collectioneditor/manager/metapage-manager.js"></script>
+    <script src="scripts/collectioneditor/service/collection-service.js"></script>
+    <script src="scripts/collectioneditor/service/state-service.js"></script>
+    <script src="scripts/collectioneditor/md5.js"></script>
 
     <!-- Load Angular Controllers -->
-    <!-- <script src="../dist/jquery.min.js"></script>
-    <script src="../dist/semantic.min.js"></script>
-    <script src="../dist/jquery-ui.min.js"></script> -->
-    <script src="../dist/script.min.1.1.js"></script>
-    <!-- <script src="../dist/contextmenu.min.js"></script> -->
+    <script src="scripts/angular/controller/main.js"></script>
+    <script src="scripts/angular/directive/template-compiler-directive.js"></script>
     <!-- endinject -->
     <script type="text/javascript">
         //TODO: Need to fix this below code ASAP
