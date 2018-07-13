@@ -9,9 +9,13 @@ org.ekstep.collectioneditor.metaPageManager = new(Class.extend({
         var instance = this;
         if (config.templateURL) {
 
-            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache).then(function (value) {
-                config.identifier = value;
-            });
+            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache, config.objectType[0])
+            // .then(function (value) {
+            //     console.log("RESOLVING PROMISE IN THEN", value);
+                
+                
+            //     config.identifier = value;
+            // });
 
             if (config.controllerURL && _.isString(config.controllerURL)) {
                 instance.loadNgModules(undefined, config.controllerURL, config.allowTemplateCache)

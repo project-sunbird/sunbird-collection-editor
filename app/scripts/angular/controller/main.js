@@ -20,9 +20,8 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).fact
     });
     $httpProvider.interceptors.push('cacheBustInterceptor');
 }]);
-angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad','$templateCache', function(ngDialog, $ocLazyLoad,$templateCache) {
-    function loadNgModules(templatePath, controllerPath, allowTemplateCache, identifier) {
-        // console.log(allowTemplateCache);
+angular.module('editorApp').controller('popupController', ['$scope','ngDialog', '$ocLazyLoad','$templateCache', function($scope, ngDialog, $ocLazyLoad,$templateCache) {
+    function loadNgModules(templatePath, controllerPath, allowTemplateCache) {
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
@@ -35,10 +34,22 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     //     ]);
     // }
     // else{
+    //     // return new Promise(function (resolve, reject){
+    //     //     if (angular.isString(templatePath) && templatePath.length > 0) {
+    //     //         angular.forEach(angular.element(templatePath), function(node) {
+    //     //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
+    //     //               resolve($templateCache.put(node.id, node.innerHTML));
+    //     //             }
+    //     //         });
+    //     //     }
+    //     //     else{
+    //     //         reject('failed');
+    //     //     }
+    //     // })
     //     if (angular.isString(templatePath) && templatePath.length > 0) {
     //         angular.forEach(angular.element(templatePath), function(node) {
     //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
-    //                 $templateCache.put(node.id, node.innerHTML);
+    //               return $templateCache.put(node.id, node.innerHTML);
     //             }
     //         });
     //     }
@@ -51,30 +62,34 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     };
     org.ekstep.contenteditor.api.getService('popup').initService(loadNgModules, openModal);
 }]);
-angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location', '$templateCache',
-    function($scope, $ocLazyLoad, $location, $templateCache) { 
+angular.module('editorApp').controller('MainCtrl', ['$scope', '$timeout', '$http', '$location', '$q', '$window', '$document', '$ocLazyLoad', '$rootScope', '$templateCache',
+    function($scope, $timeout, $http, $location, $q, $window, $document, $ocLazyLoad, $rootScope, $templateCache) { 
 
-        $scope.loadNgModules = function(templatePath, controllerPath, allowTemplateCache) {
-            if(!allowTemplateCache){
+        $scope.loadNgModules = function (templatePath, controllerPath, allowTemplateCache, identifier) {
+            if (!allowTemplateCache) {
                 var files = [];
-                if (templatePath) files.push({ type: 'html', path: templatePath });
-                if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
+                if (templatePath) files.push({
+                    type: 'html',
+                    path: templatePath
+                });
+                if (controllerPath) files.push({
+                    type: 'js',
+                    path: controllerPath + '?' + ecEditor.getConfig('build_number')
+                });
                 if (files.length) return $ocLazyLoad.load(files)
-            }else{
-                return new Promise(function(resolve, reject){
+            } else {
+                return new Promise(function (resolve, reject) {
                     if (angular.isString(templatePath) && templatePath.length > 0) {
-                        angular.forEach(angular.element(templatePath), function(node) {     
-                            $templateCache.put(node.id, node.innerHTML);                                                                             
-                            resolve(node.id);
+                        angular.forEach(angular.element(templatePath), function (node) {
+                            resolve($templateCache.put(identifier, node.innerHTML));
                         });
-                    }
-                    else{
+                    } else {
                         reject('Error!');
                     }
                 })
-                    
+
             }
-        };  
+        };
 
         
 

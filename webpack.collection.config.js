@@ -32,10 +32,10 @@ function getEntryFiles() {
             entryFiles: packagePlugins(),
             outputName: 'coreplugins.js',
         },
-        {
-            entryFiles: getVendorCSS(),
-            outputName: 'plugin-vendor',
-        },
+        // {
+        //     entryFiles: getVendorCSS(),
+        //     outputName: 'plugin-vendor',
+        // },
     ];
     return entryPlus(entryFiles);
 }
@@ -43,7 +43,6 @@ function getEntryFiles() {
 
 function packagePlugins() {
     var pluginPackageArr = []; // Default coreplugin
-    // pluginPackageArr.push('./app/scripts/coreplugins.js')
     corePlugins.forEach(function(plugin) {
         var dependenciesArr = [];
         var packagedDepArr = [];
@@ -64,7 +63,6 @@ function packagePlugins() {
             var matchLoadNgModule = pluginContent.match(/\b(loadNgModules)\b.*?\)/g);
             var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);            
             if(matchLoadNgModule !== null){
-                console.log("inside if",plugin);
                 pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function($0) {
                     var dash;
                     dash = 'loadNgModules(' + templatePathArr[count] + ' , ' + controllerPathArr[count] + ', true)'
@@ -73,7 +71,6 @@ function packagePlugins() {
                 }))
             }
             else if(matchRegisterMeta !== null){
-                console.log("inside else if",plugin);
                 
                 pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function($1, $2, $3) {
                     var dash;
@@ -83,7 +80,6 @@ function packagePlugins() {
                 }));
             }    
             else {
-                console.log("inside else",plugin);
                 pluginContent = uglifyjs.minify(pluginContent);
             }
     
@@ -105,7 +101,7 @@ function packagePlugins() {
         fs.appendFile('plugins/' + plugin + '/editor/plugin.dist.js', [...dependenciesArr].join("\n"))
         pluginPackageArr.push('./plugins/' + plugin + '/editor/plugin.dist.js')
     })
-
+    pluginPackageArr.push('./app/scripts/coreplugins.js')
     return pluginPackageArr;
 }
 
@@ -132,7 +128,7 @@ module.exports = {
 
     output: {
         filename: '[name]',
-        path: path.resolve(__dirname, './dist/scripts'),
+        path: path.resolve(__dirname, './app/scripts'),
     },
     resolve: {
         alias: {

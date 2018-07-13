@@ -240,6 +240,10 @@ module.exports = {
                 to: './'
             },
             {
+                from: './app/scripts/plugin-vendor.min.css',
+                to: './'
+            },
+            {
                 from: './deploy/gulpfile.js',
                 to: './'
             },
