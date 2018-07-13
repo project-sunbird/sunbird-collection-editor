@@ -78,8 +78,8 @@ const APP_STYLE = [
     "./app/libs/ng-tags-input.css",
     "./app/libs/prism.css",
     './app/styles/noto.css',
-    './app/styles/iconfont.css'
-
+    './app/styles/iconfont.css',
+    './app/scripts/plugin-vendor.min.css'
 ];
 
 // removing the duplicate files
@@ -237,10 +237,6 @@ module.exports = {
             },
             {
                 from: './app/scripts/coreplugins.js',
-                to: './'
-            },
-            {
-                from: './app/scripts/plugin-vendor.min.css',
                 to: './'
             },
             {

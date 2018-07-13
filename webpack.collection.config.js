@@ -32,10 +32,10 @@ function getEntryFiles() {
             entryFiles: packagePlugins(),
             outputName: 'coreplugins.js',
         },
-        // {
-        //     entryFiles: getVendorCSS(),
-        //     outputName: 'plugin-vendor',
-        // },
+        {
+            entryFiles: getVendorCSS(),
+            outputName: 'plugin-vendor',
+        },
     ];
     return entryPlus(entryFiles);
 }
