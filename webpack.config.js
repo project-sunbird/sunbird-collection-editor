@@ -64,6 +64,7 @@ var EDITOR_APP = [
 ];
 const APP_STYLE = [
     "./app/styles/jquery-ui.css",
+    './app/scripts/plugin-vendor.min.css',
     "./app/styles/semantic.min.css",
     "./app/styles/content-editor.css",
     "./app/styles/metaform.css",
@@ -79,7 +80,6 @@ const APP_STYLE = [
     "./app/libs/prism.css",
     './app/styles/noto.css',
     './app/styles/iconfont.css',
-    './app/scripts/plugin-vendor.min.css'
 ];
 
 // removing the duplicate files
@@ -110,14 +110,14 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     test: /\.js$/,
-            //     loader: 'string-replace-loader',
-            //     options: {
-            //         multiple: CONFIG_STRING_REPLACE,
-            //         strict: true
-            //     }
-            // },
+            {
+                test: /\.js$/,
+                loader: 'string-replace-loader',
+                options: {
+                    multiple: CONFIG_STRING_REPLACE,
+                    strict: true
+                }
+            },
 
             {
                 test: require.resolve('./app/bower_components/async/dist/async.min.js'),
