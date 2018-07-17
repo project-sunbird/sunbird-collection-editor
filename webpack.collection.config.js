@@ -28,7 +28,8 @@ var corePlugins = [
 let entryFiles = []
 
 function getEntryFiles() {
-    entryFiles = [{
+    entryFiles = [
+        {
             entryFiles: packagePlugins(),
             outputName: 'coreplugins.js',
         },
@@ -36,7 +37,7 @@ function getEntryFiles() {
             entryFiles: getVendorCSS(),
             outputName: 'plugin-vendor',
         },
-    ];
+    ];    
     return entryPlus(entryFiles);
 }
 
@@ -62,7 +63,7 @@ function packagePlugins() {
             var count = 0;
             var matchLoadNgModule = pluginContent.match(/\b(loadNgModules)\b.*?\)/g);
             var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);
-            var matchBreadCrumb = pluginContent.match(/(registerBreadcrumb).*[\s]*?(objectType:.*?])([^)]+)\)/g);
+            var matchBreadCrumb = pluginContent.match(/(registerBreadcrumb)([^)]+)\)/g);
             if (matchLoadNgModule !== null) {
                 pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function ($0) {
                     var dash;
@@ -70,14 +71,14 @@ function packagePlugins() {
                     count++;
                     return dash;
                 }))
-            } else if (matchBreadCrumb !== null) {
-                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerBreadcrumb).*[\s]*?(objectType:.*?])([^)]+)\)/g, function ($1, $2, $3) {
+            }else if (matchBreadCrumb !== null) {
+                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerBreadcrumb)([^)]+)\)/g, function ($0) {
                     var dash;
-                    dash = 'registerBreadcrumb({' + $3 + ', templateURL: ' + templatePathArr[count] + ', controllerURL:' + controllerPathArr[count] + ', allowTemplateCache: true})'
-                    count++;
+                    dash = 'registerBreadcrumb({templateURL: ' + templatePathArr[count] + ', controllerURL:' + controllerPathArr[count] + ', allowTemplateCache: true})'
+                    count++;                
                     return dash;
                 }))
-
+                
             } else if (matchRegisterMeta !== null) {
 
                 pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function ($1, $2, $3) {
@@ -102,6 +103,7 @@ function packagePlugins() {
                 }
             });
         }
+
         dependenciesArr.push('org.ekstep.pluginframework.pluginManager.registerPlugin(' + JSON.stringify(manifest) + ',' + pluginContent.code.replace(/;\s*$/, "") + ')')
         fs.appendFile('plugins/' + plugin + '/editor/plugin.dist.js', [...dependenciesArr].join("\n"))
         pluginPackageArr.push('./plugins/' + plugin + '/editor/plugin.dist.js')

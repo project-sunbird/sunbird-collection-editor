@@ -9,14 +9,15 @@ org.ekstep.collectioneditor.metaPageManager = new(Class.extend({
         var instance = this;
         if (config.templateURL) {
 
-            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache, config.objectType[0])
+            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache).then(function(value){
+                config.identifier = value;
+            })
 
             if (config.controllerURL && _.isString(config.controllerURL)) {
                 instance.loadNgModules(undefined, config.controllerURL, config.allowTemplateCache)
-                    .then(function (x) {
+                    .then(function () {
                         instance.registeredPages.push(config);
                     }, function (e) {
-                        console.error(e);
                         throw "unable to load controller :" + config.controllerURL;
                     });
             } else {
@@ -47,7 +48,9 @@ org.ekstep.collectioneditor.metaPageManager = new(Class.extend({
     registerBreadcrumb: function (config) {
         var instance = this;
         if (config.templateURL) {
-            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache, config.objectType[0]);
+            instance.loadNgModules(config.templateURL, undefined, config.allowTemplateCache).then(function(value){
+                config.identifier = value;
+            });
             if (config.controllerURL && _.isString(config.controllerURL)) {
                 instance.loadNgModules(undefined, config.controllerURL, config.allowTemplateCache)
                     .then(function () {

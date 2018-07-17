@@ -37,7 +37,7 @@ angular.module('editorApp').controller('popupController', ['$scope','ngDialog', 
 angular.module('editorApp').controller('MainCtrl', ['$scope', '$timeout', '$http', '$location', '$q', '$window', '$document', '$ocLazyLoad', '$rootScope', '$templateCache',
     function($scope, $timeout, $http, $location, $q, $window, $document, $ocLazyLoad, $rootScope, $templateCache) { 
 
-        $scope.loadNgModules = function (templatePath, controllerPath, allowTemplateCache, identifier) {
+        $scope.loadNgModules = function (templatePath, controllerPath, allowTemplateCache) {
             if (!allowTemplateCache) {
                 var files = [];
                 if (templatePath) files.push({
@@ -53,7 +53,8 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$timeout', '$http
                 return new Promise(function (resolve, reject) {
                     if (angular.isString(templatePath) && templatePath.length > 0) {
                         angular.forEach(angular.element(templatePath), function (node) {
-                            resolve($templateCache.put(identifier, node.innerHTML));
+                            $templateCache.put(node.id, node.innerHTML)
+                            resolve(node.id);
                         });
                     } else {
                         reject('Error!');
