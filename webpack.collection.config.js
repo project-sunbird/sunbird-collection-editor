@@ -11,18 +11,18 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 var corePlugins = [
-     "org.ekstep.conceptselector-1.1",
-     "org.ekstep.assetbrowser-1.2",
+    "org.ekstep.conceptselector-1.1",
+    "org.ekstep.assetbrowser-1.2",
     "org.ekstep.contenteditorfunctions-1.2",
     "org.ekstep.unitmeta-1.5",
-     "org.ekstep.contentmeta-1.5",
+    "org.ekstep.contentmeta-1.5",
     "org.ekstep.courseunitmeta-1.5",
     "org.ekstep.lessonplanunitmeta-1.5",
-     "org.ekstep.preview-1.1",
-     "org.ekstep.telemetry-1.0",
-     "org.ekstep.toaster-1.0",
-     "org.ekstep.breadcrumb-1.0",
-     "org.ekstep.collectionkeyboardshortcuts-1.0"
+    "org.ekstep.preview-1.1",
+    "org.ekstep.telemetry-1.0",
+    "org.ekstep.toaster-1.0",
+    "org.ekstep.breadcrumb-1.1",
+    "org.ekstep.collectionkeyboardshortcuts-1.0"
 ]
 
 let entryFiles = []
@@ -43,55 +43,60 @@ function getEntryFiles() {
 
 function packagePlugins() {
     var pluginPackageArr = []; // Default coreplugin
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function (plugin) {
         var dependenciesArr = [];
         var packagedDepArr = [];
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         var manifestURL = './plugins/' + plugin + '/manifest.json';
-        var pluginContent = fs.readFileSync('plugins/' + plugin + '/editor/plugin.js', 'utf8');        
+        var pluginContent = fs.readFileSync('plugins/' + plugin + '/editor/plugin.js', 'utf8');
         if (fs.existsSync('plugins/' + plugin + '/editor/plugin.dist.js')) {
             fs.unlinkSync('plugins/' + plugin + '/editor/plugin.dist.js');
         }
         if (manifest.editor.views && pluginContent) {
             var controllerPathArr = [];
             var templatePathArr = [];
-            manifest.editor.views.forEach(function(obj, i) {
+            manifest.editor.views.forEach(function (obj, i) {
                 controllerPathArr[i] = (obj.controller) ? 'require("' + obj.controller + '")' : undefined;
                 templatePathArr[i] = (obj.template) ? 'require("' + obj.template + '")' : undefined;
             });
-            var count = 0;            
+            var count = 0;
             var matchLoadNgModule = pluginContent.match(/\b(loadNgModules)\b.*?\)/g);
-            var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);            
-            if(matchLoadNgModule !== null){
-                pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function($0) {
+            var matchRegisterMeta = pluginContent.match(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g);
+            var matchBreadCrumb = pluginContent.match(/(registerBreadcrumb).*[\s]*?(objectType:.*?])([^)]+)\)/g);
+            if (matchLoadNgModule !== null) {
+                pluginContent = uglifyjs.minify(pluginContent.replace(/\b(loadNgModules)\b.*?\)/g, function ($0) {
                     var dash;
                     dash = 'loadNgModules(' + templatePathArr[count] + ' , ' + controllerPathArr[count] + ', true)'
                     count++;
                     return dash;
                 }))
-            }
-            else if(matchRegisterMeta !== null){
-                
-                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function($1, $2, $3) {
+            } else if (matchBreadCrumb !== null) {
+                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerBreadcrumb).*[\s]*?(objectType:.*?])([^)]+)\)/g, function ($1, $2, $3) {
                     var dash;
-                    dash = 'registerMetaPage({' + $3 + ', templateURL: ' + templatePathArr[count] + ', controllerURL:'+ controllerPathArr[count] + ', allowTemplateCache: true})'
+                    dash = 'registerBreadcrumb({' + $3 + ', templateURL: ' + templatePathArr[count] + ', controllerURL:' + controllerPathArr[count] + ', allowTemplateCache: true})'
+                    count++;
+                    return dash;
+                }))
+
+            } else if (matchRegisterMeta !== null) {
+
+                pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function ($1, $2, $3) {
+                    var dash;
+                    dash = 'registerMetaPage({' + $3 + ', templateURL: ' + templatePathArr[count] + ', controllerURL:' + controllerPathArr[count] + ', allowTemplateCache: true})'
                     count++;
                     return dash;
                 }));
-            }    
-            else {
+            } else {
                 pluginContent = uglifyjs.minify(pluginContent);
             }
-    
-        } 
-         
-        else {
+
+        } else {
             pluginContent = uglifyjs.minify(pluginContent);
         }
 
         if (manifest.editor.dependencies) {
-            
-            manifest.editor.dependencies.forEach(function(obj, i) {
+
+            manifest.editor.dependencies.forEach(function (obj, i) {
                 if (obj.type == "js") {
                     dependenciesArr[i] = fs.readFileSync('./plugins/' + plugin + '/' + obj.src, 'utf8');
                 }
@@ -107,10 +112,10 @@ function packagePlugins() {
 
 function getVendorCSS() {
     var cssDependencies = [];
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function (plugin) {
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
-            manifest.editor.dependencies.forEach(function(dep) {
+            manifest.editor.dependencies.forEach(function (dep) {
                 if (dep.type == "css") {
                     cssDependencies.push('./plugins/' + plugin + '/' + dep.src)
                 }
@@ -139,7 +144,7 @@ module.exports = {
     },
     module: {
         rules: [
-            
+
             {
                 test: require.resolve('./app/bower_components/izitoast/dist/js/iziToast.min.js'),
                 use: [{

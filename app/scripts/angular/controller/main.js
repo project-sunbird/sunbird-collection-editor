@@ -26,34 +26,6 @@ angular.module('editorApp').controller('popupController', ['$scope','ngDialog', 
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
         ]);
-
-    // if(!allowTemplateCache){
-    //     return $ocLazyLoad.load([
-    //         { type: 'html', path: templatePath },
-    //         { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
-    //     ]);
-    // }
-    // else{
-    //     // return new Promise(function (resolve, reject){
-    //     //     if (angular.isString(templatePath) && templatePath.length > 0) {
-    //     //         angular.forEach(angular.element(templatePath), function(node) {
-    //     //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
-    //     //               resolve($templateCache.put(node.id, node.innerHTML));
-    //     //             }
-    //     //         });
-    //     //     }
-    //     //     else{
-    //     //         reject('failed');
-    //     //     }
-    //     // })
-    //     if (angular.isString(templatePath) && templatePath.length > 0) {
-    //         angular.forEach(angular.element(templatePath), function(node) {
-    //             if (node.nodeName === "SCRIPT" && node.type === "text/ng-template") {
-    //               return $templateCache.put(node.id, node.innerHTML);
-    //             }
-    //         });
-    //     }
-    // }
     };
 
     function openModal(config, callback) {

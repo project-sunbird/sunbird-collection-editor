@@ -307,8 +307,7 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {
-                // var resource = '/content-plugins/' + plugin + '/' + dependency.src;
-                var resource = '/plugins/' + plugin + '/' + dependency.src;
+                var resource = '/content-plugins/' + plugin + '/' + dependency.src;
                 if (dependency.type == 'js') {
                     fs.appendFile('app/scripts/coreplugins.js', "org.ekstep.pluginframework.resourceManager.loadExternalResource('" + resource + "', 'js')" + "\n");
                 } else if (dependency.type == 'css') {
