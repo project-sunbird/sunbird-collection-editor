@@ -52,8 +52,10 @@ function packagePlugins() {
         var pluginContent = fs.readFileSync('plugins/' + plugin + '/editor/plugin.js', 'utf8');
         if (fs.existsSync('plugins/' + plugin + '/editor/plugin.dist.js')) {
             fs.unlinkSync('plugins/' + plugin + '/editor/plugin.dist.js');
-        }
-        if (manifest.editor.views && pluginContent) {
+        }        
+        console.log(plugin);
+
+        if (manifest.editor.views && pluginContent && !/(org.ekstep.assetbrowser-|org.ekstep.preview-)/.test(plugin)) {                        
             var controllerPathArr = [];
             var templatePathArr = [];
             manifest.editor.views.forEach(function (obj, i) {
