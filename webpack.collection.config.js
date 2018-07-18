@@ -110,7 +110,6 @@ function packagePlugins() {
         fs.appendFile('plugins/' + plugin + '/editor/plugin.dist.js', [...dependenciesArr].join("\n"))
         pluginPackageArr.push('./plugins/' + plugin + '/editor/plugin.dist.js')
     })
-    pluginPackageArr.push('./app/scripts/coreplugins.js')
     return pluginPackageArr;
 }
 
