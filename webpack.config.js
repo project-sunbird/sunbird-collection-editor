@@ -28,8 +28,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
  * External files 
  */
 const VENDOR = [
-    "./app/bower_components/jquery/dist/jquery.js", // Need to check both semantic and jquery
-    "./app/bower_components/semantic/dist/semantic.js", // "./node_modules/ajv/dist/ajv.bundle.js",
+    "./app/bower_components/jquery/dist/jquery.js", 
+    "./app/bower_components/semantic/dist/semantic.js",
     "./app/bower_components/jquery-ui/jquery-ui.js",
     "./app/libs/please-wait.min.js",
     "./app/bower_components/async/dist/async.min.js",

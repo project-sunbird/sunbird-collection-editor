@@ -34,9 +34,9 @@ angular.module('editorApp').controller('popupController', ['$scope','ngDialog', 
     };
     org.ekstep.contenteditor.api.getService('popup').initService(loadNgModules, openModal);
 }]);
-angular.module('editorApp').controller('MainCtrl', ['$scope', '$timeout', '$http', '$location', '$q', '$window', '$document', '$ocLazyLoad', '$rootScope', '$templateCache',
-    function($scope, $timeout, $http, $location, $q, $window, $document, $ocLazyLoad, $rootScope, $templateCache) { 
-
+angular.module('editorApp').controller('MainCtrl', ['$scope', '$location', '$ocLazyLoad', '$templateCache',
+    function($scope, $location, $ocLazyLoad, $templateCache) { 
+ 
         $scope.loadNgModules = function (templatePath, controllerPath, allowTemplateCache) {
             if (!allowTemplateCache) {
                 var files = [];
@@ -92,7 +92,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$timeout', '$http
 
         config.collectionEditorPlugins = config.plugins || org.ekstep.contenteditor.config.plugins;
         config.plugins = [        
-            { "id": "org.ekstep.collectioneditor", "ver": "1.3", "type": "plugin" }
+            { "id": "org.ekstep.collectioneditor", "ver": "1.4", "type": "plugin" }
         ]
         org.ekstep.contenteditor.init(context, config, $scope, undefined, function() {
             $scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE);            
