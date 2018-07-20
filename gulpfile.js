@@ -14,8 +14,8 @@ var merge = require('merge-stream');
 var replace = require('gulp-string-replace');
 var uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
-var versionNumber = process.env.version_number;
-var buildNumber = process.env.build_number;
+var versionNumber = process.env.version_number || 1;
+var buildNumber = process.env.build_number || 1;
 
 if(!versionNumber && !versionNumber) {
     console.error('Error!!! Cannot find verion_number and build_number env variables');
@@ -231,18 +231,18 @@ gulp.task('zip', ['minify', 'inject', 'replace', 'packageCorePlugins'], function
 gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
 
 var corePlugins = [
-    "org.ekstep.conceptselector-1.1",
-    "org.ekstep.assetbrowser-1.2",
-    "org.ekstep.contenteditorfunctions-1.2",
-    "org.ekstep.unitmeta-1.4",
-    "org.ekstep.contentmeta-1.4",
-    "org.ekstep.courseunitmeta-1.4",
-    "org.ekstep.lessonplanunitmeta-1.4",
-    "org.ekstep.preview-1.1",
-    "org.ekstep.telemetry-1.0",
-    "org.ekstep.toaster-1.0",
-    "org.ekstep.breadcrumb-1.0",
-    "org.ekstep.collectionkeyboardshortcuts-1.0"
+    // "org.ekstep.conceptselector-1.1",
+    // "org.ekstep.assetbrowser-1.2",
+    // "org.ekstep.contenteditorfunctions-1.2",
+    // "org.ekstep.unitmeta-1.5",
+    // "org.ekstep.contentmeta-1.5",
+    // "org.ekstep.courseunitmeta-1.5",
+    // "org.ekstep.lessonplanunitmeta-1.5",
+    // "org.ekstep.preview-1.1",
+    // "org.ekstep.telemetry-1.0",
+    // "org.ekstep.toaster-1.0",
+    // "org.ekstep.breadcrumb-1.0",
+    // "org.ekstep.collectionkeyboardshortcuts-1.0"
 ]
 
 gulp.task('minifyCorePlugins', function() {
@@ -273,7 +273,7 @@ gulp.task('packageCorePluginsLocal', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function(plugin) {        
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {
@@ -301,7 +301,9 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin) {
+    corePlugins.forEach(function(plugin){
+        console.log('plugins/' + plugin + '/manifest.json');
+
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {

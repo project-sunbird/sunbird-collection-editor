@@ -20,8 +20,8 @@ angular.module('editorApp', ['ngDialog', 'oc.lazyLoad', 'Scope.safeApply']).fact
     });
     $httpProvider.interceptors.push('cacheBustInterceptor');
 }]);
-angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyLoad', function(ngDialog, $ocLazyLoad) {
-    function loadNgModules(templatePath, controllerPath) {
+angular.module('editorApp').controller('popupController', ['$scope','ngDialog', '$ocLazyLoad','$templateCache', function($scope, ngDialog, $ocLazyLoad,$templateCache) {
+    function loadNgModules(templatePath, controllerPath, allowTemplateCache) {
         return $ocLazyLoad.load([
             { type: 'html', path: templatePath },
             { type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')}
@@ -34,15 +34,37 @@ angular.module('editorApp').controller('popupController', ['ngDialog', '$ocLazyL
     };
     org.ekstep.contenteditor.api.getService('popup').initService(loadNgModules, openModal);
 }]);
-angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$location',
-    function($scope, $ocLazyLoad, $location) { 
+angular.module('editorApp').controller('MainCtrl', ['$scope', '$location', '$ocLazyLoad', '$templateCache',
+    function($scope, $location, $ocLazyLoad, $templateCache) { 
+ 
+        $scope.loadNgModules = function (templatePath, controllerPath, allowTemplateCache) {
+            if (!allowTemplateCache) {
+                var files = [];
+                if (templatePath) files.push({
+                    type: 'html',
+                    path: templatePath
+                });
+                if (controllerPath) files.push({
+                    type: 'js',
+                    path: controllerPath + '?' + ecEditor.getConfig('build_number')
+                });
+                if (files.length) return $ocLazyLoad.load(files)
+            } else {
+                return new Promise(function (resolve, reject) {
+                    if (angular.isString(templatePath) && templatePath.length > 0) {
+                        angular.forEach(angular.element(templatePath), function (node) {
+                            $templateCache.put(node.id, node.innerHTML)
+                            resolve(node.id);
+                        });
+                    } else {
+                        reject('Error!');
+                    }
+                })
 
-        $scope.loadNgModules = function(templatePath, controllerPath) {
-            var files = [];
-            if (templatePath) files.push({ type: 'html', path: templatePath });
-            if (controllerPath) files.push({ type: 'js', path: controllerPath + '?' + ecEditor.getConfig('build_number')});
-            if (files.length) return $ocLazyLoad.load(files)
-        };  
+            }
+        };
+
+        
 
         org.ekstep.contenteditor.containerManager.initialize({loadNgModules: $scope.loadNgModules, scope: $scope });
         org.ekstep.collectioneditor.metaPageManager.initialize({loadNgModules: $scope.loadNgModules });
@@ -70,7 +92,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$ocLazyLoad', '$l
 
         config.collectionEditorPlugins = config.plugins || org.ekstep.contenteditor.config.plugins;
         config.plugins = [        
-            { "id": "org.ekstep.collectioneditor", "ver": "1.3", "type": "plugin" }
+            { "id": "org.ekstep.collectioneditor", "ver": "1.4", "type": "plugin" }
         ]
         org.ekstep.contenteditor.init(context, config, $scope, undefined, function() {
             $scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE);            

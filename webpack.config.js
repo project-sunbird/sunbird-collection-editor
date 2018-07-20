@@ -1,9 +1,9 @@
 //TODO: Remove the unused constants
 
 
-const ENVIRONMENT = process.env.NODE_ENV;
-const BUILD_NUMBER = process.env.build_number;
-const EDITOR_VER = process.env.version_number;
+const ENVIRONMENT = process.env.NODE_ENV || 1;
+const BUILD_NUMBER = process.env.build_number || 1;
+const EDITOR_VER = process.env.version_number || 1;
 
 const CONFIG_STRING_REPLACE = [
     { search: '/plugins', replace: '/content-plugins' },
@@ -28,6 +28,9 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
  * External files 
  */
 const VENDOR = [
+    "./app/bower_components/jquery/dist/jquery.js", 
+    "./app/bower_components/semantic/dist/semantic.js",
+    "./app/bower_components/jquery-ui/jquery-ui.js",
     "./app/libs/please-wait.min.js",
     "./app/bower_components/async/dist/async.min.js",
     "./app/bower_components/angular/angular.js",
@@ -40,7 +43,8 @@ const VENDOR = [
     "./app/bower_components/oclazyload/dist/ocLazyLoad.min.js",
     "./app/scripts/collectioneditor/md5.js",
     "./app/libs/tokens.js",
-    "./app/libs/ng-tags-input.js"
+    "./app/libs/ng-tags-input.js",
+    "./app/libs/contextmenu.min.js"
 ];
 
 var EDITOR_APP = [
@@ -60,6 +64,7 @@ var EDITOR_APP = [
 ];
 const APP_STYLE = [
     "./app/styles/jquery-ui.css",
+    './app/scripts/plugin-vendor.min.css',
     "./app/styles/semantic.min.css",
     "./app/styles/content-editor.css",
     "./app/styles/metaform.css",
@@ -74,8 +79,7 @@ const APP_STYLE = [
     "./app/libs/ng-tags-input.css",
     "./app/libs/prism.css",
     './app/styles/noto.css',
-    './app/styles/iconfont.css'
-
+    './app/styles/iconfont.css',
 ];
 
 // removing the duplicate files
@@ -98,13 +102,15 @@ module.exports = {
     },
     resolve: {
         alias: {
+            'jquery': path.resolve('./node_modules/jquery/dist/jquery.js'),
             'jquery-ui/ui/widgets/menu': path.resolve('./app/bower_components/jquery-ui/ui/widgets/menu.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
             'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
         }
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.js$/,
                 loader: 'string-replace-loader',
                 options: {
@@ -118,6 +124,20 @@ module.exports = {
                 use: [{
                     loader: 'expose-loader',
                     options: 'async'
+                }]
+            },
+            {
+                test: require.resolve('jquery'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: '$'
+                }]
+            },
+            {
+                test: require.resolve('jquery'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'jQuery'
                 }]
             },
             {
@@ -257,6 +277,8 @@ module.exports = {
             Ajv: 'ajv',
             $: "jquery",
             jQuery: "jquery",
+            "window.jQuery": 'jquery',
+            "window.$": 'jquery',
             async: 'async'
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
