@@ -25,7 +25,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
  * External files 
  */
 const VENDOR = [
-    "./app/bower_components/jquery/dist/jquery.js", 
+    "./app/bower_components/jquery/dist/jquery.js",
     "./app/bower_components/semantic/dist/semantic.js",
     "./app/bower_components/jquery-ui/jquery-ui.js",
     "./app/libs/please-wait.min.js",
@@ -106,8 +106,7 @@ module.exports = {
         }
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.js$/,
                 loader: 'string-replace-loader',
                 options: {
@@ -149,6 +148,13 @@ module.exports = {
                 use: [{
                     loader: 'expose-loader',
                     options: 'pleaseWait'
+                }]
+            },
+            {
+                test: require.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'Fingerprint2'
                 }]
             },
             {
