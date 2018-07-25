@@ -70,7 +70,6 @@ describe('collection service', function() {
 
     it('Should drop the selected node', function() {
         var node = jQuery("#collection-tree").fancytree("getTree").getActiveNode()
-            //TODO: Need to mock the dataObject
         var data = { otherNode: { data: {} }, node: {} };
         data.otherNode.getLevel = function() {}
         spyOn(org.ekstep.services.collectionService, "_dropNode").and.callThrough();
