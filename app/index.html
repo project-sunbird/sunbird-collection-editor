@@ -71,9 +71,6 @@
     <script src="scripts/angular/directive/template-compiler-directive.js"></script>
     <!-- endinject -->
     <script type="text/javascript">
-        //TODO: Need to fix this below code ASAP
-        // Currently, Webpack is bundling window object `pleaseWait` into nested format.
-        // Ex: window.pleaseWait.pleaseWait ==> window.pleaseWait 
         if (typeof window.pleaseWait !== 'function') {
             if (typeof window.pleaseWait.pleaseWait === 'function') {
                 window.pleaseWait = window.pleaseWait.pleaseWait;
