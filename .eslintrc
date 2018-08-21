@@ -11,7 +11,16 @@
       "ServiceConstants": true,
       "alert": true,
       "Class": true,
-      "UUID": true
+      "jQuery": true,
+      "UUID": true,
+      "describe": true,
+      "jasmine": true,
+      "afterAll": true,
+      "beforeAll": true,
+      "it": true,
+      "spyOn": true,
+      "expect": true,
+      "xit": true
     },
     "rules": {
       "indent": [2, "tab"],
