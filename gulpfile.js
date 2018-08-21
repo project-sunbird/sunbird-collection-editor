@@ -14,6 +14,7 @@ var merge = require('merge-stream');
 var replace = require('gulp-string-replace');
 var uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
+var git = require('gulp-git'); 
 var versionNumber = process.env.version_number || 1;
 var buildNumber = process.env.build_number || 1;
 var branchName = process.env.branch || 'master';
