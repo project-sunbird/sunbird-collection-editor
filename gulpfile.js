@@ -16,6 +16,7 @@ var uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
 var versionNumber = process.env.version_number || 1;
 var buildNumber = process.env.build_number || 1;
+var branchName = process.env.branch || 'master';
 
 if(!versionNumber && !versionNumber) {
     console.error('Error!!! Cannot find verion_number and build_number env variables');
@@ -321,4 +322,13 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
     return gulp.src('plugins/**/plugin.min.js', {
         read: false
     }).pipe(clean());
+});
+
+gulp.task("clone-plugins", function(done) {
+    git.clone('https://github.com/project-sunbird/sunbird-content-plugins.git', {args: '-b '+ branchName +' ./plugins'}, function (err) {
+        if (err) {
+            done(err);
+        }
+        done();
+    });
 });

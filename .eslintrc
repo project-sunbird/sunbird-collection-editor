@@ -1,0 +1,21 @@
+{
+    "extends": "standard",
+    "globals": {
+      "org": true,
+      "CryptoJS": true,
+      "_": true,
+      "$": true,
+      "angular": true,
+      "ecEditor": true,
+      "EkTelemetry": true,
+      "ServiceConstants": true,
+      "alert": true,
+      "Class": true,
+      "UUID": true
+    },
+    "rules": {
+      "indent": [2, "tab"],
+      "no-tabs": 0,
+      "no-throw-literal": "error"
+    }
+  }

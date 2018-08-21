@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+    - "6.1"
+sudo: required
+addons:
+  chrome: stable
+before_script:
+    - npm install
+    - cd app
+    - npm install -g bower
+    - bower cache clean
+    - bower install --force
+    - cd ./..    
+    - gulp clone-plugins
+    - npm run collection-plugins
+    - npm run build
+script:
+    - npm run testpluginframework

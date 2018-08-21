@@ -1,21 +1,21 @@
 window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, {
-    initEditor: function(config, cb) {
-        var startTime = Date.now();
-        if (config) org.ekstep.services.collectionService.initialize(config);
-        org.ekstep.pluginframework.pluginManager.loadAllPlugins(ecEditor.getConfig('collectionEditorPlugins'), undefined, function () {
-            org.ekstep.services.telemetryService.start((new Date()).getTime() - startTime);
-            if (cb) cb();    
-        });        
-    },
-    /**
+	initEditor: function (config, cb) {
+		var startTime = Date.now()
+		if (config) org.ekstep.services.collectionService.initialize(config)
+		org.ekstep.pluginframework.pluginManager.loadAllPlugins(ecEditor.getConfig('collectionEditorPlugins'), undefined, function () {
+			org.ekstep.services.telemetryService.start((new Date()).getTime() - startTime)
+			if (cb) cb()
+		})
+	},
+	/**
      * Retrns the current stage object to the plugin. Plugins might use this to query other objects on the
      * canvas or access other stage context.
      * @memberof org.ekstep.contenteditor.api
      */
-    getCurrentStage: function() {
-        return org.ekstep.services.collectionService.getActiveNode().data;
-    },
-    /**
+	getCurrentStage: function () {
+		return org.ekstep.services.collectionService.getActiveNode().data
+	},
+	/**
      * Returns the handle to the Angular services. The services can be used by plugisn to achieve
      * the functional calls or render custom views. Valid services are:
      *     popup - UI service to render popup
@@ -30,51 +30,51 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
      * @param serviceId {string} id of the service to return. Returns undefined if the id is invalid
      * @memberof org.ekstep.contenteditor.api
      */
-    getService: function(serviceId) {
-        var service = '';
-        switch (serviceId) {
-            case ServiceConstants.POPUP_SERVICE:
-                service = org.ekstep.services.popupService;
-                break;
-            case ServiceConstants.CONTENT_SERVICE:
-                service = org.ekstep.services.contentService;
-                break;
-            case ServiceConstants.ASSESSMENT_SERVICE:
-                service = org.ekstep.services.assessmentService;
-                break;
-            case ServiceConstants.LANGUAGE_SERVICE:
-                service = org.ekstep.services.languageService;
-                break;
-            case ServiceConstants.SEARCH_SERVICE:
-                service = org.ekstep.services.searchService;
-                break;
-            case ServiceConstants.META_SERVICE:
-                service = org.ekstep.services.metaService;
-                break;
-            case ServiceConstants.ASSET_SERVICE:
-                service = org.ekstep.services.assetService;
-                break;
-            case ServiceConstants.TELEMETRY_SERVICE:
-                service = org.ekstep.services.telemetryService;
-                break;
-            case ServiceConstants.COLLECTION_SERVICE:
-                service = org.ekstep.services.collectionService;
-                break;
-            case ServiceConstants.DIALCODE_SERVICE:
-                service = org.ekstep.services.dialcodeService;
-                break;
-        }
-        return service;
-    },
-    registerMetaPage: function(config) {
-        if(config) org.ekstep.collectioneditor.metaPageManager.register(config);
-    },
-    registerSidebar: function(config) {
-        if(config) org.ekstep.collectioneditor.metaPageManager.registerSidebar(config);
-    },
-    registerBreadcrumb: function (config) {
-        if (config) org.ekstep.collectioneditor.metaPageManager.registerBreadcrumb(config);
-    }
-});
+	getService: function (serviceId) {
+		var service = ''
+		switch (serviceId) {
+		case ServiceConstants.POPUP_SERVICE:
+			service = org.ekstep.services.popupService
+			break
+		case ServiceConstants.CONTENT_SERVICE:
+			service = org.ekstep.services.contentService
+			break
+		case ServiceConstants.ASSESSMENT_SERVICE:
+			service = org.ekstep.services.assessmentService
+			break
+		case ServiceConstants.LANGUAGE_SERVICE:
+			service = org.ekstep.services.languageService
+			break
+		case ServiceConstants.SEARCH_SERVICE:
+			service = org.ekstep.services.searchService
+			break
+		case ServiceConstants.META_SERVICE:
+			service = org.ekstep.services.metaService
+			break
+		case ServiceConstants.ASSET_SERVICE:
+			service = org.ekstep.services.assetService
+			break
+		case ServiceConstants.TELEMETRY_SERVICE:
+			service = org.ekstep.services.telemetryService
+			break
+		case ServiceConstants.COLLECTION_SERVICE:
+			service = org.ekstep.services.collectionService
+			break
+		case ServiceConstants.DIALCODE_SERVICE:
+			service = org.ekstep.services.dialcodeService
+			break
+		}
+		return service
+	},
+	registerMetaPage: function (config) {
+		if (config) org.ekstep.collectioneditor.metaPageManager.register(config)
+	},
+	registerSidebar: function (config) {
+		if (config) org.ekstep.collectioneditor.metaPageManager.registerSidebar(config)
+	},
+	registerBreadcrumb: function (config) {
+		if (config) org.ekstep.collectioneditor.metaPageManager.registerBreadcrumb(config)
+	}
+})
 
-window.ecEditor = window.org.ekstep.collectioneditor.api;
+window.ecEditor = window.org.ekstep.collectioneditor.api
