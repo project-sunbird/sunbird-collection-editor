@@ -1,6 +1,6 @@
-const ENVIRONMENT = process.env.NODE_ENV || 1;
-const BUILD_NUMBER = process.env.build_number || "1";
-const EDITOR_VER = process.env.version_number || "1.10.0";
+const ENVIRONMENT = process.env.NODE_ENV;
+const BUILD_NUMBER = process.env.build_number;
+const EDITOR_VER = process.env.version_number;
 
 const CONFIG_STRING_REPLACE = [
     { search: '/plugins', replace: '/content-plugins' },
