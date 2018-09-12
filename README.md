@@ -1,4 +1,4 @@
-# Collection-Editor
+# Collection Editor
 
 
 ## Introduction
