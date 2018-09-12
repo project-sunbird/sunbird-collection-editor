@@ -1,6 +1,6 @@
 {
     "name": "@project-sunbird/collection-editor",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Collection Editor to support content types like Book, Collection, Course, Lesson Plan",
     "main": "",
     "directories": {
