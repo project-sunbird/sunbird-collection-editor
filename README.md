@@ -134,7 +134,7 @@ window.config = {
 ```
 	
 
-## How to setup collection-editor in local
+## How to setup sunbird-collection-editor in local
 1. Clone the sunbird-collection-editor repo from [here](https://github.com/project-sunbird/sunbird-collection-editor)
 2. Clone the sunbird-content-plugins repo from [here](https://github.com/project-sunbird/sunbird-content-plugins) 
 3. Go to the root directory sunbird-collection-editor.
@@ -146,5 +146,8 @@ for windows: use `mklink`
 
 ## ChangeLogs
    For changes logs please refer [here](https://github.com/project-sunbird/sunbird-collection-editor/releases) 
+
+  
+ >For sunbird-collection-editor demo please visit [here](https://staging.open-sunbird.org/workspace/content/create)   
 
 
