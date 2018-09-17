@@ -334,7 +334,7 @@ module.exports = (env, argv) => {
                 },
             }),
             new OnBuildSuccess(function(stats) {
-                if (env.channel.toUpperCase() === 'NPM_PACKAGE') {
+                if (env && env.channel.toUpperCase() === 'NPM_PACKAGE') {
                     build_npm_package();
                 }
             }),
