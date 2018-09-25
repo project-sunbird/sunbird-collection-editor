@@ -3,6 +3,11 @@
     "version": "0.0.3",
     "description": "Collection Editor to support content types like Book, Collection, Course, Lesson Plan",
     "main": "",
+    "eslintConfig": {
+        "extends": [
+            "standard"
+        ]
+    },
     "directories": {
         "test": "test"
     },
@@ -102,7 +107,13 @@
         "any-promise": "^1.3.0",
         "on-build-webpack": "0.1.0",
         "cpy": "7.0.1",
-        "gulp-git": "2.8.0"
+        "gulp-git": "2.8.0",
+        "eslint": "^5.4.0",
+        "eslint-config-standard": "^11.0.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-promise": "^3.8.0",
+        "eslint-plugin-standard": "^3.1.0"
     },
     "scripts": {
         "test": "karma start karmaconf.js",
