@@ -1,7 +1,8 @@
+[![Build Status](https://travis-ci.org/project-sunbird/sunbird-collection-editor.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-collection-editor)
+
+[![npm version](https://badge.fury.io/js/%40project-sunbird%2Fcollection-editor.svg)](https://badge.fury.io/js/%40project-sunbird%2Fcollection-editor)
+
 # Collection Editor
-
-
-## Introduction
 	
 Collection Editor which allows user to create a group of contents.
 It can be (ECML, Pdf, HTML, H5P, Epub, Youtube, Mp4/Webm) 
