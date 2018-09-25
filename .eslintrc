@@ -38,7 +38,8 @@
         "Mousetrap": true,
         "afterEach": true,
         "location": true,
-        "X2JS": true
+        "X2JS": true,
+        "define": true
     },
     "rules": {
         "indent": [2, "tab"],
