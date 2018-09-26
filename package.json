@@ -100,7 +100,8 @@
         "webpack-runtime-public-path-plugin": "*",
         "zip-webpack-plugin": "^3.0.0",
         "any-promise": "^1.3.0",
-        "on-build-webpack": "0.1.0"
+        "on-build-webpack": "0.1.0",
+        "cpy": "7.0.1"
     },
     "scripts": {
         "test": "karma start karmaconf.js",
