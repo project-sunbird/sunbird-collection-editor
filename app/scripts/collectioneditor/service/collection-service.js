@@ -43,6 +43,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 	setNodeTitle: function (title) {
 		var instance = this
 		if (!title) title = 'Untitled'
+        title = title.replace(/[^\w:&_\-.(\),\/\s]/g, "");
 		ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode().applyPatch({ 'title': title }).done(function (a, b) {
 			instance.onRenderNode(undefined, { node: ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode() }, true)
 		})
@@ -625,7 +626,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 	},
 	removeSpecialChars: function (text) {
 		// eslint-disable-next-line
-        var iChars = "@#$^*()+=-[]\\\';,/{}|\":<>"
+        var iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
 		for (var i = 0; i < text.length; i++) {
 			if (iChars.indexOf(text.charAt(i)) !== -1) {
 				ecEditor.dispatchEvent('org.ekstep.toaster:error', {
@@ -633,9 +634,10 @@ org.ekstep.services.collectionService = new (Class.extend({
 					position: 'topCenter',
 					icon: 'fa fa-warning'
 				})
-				text = text.replace(/[^a-zA-Z ]/g, '')
+				//text = text.replace(/[^a-zA-Z ]/g, '')
 			}
 		}
+        text = text.replace(/[^\w:&_\-.(\),\/\s]/g, "");
 		return text
 	},
 	getObjectTypeByAddType: function (addType) {
