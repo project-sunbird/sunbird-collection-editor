@@ -14,10 +14,12 @@ var merge = require('merge-stream');
 var replace = require('gulp-string-replace');
 var uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
+var git = require('gulp-git');
+var branchName = process.env.branch || 'master';
 var versionNumber = process.env.version_number || 1;
 var buildNumber = process.env.build_number || 1;
 
-if(!versionNumber && !versionNumber) {
+if (!versionNumber && !versionNumber) {
     console.error('Error!!! Cannot find verion_number and build_number env variables');
     return process.exit(1);
 }
@@ -228,7 +230,7 @@ gulp.task('zip', ['minify', 'inject', 'replace', 'packageCorePlugins'], function
         .pipe(gulp.dest(''));
 });
 
-gulp.task('build', ['minify','inject', 'replace', 'packageCorePlugins', 'zip']);
+gulp.task('build', ['minify', 'inject', 'replace', 'packageCorePlugins', 'zip']);
 
 var corePlugins = [
     // "org.ekstep.conceptselector-1.1",
@@ -273,7 +275,7 @@ gulp.task('packageCorePluginsLocal', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin) {        
+    corePlugins.forEach(function(plugin) {
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
         if (manifest.editor.dependencies) {
             manifest.editor.dependencies.forEach(function(dependency) {
@@ -301,7 +303,7 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
     if (fs.existsSync('app/scripts/coreplugins.js')) {
         fs.unlinkSync('app/scripts/coreplugins.js');
     }
-    corePlugins.forEach(function(plugin){
+    corePlugins.forEach(function(plugin) {
         console.log('plugins/' + plugin + '/manifest.json');
 
         var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'));
@@ -321,4 +323,12 @@ gulp.task('packageCorePlugins', ["minifyCorePlugins"], function() {
     return gulp.src('plugins/**/plugin.min.js', {
         read: false
     }).pipe(clean());
+});
+gulp.task("clone-plugins", function(done) {
+    git.clone('https://github.com/project-sunbird/sunbird-content-plugins.git', { args: '-b ' + branchName + ' ./plugins' }, function(err) {
+        if (err) {
+            done(err);
+        }
+        done();
+    });
 });
