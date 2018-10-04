@@ -1,0 +1,6 @@
+app/bower_components/lodash/vendor/benchmark.js
+app/bower_components/**/*
+app/libs/**
+app/scripts/collectioneditor/md5.js
+app/scripts/coreplugins.js
+node_modules/**
