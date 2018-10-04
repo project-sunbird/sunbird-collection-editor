@@ -6,7 +6,7 @@ describe('Collection Editor', function() {
         org.ekstep.services.collectionService.data = {};
         done();
     });
-    it('should init editor', function() {
+    it('should init editor', function(done) {
         spyOn(org.ekstep.collectioneditor.api, "initEditor").and.callThrough();
         var config = {
             baseURL: 'https://dev.ekstep.in',
@@ -35,25 +35,28 @@ describe('Collection Editor', function() {
         expect(org.ekstep.collectioneditor.api.initEditor).toHaveBeenCalled();
         org.ekstep.collectioneditor.api.initEditor('', '');
         expect(org.ekstep.collectioneditor.api.initEditor.calls.count()).toEqual(2);
+        done()
     });
 
-    it('should return currentStage', function() {
+    it('should return currentStage', function(done) {
         org.ekstep.services.collectionService.initialize(org.ekstep.contenteditor.config.editorConfig);
         org.ekstep.services.collectionService.fromCollection(collectionData);
         var returnValue = org.ekstep.collectioneditor.api.getCurrentStage();
         expect(returnValue).toBeDefined();
         //expect(typeof returnValue.id == "string").toBeTruthy();
+        done()
     });
 
-    it('should register contentmeta', function() {
+    it('should register contentmeta', function(done) {
         spyOn(org.ekstep.collectioneditor.api, "registerMetaPage").and.callThrough();
         org.ekstep.collectioneditor.api.registerMetaPage(org.ekstep.contenteditor.config);
         expect(org.ekstep.collectioneditor.api.registerMetaPage).toHaveBeenCalled();
         org.ekstep.collectioneditor.api.registerMetaPage('');
         expect(org.ekstep.collectioneditor.api.registerMetaPage.calls.count()).toEqual(2);
+        done()
     });
 
-    it('should return respective services', function() {
+    it('should return respective services', function(done) {
         spyOn(org.ekstep.collectioneditor.api, "getService").and.callThrough();
         expect(org.ekstep.collectioneditor.api.getService("popup")).toBe(org.ekstep.services.popupService);
         expect(org.ekstep.collectioneditor.api.getService("content")).toBe(org.ekstep.services.contentService);
@@ -64,6 +67,7 @@ describe('Collection Editor', function() {
         expect(org.ekstep.collectioneditor.api.getService("asset")).toBe(org.ekstep.services.assetService);
         expect(org.ekstep.collectioneditor.api.getService("telemetry")).toBe(org.ekstep.services.telemetryService);
         expect(org.ekstep.collectioneditor.api.getService("collection")).toBe(org.ekstep.services.collectionService);
+        done()
     });
 
 });
