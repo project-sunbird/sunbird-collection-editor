@@ -201,7 +201,7 @@ describe('collection service', function() {
         spyOn(org.ekstep.services.collectionService, "removeSpecialChars").and.callThrough();
         var text = org.ekstep.services.collectionService.removeSpecialChars("@#$432423ABC");
         expect(org.ekstep.services.collectionService.removeSpecialChars).toHaveBeenCalled();
-        expect(text).toEqual('ABC')
+        expect(text).toEqual('432423ABC')
     })
 
     it('Should get the objectType', function() {
