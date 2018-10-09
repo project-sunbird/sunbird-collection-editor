@@ -1,12 +1,23 @@
 window.context = {
-    "contentId": "do_112598127241691136116",
+    // "contentId": "do_112272630392659968130",
+    "contentId": "do_21256981223442841614868", //QA//NCF
+    // "contentId": "do_11260400078690713614", //dev
+    // "contentId": "do_2125735539644989441526",
+    // "contentId": "do_112272630392659968130",
     "sid": "rctrs9r0748iidtuhh79ust993",
     "user": {
         "id": "390",
         "name": "Santhosh Vasabhaktula",
-        "email": "santhosh@ilimi.in"
+        "email": "santhosh@ilimi.in",
+        "organisations" : {
+            "2125735539644989441526" : "Sunbird ORG",
+            "112272630392659968130" : "EKSteP org"
+        }
     },
-    "framework": 'NCERT'
+    "framework": 'NCF',
+    "ownershipType": ["createdBy", "createdFor"],
+    
+    
 };
 
 window.config = {
@@ -23,7 +34,7 @@ window.config = {
         "mode": "Edit",
         "contentStatus": "draft",
         "rules": {
-            "levels": 3,
+            "levels": 7,
             "objectTypes": [{
                 "type": "TextBook",
                 "label": "Textbook",

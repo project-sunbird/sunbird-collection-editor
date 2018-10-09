@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({limit: '50mb'}))
 app.use(express.static(path.join(__dirname, '.')));
 
-app.use('/action', proxy('dev.ekstep.in', {
+app.use('/action', proxy('qa.ekstep.in', {
     https: true,
     proxyReqPathResolver: function(req) {
         return "/api" + urlHelper.parse(req.url).path;
@@ -25,6 +25,12 @@ app.use('/action', proxy('dev.ekstep.in', {
         // you can update headers 
         proxyReqOpts.headers['Content-Type'] = 'application/json';
         proxyReqOpts.headers['user-id'] = 'content-editor';
+        //QA
+        proxyReqOpts.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIwNjM3ODhjMDFjMTg0OGEwOGJjNTRkNzZjYjFkNjQ0ZiIsImlhdCI6bnVsbCwiZXhwIjpudWxsLCJhdWQiOiIiLCJzdWIiOiIifQ.k-C981IZ7clwqDNtBNZ4vL_Iz0BN25MgCbyeZX89Lp0';
+
+        //DEV
+        // proxyReqOpts.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2NWU2MTUxNzdkODY0MGJkYWNmMWE4MWEwM2Y5MmNjYSJ9.yST4a-kA0K-r-86m0gx45IMTTZP0ujQnjFDEjv2wU0A';
+        
         return proxyReqOpts;
     }
 }));

@@ -1,7 +1,7 @@
 describe("content editor integration test: ", function() {
     var originalTimeout;
 
-    beforeAll(function() {
+    beforeAll(function(done) {
         org.ekstep.contenteditor.globalContext = {};
         var corePlugins = [
             { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" },
@@ -31,6 +31,7 @@ describe("content editor integration test: ", function() {
         });
 
         org.ekstep.pluginframework.pluginManager.loadAllPlugins(corePlugins, undefined, function() {
+            done()
         });
     });
 
