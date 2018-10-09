@@ -6,7 +6,7 @@ describe('Collection Editor', function() {
         org.ekstep.services.collectionService.data = {};
         done();
     });
-    it('should init editor', function() {
+    it('should init editor', function(done) {
         spyOn(org.ekstep.collectioneditor.api, "initEditor").and.callThrough();
         var config = {
             baseURL: 'https://dev.ekstep.in',
@@ -35,6 +35,7 @@ describe('Collection Editor', function() {
         expect(org.ekstep.collectioneditor.api.initEditor).toHaveBeenCalled();
         org.ekstep.collectioneditor.api.initEditor('', '');
         expect(org.ekstep.collectioneditor.api.initEditor.calls.count()).toEqual(2);
+        done()
     });
 
     it('should return currentStage', function() {
