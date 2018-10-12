@@ -4,6 +4,7 @@ node_js:
 sudo: required
 addons:
   chrome: stable
+bundler_args: --retry 5
 before_script:
     - npm install
     - cd app
