@@ -132,7 +132,7 @@ module.exports = function(config) {
             "PhantomJS"
         ],
 
-        browserNoActivityTimeout: 100000,
+        browserNoActivityTimeout: 60000,
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
