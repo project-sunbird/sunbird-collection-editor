@@ -151,3 +151,11 @@ for windows: use `mklink`
  >For sunbird-collection-editor demo please visit [here](https://staging.open-sunbird.org/workspace/content/create)   
 
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/project-sunbird/sunbird-collection-editor/blob/master/LICENSE) file for details
+
+## Versioning
+We use [SemVer](https://semver.org/) for versioning. For the versions available, see the [tags](https://github.com/project-sunbird/sunbird-collection-editor/tags) on this repository.
+
+## Any Issues?
+We have an open and active [issue tracker](https://project-sunbird.atlassian.net/issues/). Please report any issues.
