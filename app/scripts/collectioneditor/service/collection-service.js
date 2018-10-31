@@ -43,7 +43,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 	setNodeTitle: function (title) {
 		var instance = this
 		if (!title) title = 'Untitled'
-        title = title.replace(/[^\w:&_\-.(\),\/\s]/g, "");
+		title = title.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
 		ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode().applyPatch({ 'title': title }).done(function (a, b) {
 			instance.onRenderNode(undefined, { node: ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode() }, true)
 		})
@@ -634,10 +634,10 @@ org.ekstep.services.collectionService = new (Class.extend({
 					position: 'topCenter',
 					icon: 'fa fa-warning'
 				})
-				//text = text.replace(/[^a-zA-Z ]/g, '')
 			}
 		}
-        text = text.replace(/[^\w:&_\-.(\),\/\s]/g, "");
+		// eslint-disable-next-line
+		text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
 		return text
 	},
 	getObjectTypeByAddType: function (addType) {
