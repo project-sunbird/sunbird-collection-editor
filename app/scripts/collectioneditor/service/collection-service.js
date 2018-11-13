@@ -627,18 +627,20 @@ org.ekstep.services.collectionService = new (Class.extend({
 		}
 	},
 	removeSpecialChars: function (text) {
-		var iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
-		for (var i = 0; i < text.length; i++) {
-			if (iChars.indexOf(text.charAt(i)) !== -1) {
-				ecEditor.dispatchEvent('org.ekstep.toaster:error', {
-					message: 'Special character "'+ text.charAt(i) + '" is not allowed',
-					position: 'topCenter',
-					icon: 'fa fa-warning'
-				})
+		if (text) {
+			var iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
+			for (var i = 0; i < text.length; i++) {
+				if (iChars.indexOf(text.charAt(i)) !== -1) {
+					ecEditor.dispatchEvent('org.ekstep.toaster:error', {
+						message: 'Special character "' + text.charAt(i) + '" is not allowed',
+						position: 'topCenter',
+						icon: 'fa fa-warning'
+					})
+				}
 			}
+			text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
+			return text;
 		}
-		text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
-        return text; 
 	},
 	getObjectTypeByAddType: function (addType) {
 		var categoryList = []
