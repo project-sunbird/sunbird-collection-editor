@@ -43,9 +43,9 @@ org.ekstep.services.collectionService = new (Class.extend({
 	setNodeTitle: function (title) {
 		var instance = this
 		if (!title) title = 'Untitled'
-		title = title.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
+		title = instance.removeSpecialChars(title);
 		ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode().applyPatch({ 'title': title }).done(function (a, b) {
-			instance.onRenderNode(undefined, { node: ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode() }, true)
+			instance.onRenderNode(undefined, { node: ecEditor.jQuery('#collection-tree').fancytree('getTree').getActiveNode() }, true)	
 		})
 		ecEditor.jQuery('span.fancytree-title').attr('style', 'width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden')
 	},
@@ -191,6 +191,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			extensions: ['dnd', 'filter', 'edit'],
 			source: tree,
 			keyboard: true,
+			escapeTitles: true, 
 			modifyChild: function (event, data) {
 				if (data && data.operation === 'remove') {
 					org.ekstep.services.telemetryService.interact({ 'type': 'click', 'subtype': 'remove', 'target': 'node', 'pluginid': 'org.ekstep.collectioneditor', 'pluginver': '1.3', 'objectid': data.node.data.id, 'stage': data.node.data.id })
@@ -241,12 +242,13 @@ org.ekstep.services.collectionService = new (Class.extend({
 					inputNode.attr('size', '15')
 					ecEditor.jQuery(data.node.span.childNodes[2]).attr('style', 'background:none;')
 					inputNode.focus()
-					var currentValue = inputNode.val()
+					var currentValue = instance.removeSpecialChars(inputNode.val())
 					inputNode.val('')
 					inputNode.val(currentValue)
 					inputNode[0].scrollLeft = inputNode[0].scrollWidth
 				},
 				close: function (event, data) {
+					instance.setNodeTitle(data.node.title)
 					ecEditor.jQuery('span.fancytree-title').attr('style', 'width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden')
 					ecEditor.dispatchEvent('title:update:' + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this)
 					ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title)
@@ -625,22 +627,20 @@ org.ekstep.services.collectionService = new (Class.extend({
 		}
 	},
 	removeSpecialChars: function (text) {
-		// eslint-disable-next-line
-		if(text){
+    if (text) {
 			var iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
 			for (var i = 0; i < text.length; i++) {
 				if (iChars.indexOf(text.charAt(i)) !== -1) {
 					ecEditor.dispatchEvent('org.ekstep.toaster:error', {
-						message: 'Special characters are not allowed',
+						message: 'Special character "' + text.charAt(i) + '" is not allowed',
 						position: 'topCenter',
 						icon: 'fa fa-warning'
 					})
 				}
 			}
-			// eslint-disable-next-line
 			text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, "");
-			return text
-		}	
+			return text;
+		}
 	},
 	getObjectTypeByAddType: function (addType) {
 		var categoryList = []
