@@ -627,7 +627,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 		}
 	},
 	removeSpecialChars: function (text) {
-		if (text) {
+    if (text) {
 			var iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
 			for (var i = 0; i < text.length; i++) {
 				if (iChars.indexOf(text.charAt(i)) !== -1) {
