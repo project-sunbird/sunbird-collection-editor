@@ -49,7 +49,7 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     margin: 0 0 .28571429rem 0;
-    color: #979797;    
+    color: #979797;
 }
 
 .form-fields-except-image {
@@ -163,7 +163,7 @@ body {
     padding-left: 1vw;
 }
 
-.button-overrides {   
+.button-overrides {
     padding: 0.85em 1.5em!important;
     text-transform: none!important;
     border-radius: .25rem!important;
@@ -188,7 +188,7 @@ body {
 #read-metadata-wrapper .ui.items {
     height: 30%!important;
     margin-bottom: 0!important;
-    
+
 }
 
 #read-metadata-wrapper .item,
@@ -248,7 +248,7 @@ body {
  }
 
  .padding-none {
-    padding:0 !important;    
+    padding:0 !important;
  }
 
  .margin-bottom-0 {
@@ -284,3 +284,13 @@ body {
 .ui.selection.dropdown .menu>.item {
     text-transform: capitalize;
 }
+
+.ui.checkbox.qrCodeCheck .box:before,.ui.checkbox label:before, .ui.checkbox.qrCodeCheck .box:after,.ui.checkbox label:after{
+    width: 17px ;
+    height: 17px;
+    border: 2px solid #0079ff;
+  }
+
+  .ui.radio.checkbox.qrCodeCheck input:checked~.box:after, .ui.radio.checkbox.qrCodeCheck input:checked~label:after{
+    background-color: #0079ff;
+  }
