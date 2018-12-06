@@ -92,7 +92,7 @@ angular.module('editorApp').controller('MainCtrl', ['$scope', '$location', '$ocL
 
 		config.collectionEditorPlugins = config.plugins || org.ekstep.contenteditor.config.plugins
 		config.plugins = [
-			{ 'id': 'org.ekstep.collectioneditor', 'ver': '1.4', 'type': 'plugin' }
+			{ 'id': 'org.ekstep.collectioneditor', 'ver': '1.5', 'type': 'plugin' }
 		]
 		org.ekstep.contenteditor.init(context, config, $scope, undefined, function () {
 			$scope.contentService = org.ekstep.contenteditor.api.getService(ServiceConstants.CONTENT_SERVICE)
