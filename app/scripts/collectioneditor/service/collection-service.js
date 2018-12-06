@@ -474,7 +474,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			return obj.type === type
 		})
 	},
-	reloadTreeFromCollction: function (data) {
+	reloadCollectionTree: function (data) {
 		var treeData = this._buildTree(data)
 		var instance = this;
 		ecEditor.jQuery('#collection-tree').fancytree('getTree').reload([{
