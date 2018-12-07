@@ -474,24 +474,6 @@ org.ekstep.services.collectionService = new (Class.extend({
 			return obj.type === type
 		})
 	},
-	reloadCollectionTree: function (data) {
-		var treeData = this._buildTree(data)
-		var instance = this;
-		ecEditor.jQuery('#collection-tree').fancytree('getTree').reload([{
-			'id': data.identifier || UUID(),
-			'title': data.name,
-			'tooltip': data.name,
-			'objectType': data.contentType,
-			'metadata': _.omit(data, ['children', 'collections']),
-			'folder': true,
-			'children': treeData,
-			'root': true,
-			'icon': instance.getObjectType(data.contentType).iconClass
-		}]);
-		var rootNode = ecEditor.jQuery('#collection-tree').fancytree('getRootNode')
-		var firstChild = rootNode.getFirstChild().getFirstChild() // rootNode.getFirstChild() will always be available.
-		firstChild ? firstChild.setActive() : rootNode.getFirstChild().setActive() // select the first children node by default
-	},
 	fromCollection: function (data) {
 		var treeData = this._buildTree(data)
 		var instance = this
