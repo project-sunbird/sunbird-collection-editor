@@ -66,9 +66,12 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
 		case ServiceConstants.USER_SERVICE:
 			service = org.ekstep.services.userService
 			break
-    	case ServiceConstants.TEXTBOOK_SERVICE:
-      		service = org.ekstep.services.textbookService
-      		break
+		case ServiceConstants.CONTENT_LOCK_SERVICE:
+			service = org.ekstep.services.lockService
+			break
+		case ServiceConstants.TEXTBOOK_SERVICE:
+			service = org.ekstep.services.textbookService
+			break
 		}
 		return service
 	},
