@@ -1,4 +1,3 @@
-package build
 node() {
     try {
         String ANSI_GREEN = "\u001B[32m"
@@ -43,7 +42,6 @@ node() {
                         bower cache clean
                         bower install --force
                         cd ..
-                        echo "Version: ${version_number}"
                         #gulp build
                         #gulp packageCorePlugins
                         npm run collection-plugins
