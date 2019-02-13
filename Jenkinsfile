@@ -11,19 +11,19 @@ node() {
             stage('Checkout') {
                 cleanWs()
                 sh "git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins"
-                if (params.tag == "") {
+                if (params.github_release_tag == "") {
                     checkout scm
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
                     build_tag = branch_name + "_" + commit_hash
-                    println(ANSI_BOLD + ANSI_YELLOW + "Tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
+                    println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
                     sh "cd plugins && git checkout origin/${branch_name} -b ${branch_name}"
                 } else {
                     def scmVars = checkout scm
-                    checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.tag}"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
+                    checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.github_release_tag}"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
                     build_tag = params.tag
-                    println(ANSI_BOLD + ANSI_YELLOW + "Tag specified, building from tag: " + params.tag + ANSI_NORMAL)
-                    sh "cd plugins && git checkout tags/${params.tag} -b ${params.tag}"
+                    println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
+                    sh "cd plugins && git checkout tags/${params.github_release_tag} -b ${params.github_release_tag}"
                 }
                 echo "build_tag: " + build_tag
 
