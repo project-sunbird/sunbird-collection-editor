@@ -1,6 +1,8 @@
 describe("content editor integration test: ", function() {
-
+    var originalTimeout;
     beforeAll(function(done) {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
         org.ekstep.contenteditor.globalContext = {};
         var corePlugins = [
             { "id": "org.ekstep.collectioneditor", "ver": "1.0", "type": "plugin" },
@@ -32,6 +34,10 @@ describe("content editor integration test: ", function() {
         org.ekstep.pluginframework.pluginManager.loadAllPlugins(corePlugins, undefined, function() {
             done();
         });
+    });
+
+    afterEach(function() {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     it('should load default plugins', function(done) {
