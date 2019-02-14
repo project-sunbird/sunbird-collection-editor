@@ -120,7 +120,8 @@
     "test-with-coverage": "istanbul cover karma start karmaconf.js && cat ./coverage/lcov.info | codacy-coverage",
     "build": "webpack",
     "collection-plugins": "webpack --config webpack.collection.config.js",
-    "build-editor": "npm run test && npm run collection-plugins && npm run build",
+    "build-editor": "npm run collection-plugins && npm run build",
+    "test-with-coverage": "istanbul cover npm run test && cat ./coverage/lcov.info | codacy-coverage",
     "build-npm-pkg": "npm run collection-plugins && webpack --env.channel=NPM_PACKAGE && cd collection-editor && gulp minifyJs && gulp copystyleImages && gulp clean && gulp injectrenamedfiles"
   },
   "repository": {
