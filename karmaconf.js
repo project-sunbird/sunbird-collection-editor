@@ -51,6 +51,7 @@ module.exports = function(config) {
             "app/scripts/angular/controller/main.js",
             "app/scripts/angular/directive/template-compiler-directive.js",
             "test/baseSpec.js",
+            'test/libs/*.js',
             'test/scripts/**/*.js',
             { pattern: 'plugins/org.ekstep.collectioneditor-1.0/**/*.json', watched: true, served: true, included: false }
         ],
