@@ -47,12 +47,17 @@ node() {
                         npm run collection-plugins
                         npm run build
                         npm run test
-                        cp collection-editor.zip collection-editor.zip:${artifact_version}
+                        #cp collection-editor.zip collection-editor.zip:${artifact_version}
                     """
                 }
                 stage('ArchiveArtifacts') {
-                    archiveArtifacts "collection-editor.zip:${artifact_version}"
-                    sh """echo {\\"artifact_name\\" : \\"collection-editor.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
+                    sh """
+                        mkdir collection-editor-artifacts
+                        cp collection-editor.zip collection-editor-artifacts
+                        zip -j  collection-editor-artifacts.zip:${artifact_version}  collection-editor-artifacts/*                      
+                    """
+                    archiveArtifacts "collection-editor-artifacts:${artifact_version}"
+                    sh """echo {\\"artifact_name\\" : \\"collection-editor-artifacts\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
                     archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
                     currentBuild.description = "${artifact_version}"
                 }
