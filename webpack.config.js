@@ -292,6 +292,7 @@ module.exports = (env, argv) => {
             }),
             new webpack.ProvidePlugin({
                 Fingerprint2: 'Fingerprint2',
+                UAParser: 'UAParser',
                 Ajv: 'ajv',
                 $: "jquery",
                 jQuery: "jquery",
