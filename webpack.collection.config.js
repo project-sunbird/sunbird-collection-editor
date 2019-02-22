@@ -16,7 +16,7 @@ var corePlugins = [
     "org.ekstep.contenteditorfunctions-1.2",
     "org.ekstep.unitmeta-1.7",
     "org.ekstep.contentmeta-1.5",
-    "org.ekstep.courseunitmeta-1.6",
+    "org.ekstep.courseunitmeta-1.7",
     "org.ekstep.lessonplanunitmeta-1.5",
     "org.ekstep.preview-1.1",
     "org.ekstep.telemetry-1.0",
