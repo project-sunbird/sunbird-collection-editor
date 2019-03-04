@@ -27,8 +27,8 @@ node() {
                        gulp clean
                        gulp injectrenamedfiles  # Inject the minified files to index.html
                        gulp package # Package the build
-                       az storage blob upload-batch --destination ${params.container_name}/artefacts/editor/ --source dist/editor/ --account-name $azure_account_name --account-key $azure_account_key
-                       az storage blob upload-batch --destination ${params.container_name}/artefacts/coreplugins/ --source dist/coreplugins/ --account-name $azure_account_name --account-key $azure_account_key
+                       az storage blob upload-batch --destination ${params.container_name}/artefacts/editor --source dist/editor --account-name $azure_account_name --account-key $azure_account_key
+                       az storage blob upload-batch --destination ${params.container_name}/artefacts/coreplugins --source dist/coreplugins --account-name $azure_account_name --account-key $azure_account_key
                     """
                     }
                     currentBuild.description = "${artifact_version}"
