@@ -33,7 +33,7 @@ node() {
 
                 stage('Build') {
                     sh """
-                        export version_number=${artifact_version}
+                        export version_number=${branch_name}
                         rm -rf collection-editor
                         node -v
                         npm -v                        
