@@ -110,7 +110,8 @@ module.exports = (env, argv) => {
                 'jquery': path.resolve('./node_modules/jquery/dist/jquery.js'),
                 'jquery-ui/ui/widgets/menu': path.resolve('./app/bower_components/jquery-ui/ui/widgets/menu.js'),
                 'angular': path.resolve('./app/bower_components/angular/angular.js'),
-                'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
+                'Fingerprint2': path.resolve('./app/bower_components/fingerprintjs2/fingerprint2.js'),
+                'UAParser': path.resolve('./app/libs/ua-parser.min.js')
             }
         },
         module: {
@@ -122,7 +123,6 @@ module.exports = (env, argv) => {
                         strict: true
                     }
                 },
-
                 {
                     test: require.resolve('./app/bower_components/async/dist/async.min.js'),
                     use: [{
@@ -159,10 +159,17 @@ module.exports = (env, argv) => {
                     }]
                 },
                 {
-                    test: require.resolve('./app/bower_components/fingerprintjs2/dist/fingerprint2.min.js'),
+                    test: require.resolve('./app/bower_components/fingerprintjs2/fingerprint2.js'),
                     use: [{
                         loader: 'expose-loader',
                         options: 'Fingerprint2'
+                    }]
+                },
+                {
+                    test: require.resolve('./app/libs/ua-parser.min.js'),
+                    use: [{
+                        loader: 'expose-loader',
+                        options: 'UAParser'
                     }]
                 },
                 {
@@ -285,6 +292,7 @@ module.exports = (env, argv) => {
             }),
             new webpack.ProvidePlugin({
                 Fingerprint2: 'Fingerprint2',
+                UAParser: 'UAParser',
                 Ajv: 'ajv',
                 $: "jquery",
                 jQuery: "jquery",

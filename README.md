@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6ac235c7a3ff4b888dd12d66d0fe4c88)](https://app.codacy.com/app/sunbird-bot/sunbird-collection-editor?utm_source=github.com&utm_medium=referral&utm_content=project-sunbird/sunbird-collection-editor&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://travis-ci.org/project-sunbird/sunbird-collection-editor.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-collection-editor)
 [![npm version](https://badge.fury.io/js/%40project-sunbird%2Fcollection-editor.svg)](https://badge.fury.io/js/%40project-sunbird%2Fcollection-editor)
 
