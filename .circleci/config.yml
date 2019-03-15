@@ -1,0 +1,34 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: g33tha/plugin:test
+        environment:
+           version_number: $CIRCLE_BRANCH
+     
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          
+      - run: git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $CIRCLE_BRANCH 
+      - run: npm install
+      - run: cd app && bower cache clean --allow-root
+      - run: cd app && bower install --force --allow-root
+      - run: npm run collection-plugins
+      - run: npm run build
+      - run: npm run test
+      
+      - store_artifacts:
+          path: collection-editor.zip
+          destination: collection-editor.zip
+          
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths: ./node_modules
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build
