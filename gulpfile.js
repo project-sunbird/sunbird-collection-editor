@@ -118,7 +118,8 @@ gulp.task('minifyCSS', function() {
             'app/styles/noto.css',
             'app/styles/css/header.css',
             'app/styles/css/container.css',
-            'app/styles/css/commonStyles.css'
+            'app/styles/css/commonStyles.css',
+            'app/styles/fonts-override.css'
         ])
         .pipe(concat('style.min.css'))
         .pipe(minify({
@@ -170,7 +171,7 @@ gulp.task('minifyCssBower', function() {
 
 
 gulp.task('copycommonfonts', function() {
-    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/*', 'app/styles/images/*'], {
+    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/**/*', 'app/styles/images/*'], {
             base: 'app/styles/'
         })
         .pipe(gulp.dest('collection-editor/styles'));

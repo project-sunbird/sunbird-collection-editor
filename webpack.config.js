@@ -84,6 +84,7 @@ const APP_STYLE = [
     "./app/libs/prism.css",
     './app/styles/noto.css',
     './app/styles/iconfont.css',
+    './app/styles/fonts-override.css'
 ];
 
 // removing the duplicate files
