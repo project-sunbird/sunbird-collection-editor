@@ -53,6 +53,18 @@ describe('Collection Editor', function() {
         expect(org.ekstep.collectioneditor.api.registerMetaPage.calls.count()).toEqual(2);
     });
 
+    it('should register sidebar', function(){
+        spyOn(org.ekstep.collectioneditor.api, "registerSidebar").and.callThrough();
+        org.ekstep.collectioneditor.api.registerSidebar(org.ekstep.contenteditor.config);
+        expect(org.ekstep.collectioneditor.api.registerSidebar).toHaveBeenCalled();
+    })
+
+    it('should register breadcrumb', function(){
+        spyOn(org.ekstep.collectioneditor.api, "registerBreadcrumb").and.callThrough();
+        org.ekstep.collectioneditor.api.registerBreadcrumb(org.ekstep.contenteditor.config);
+        expect(org.ekstep.collectioneditor.api.registerBreadcrumb).toHaveBeenCalled();
+    })
+
     it('should return respective services', function() {
         spyOn(org.ekstep.collectioneditor.api, "getService").and.callThrough();
         expect(org.ekstep.collectioneditor.api.getService("popup")).toBe(org.ekstep.services.popupService);
@@ -64,6 +76,11 @@ describe('Collection Editor', function() {
         expect(org.ekstep.collectioneditor.api.getService("asset")).toBe(org.ekstep.services.assetService);
         expect(org.ekstep.collectioneditor.api.getService("telemetry")).toBe(org.ekstep.services.telemetryService);
         expect(org.ekstep.collectioneditor.api.getService("collection")).toBe(org.ekstep.services.collectionService);
+        expect(org.ekstep.collectioneditor.api.getService("dialcode")).toBe(org.ekstep.services.dialcodeService);
+        expect(org.ekstep.collectioneditor.api.getService("user")).toBe(org.ekstep.services.userService);
+        expect(org.ekstep.collectioneditor.api.getService("lock")).toBe(org.ekstep.services.lockService);
+        expect(org.ekstep.collectioneditor.api.getService("textbook")).toBe(org.ekstep.services.textbookService);
+
     });
 
 });
