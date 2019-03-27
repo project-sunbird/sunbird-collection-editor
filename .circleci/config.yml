@@ -12,6 +12,7 @@ jobs:
           #key: dependency-cache-{{ checksum "package.json" }}
           
       - run: git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $CIRCLE_BRANCH 
+      - run: sudo npm install -g bower@1.8.0 grunt-cli@1.2.0 gulp@3.9.1 codacy-coverage
       - run: npm install
       - run: cd app && bower cache clean --allow-root
       - run: cd app && bower install --force --allow-root
