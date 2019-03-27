@@ -17,11 +17,17 @@ jobs:
       - run: cd app && bower install --force --allow-root
       - run: npm run collection-plugins
       - run: npm run build
-      - run: npm run test
-      
+      - run: 
+          name: test-with-coverage
+          command: 'mkdir -p /tmp/logs && npm run test-with-coverage | tee /tmp/logs/test_cases.log'
+      - run:
+          name: Publishing report to Codacy
+          command: 'cat ./coverage/lcov.info | codacy-coverage '
+          when: always
+       
       - store_artifacts:
-          path: collection-editor.zip
-          destination: collection-editor.zip
+          path: /tmp/logs
+          destination: logs
           
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
