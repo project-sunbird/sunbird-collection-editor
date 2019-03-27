@@ -7,7 +7,7 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
 			org.ekstep.services.telemetryService.start(COLLECTION_EDITOR_LOADED - startTime);
 			ecEditor.addEventListener("org.ekstep.collectioneditor:content:load", function () {
 				//subtype should be "content_load_time"
-				ecEditor.getService(ServiceConstants.TELEMETRY_SERVICE).interact({ type: "click", subtype: "content_load_time", duration: (Date.now() - COLLECTION_EDITOR_LOADED).toString() })
+				ecEditor.getService(ServiceConstants.TELEMETRY_SERVICE).interact({ id: "screen", type: "click", subtype: "content_load_time", duration: (Date.now() - COLLECTION_EDITOR_LOADED).toString() })
 			})
 			if (cb) cb()
 		})
