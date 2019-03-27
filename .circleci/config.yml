@@ -30,7 +30,6 @@ jobs:
           path: /tmp/logs
           destination: logs
       
-      - run: chmod -R 777 ./workingDirectory
       
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
