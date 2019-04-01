@@ -51,6 +51,7 @@ module.exports = function(config) {
             "app/scripts/angular/controller/main.js",
             "app/scripts/angular/directive/template-compiler-directive.js",
             "test/baseSpec.js",
+            'test/libs/*.js',
             'test/scripts/**/*.js',
             { pattern: 'plugins/org.ekstep.collectioneditor-1.0/**/*.json', watched: true, served: true, included: false }
         ],
@@ -60,6 +61,7 @@ module.exports = function(config) {
             'karma-jasmine-matchers',
             'karma-coverage',
             'karma-phantomjs-launcher',
+            'karma-coverage-istanbul-reporter',
             'karma-mocha-reporter'
         ],
 
@@ -144,6 +146,7 @@ module.exports = function(config) {
 
         coverageReporter: {
             reporters: [
+                { type: 'lcovonly', dir: 'coverage/' },
                 { type: 'html', dir: 'coverage/' },
                 { type: 'text-summary' },
                 { type: 'cobertura' }

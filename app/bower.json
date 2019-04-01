@@ -20,7 +20,7 @@
         "ngSafeApply": "./libs/Scope.SafeApply.js",
         "izitoast": "1.1.5",
         "promise-polyfill": "*",
-        "fingerprintjs2": "^1.5.1",
+        "fingerprintjs2": "2.0.6",
         "contenteditor": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/base-editor.min.1.2.js"
     },
     "appPath": "app",
