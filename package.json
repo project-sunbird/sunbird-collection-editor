@@ -31,7 +31,7 @@
     "bower-resolve-webpack-plugin": "*",
     "brotli-gzip-webpack-plugin": "*",
     "clean-webpack-plugin": "^0.1.19",
-    "compression-webpack-plugin": "*",
+    "compression-webpack-plugin": "^2.0.0",
     "copy-webpack-plugin": "^4.5.2",
     "cpy": "7.0.1",
     "css-loader": "^0.28.11",

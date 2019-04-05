@@ -26,6 +26,7 @@ const extract = require('extract-zip');
 const { exec } = require('child_process');
 const cpy = require('cpy');
 const gulp = require('gulp');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 
 /**
@@ -312,6 +313,13 @@ module.exports = (env, argv) => {
                     }
                 },
                 canPrint: true
+            }),
+            new CompressionPlugin({
+                algorithm: 'gzip',
+                minRatio: 1,
+                filename(fileIterator){
+                    return `${fileIterator.path}.gz`
+                }
             }),
             new ZipPlugin({
                 path: path.join(__dirname, '.'),
