@@ -21,7 +21,7 @@
         "izitoast": "1.1.5",
         "promise-polyfill": "*",
         "fingerprintjs2": "2.0.6",
-        "contenteditor": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/content-editor/scripts/base-editor.min.1.2.js"
+        "contenteditor": "https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/content-editor/scripts/base-editor.min.js"
     },
     "appPath": "app",
     "moduleName": "editorApp",
