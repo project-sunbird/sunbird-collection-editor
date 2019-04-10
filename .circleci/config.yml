@@ -11,8 +11,8 @@ jobs:
       - checkout:
           path: ~/collection-editor
       
-      #- restore_cache:
-          #key: dependency-cache-{{ checksum "package.json" }}
+      - restore_cache:
+          key: ce-dependency-cache-{{ checksum "package.json" }}
        
       - run:
           name: clone plugins
@@ -47,7 +47,7 @@ jobs:
           destination: coverage
       
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: ce-dependency-cache-{{ checksum "package.json" }}
           paths: ./node_modules
 
 workflows:
