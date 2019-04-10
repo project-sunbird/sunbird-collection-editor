@@ -1,13 +1,15 @@
 version: 2.1
 jobs:
   build:
+    working_directory: ~/collection-editor
     docker:
       - image: circleci/node:6.10-browsers
         environment:
            version_number: $CIRCLE_BRANCH
      
     steps:
-      - checkout
+      - checkout:
+          path: ~/collection-editor
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
        
