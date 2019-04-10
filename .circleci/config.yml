@@ -10,8 +10,9 @@ jobs:
     steps:
       - checkout:
           path: ~/collection-editor
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      
+      #- restore_cache:
+          #key: dependency-cache-{{ checksum "package.json" }}
        
       - run:
           name: clone plugins
