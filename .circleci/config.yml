@@ -27,7 +27,7 @@ jobs:
       - run: npm run collection-plugins
       - run: npm run build
       
-     - run: 
+      - run: 
           name: test-with-coverage
           command: 'npm run test-with-coverage'
           
