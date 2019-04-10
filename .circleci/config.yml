@@ -1,15 +1,18 @@
 version: 2.1
 jobs:
   build:
+    working_directory: ~/collection-editor
     docker:
       - image: circleci/node:6.10-browsers
         environment:
            version_number: $CIRCLE_BRANCH
      
     steps:
-      - checkout
-      #- restore_cache:
-          #key: dependency-cache-{{ checksum "package.json" }}
+      - checkout:
+          path: ~/collection-editor
+      
+      - restore_cache:
+          key: ce-dependency-cache-{{ checksum "package.json" }}
        
       - run:
           name: clone plugins
@@ -18,8 +21,6 @@ jobs:
             prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/project-sunbird/sunbird-collection-editor/pulls/$prnumber)
             target_branch=$(echo "${prdata}" | jq -r '.base.ref')
             git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $target_branch 
-       
-      #- run: git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $CIRCLE_BRANCH 
 
       - run: sudo npm install -g bower@1.8.0 grunt-cli@1.2.0 gulp@3.9.1 codacy-coverage
       - run: npm install
@@ -44,7 +45,7 @@ jobs:
           destination: coverage
       
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: ce-dependency-cache-{{ checksum "package.json" }}
           paths: ./node_modules
 
 workflows:
