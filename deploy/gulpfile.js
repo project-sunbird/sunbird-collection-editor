@@ -59,7 +59,7 @@ gulp.task('bower-package', function() {
 gulp.task('package', ['iframe-package', 'embed-package', 'coreplugins-package']);
 
 gulp.task('iframe-compress', ['bower-package'], function() {
-    return gulp.src(['build/**/*.js', 'build/**/*.css', 'build/**/*.html', 'build/**/*.png', 'build/**/*.ttf', 'build/**/*.woff', 'build/**/*.woff2'])
+    return gulp.src(['build/**/*.js', 'build/**/*.css', 'build/**/*.html', 'build/**/*.png',  'build/**/*.svg', 'build/**/*.ttf', 'build/**/*.woff', 'build/**/*.woff2'])
     .pipe(gzip())
     .pipe(gulp.dest('build'));
 });
