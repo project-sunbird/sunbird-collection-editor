@@ -3,7 +3,12 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
 		var startTime = Date.now()
 		if (config) org.ekstep.services.collectionService.initialize(config)
 		org.ekstep.pluginframework.pluginManager.loadAllPlugins(ecEditor.getConfig('collectionEditorPlugins'), undefined, function () {
-			org.ekstep.services.telemetryService.start((new Date()).getTime() - startTime)
+			var COLLECTION_EDITOR_LOADED = Date.now();
+			org.ekstep.services.telemetryService.start(COLLECTION_EDITOR_LOADED - startTime);
+			ecEditor.addEventListener("org.ekstep.collectioneditor:content:load", function () {
+				//subtype should be "content_load_time"
+				ecEditor.getService(ServiceConstants.TELEMETRY_SERVICE).interact({ id: "screen", type: "click", subtype: "content_load_time", duration: (Date.now() - COLLECTION_EDITOR_LOADED).toString() })
+			})
 			if (cb) cb()
 		})
 	},
@@ -33,45 +38,45 @@ window.org.ekstep.collectioneditor.api = _.assign(org.ekstep.contenteditor.api, 
 	getService: function (serviceId) {
 		var service = ''
 		switch (serviceId) {
-		case ServiceConstants.POPUP_SERVICE:
-			service = org.ekstep.services.popupService
-			break
-		case ServiceConstants.CONTENT_SERVICE:
-			service = org.ekstep.services.contentService
-			break
-		case ServiceConstants.ASSESSMENT_SERVICE:
-			service = org.ekstep.services.assessmentService
-			break
-		case ServiceConstants.LANGUAGE_SERVICE:
-			service = org.ekstep.services.languageService
-			break
-		case ServiceConstants.SEARCH_SERVICE:
-			service = org.ekstep.services.searchService
-			break
-		case ServiceConstants.META_SERVICE:
-			service = org.ekstep.services.metaService
-			break
-		case ServiceConstants.ASSET_SERVICE:
-			service = org.ekstep.services.assetService
-			break
-		case ServiceConstants.TELEMETRY_SERVICE:
-			service = org.ekstep.services.telemetryService
-			break
-		case ServiceConstants.COLLECTION_SERVICE:
-			service = org.ekstep.services.collectionService
-			break
-		case ServiceConstants.DIALCODE_SERVICE:
-			service = org.ekstep.services.dialcodeService
-			break
-		case ServiceConstants.USER_SERVICE:
-			service = org.ekstep.services.userService
-			break
-		case ServiceConstants.CONTENT_LOCK_SERVICE:
-			service = org.ekstep.services.lockService
-			break
-		case ServiceConstants.TEXTBOOK_SERVICE:
-			service = org.ekstep.services.textbookService
-			break
+			case ServiceConstants.POPUP_SERVICE:
+				service = org.ekstep.services.popupService
+				break
+			case ServiceConstants.CONTENT_SERVICE:
+				service = org.ekstep.services.contentService
+				break
+			case ServiceConstants.ASSESSMENT_SERVICE:
+				service = org.ekstep.services.assessmentService
+				break
+			case ServiceConstants.LANGUAGE_SERVICE:
+				service = org.ekstep.services.languageService
+				break
+			case ServiceConstants.SEARCH_SERVICE:
+				service = org.ekstep.services.searchService
+				break
+			case ServiceConstants.META_SERVICE:
+				service = org.ekstep.services.metaService
+				break
+			case ServiceConstants.ASSET_SERVICE:
+				service = org.ekstep.services.assetService
+				break
+			case ServiceConstants.TELEMETRY_SERVICE:
+				service = org.ekstep.services.telemetryService
+				break
+			case ServiceConstants.COLLECTION_SERVICE:
+				service = org.ekstep.services.collectionService
+				break
+			case ServiceConstants.DIALCODE_SERVICE:
+				service = org.ekstep.services.dialcodeService
+				break
+			case ServiceConstants.USER_SERVICE:
+				service = org.ekstep.services.userService
+				break
+			case ServiceConstants.CONTENT_LOCK_SERVICE:
+				service = org.ekstep.services.lockService
+				break
+			case ServiceConstants.TEXTBOOK_SERVICE:
+				service = org.ekstep.services.textbookService
+				break
 		}
 		return service
 	},

@@ -118,7 +118,18 @@ gulp.task('minifyCSS', function() {
             'app/styles/noto.css',
             'app/styles/css/header.css',
             'app/styles/css/container.css',
-            'app/styles/css/commonStyles.css'
+            'app/styles/css/commonStyles.css',
+            'app/styles/fonts/notosans-bengali/notosansbengali.css',
+            'app/styles/fonts/notosans-malayalam/notosansmalayalam.css',
+            'app/styles/fonts/notosans-gurmukhi/notosansgurmukhi.css',
+            'app/styles/fonts/notosans-devanagari/notosansdevanagari.css',
+            'app/styles/fonts/notosans-gujarati/notosansgujarati.css',
+            'app/styles/fonts/notosans-telugu/notosanstelugu.css',
+            'app/styles/fonts/notosans-tamil/notosanstamil.css',
+            'app/styles/fonts/notosans-kannada/notosanskannada.css',
+            'app/styles/fonts/notosans-oriya/notosansoriya.css',
+            'app/styles/fonts/noto-nastaliqurdu/notonastaliqurdu.css',
+            'app/styles/fonts-override.css'
         ])
         .pipe(concat('style.min.css'))
         .pipe(minify({
@@ -170,7 +181,7 @@ gulp.task('minifyCssBower', function() {
 
 
 gulp.task('copycommonfonts', function() {
-    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/*', 'app/styles/images/*'], {
+    return gulp.src(['app/styles/themes/**/*', 'app/styles/webfonts/**/*', 'app/styles/fonts/**/*', 'app/styles/images/*'], {
             base: 'app/styles/'
         })
         .pipe(gulp.dest('collection-editor/styles'));
