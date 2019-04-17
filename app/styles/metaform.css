@@ -1,17 +1,6 @@
 
 /* cyrillic-ext */
 
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: url('webfonts/OpenSans-Regular.ttf') format('truetype');
-}
-
-html,
-body {
-    font-family: 'Open Sans', sans-serif !important;
-}
 
 #contents-data-form input,
 #contents-data-form textarea {

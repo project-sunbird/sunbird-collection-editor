@@ -13,6 +13,13 @@
          url(fonts/noto-nastaliqurdu/NotoNastaliqUrdu-Regular.ttf) format('truetype');
   }
 
+@font-face {
+    font-family: 'NotoSansbold';
+    font-style: normal;
+    font-weight: 700;
+    src:url(fonts/notosans/NotoSans-Bold.woff) format('woff');
+}
+
 /* cyrillic-ext */
 @font-face {
     font-family: 'Noto Sans';
@@ -384,6 +391,13 @@
   .ui.modal > .header,
   .label-icon-box-text,
   .cke_reset_all, .cke_reset_all *, .cke_reset_all a, .cke_reset_all textarea,
-  .ui.category.search> .results .category> .name {
+  .ui.category.search> .results .category> .name, .ui.modal>.header, .ngdialog.ngdialog-theme-default .ngdialog-content {
     font-family: inherit !important;
+  }
+
+  span.fa{
+        font: normal normal normal 14px/1 FontAwesome !important;
+  }
+  .ui.small.modal>.header{
+    font-family:NotoSansbold !important;
   }
