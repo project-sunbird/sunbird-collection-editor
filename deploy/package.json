@@ -1,6 +1,6 @@
 {
     "name": "collection-editor",
-    "version": "1.14.2",
+    "version": "1.15.0",
     "description": "It is used to update files in deployment job",
     "main": "gulpfile.js",
     "scripts": {
@@ -15,6 +15,7 @@
         "gulp-zip": "^3.2.0",
         "gulp-cachebust": "0.0.6",
         "gulp-clean": "^0.3.2",
+        "gulp-gzip": "^1.4.2",
         "gulp-inject": "^4.2.0",
         "merge-stream": "1.0.1",
         "gulp-string-replace": "^0.4.0",
