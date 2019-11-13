@@ -17,9 +17,7 @@ jobs:
       - run:
           name: clone plugins
           command: |
-            exit_code=$?
-            echo $CIRCLE_PR_NUMBER
-            if [ $exit_code -eq 0 ]; then
+            if [ -n $CIRCLE_PR_NUMBER ]; then
             prdata=$(curl -X GET -u $GITHUB_USER_TOKEN:x-oauth-basic https://api.github.com/repos/project-sunbird/sunbird-collection-editor/pulls/$CIRCLE_PR_NUMBER)
             target_branch=$(echo "${prdata}" | jq -r '.base.ref')
             git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $target_branch
