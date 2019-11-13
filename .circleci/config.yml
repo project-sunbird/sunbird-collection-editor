@@ -32,22 +32,19 @@ jobs:
       - run: 
           name: test-with-coverage
           command: 'npm run test-with-coverage'
-          
-      - run: mkdir -p /tmp/coverage && cp ./coverage/lcov.info /tmp/coverage
-      
-      - run:
-          name: Publishing report to Codacy
-          command: 'cat ./coverage/lcov.info | codacy-coverage '
-          when: always
-       
-      - store_artifacts:
-          path: /tmp/coverage
-          destination: coverage
-      
+
+      - run: 
+          name: Install sonar scanner
+          command: 'sudo npm install -g sonarqube-scanner'    
+           
+      - run: 
+          name: Sonar scanner
+          command: |
+            sonar-scanner -Dsonar.projectKey=project-sunbird_sunbird-collection-editor -Dsonar.organization=project-sunbird -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.language=js
+
       - save_cache:
           key: ce-dependency-cache-{{ checksum "package.json" }}
           paths: ./node_modules
-
 workflows:
   version: 2.1
   build_and_test:
