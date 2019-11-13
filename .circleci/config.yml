@@ -32,6 +32,10 @@ jobs:
       - run: 
           name: test-with-coverage
           command: 'npm run test-with-coverage'
+
+      - run: 
+          name: Install sonar scanner
+          command: 'sudo npm install -g sonarqube-scanner'    
            
       - run: 
           name: Sonar scanner
