@@ -35,7 +35,13 @@ jobs:
       
       - run: 
           name: test-with-coverage
-          command: 'npm run test-with-coverage'
+          command: 'npm run test'
+      
+      - run: mkdir -p /tmp/coverage && cp /home/circleci/collection-editor/coverage/lcov/PhantomJS\ 2.1.1\ \(Linux\ 0.0.0\)/lcov.info /tmp/coverage
+
+      - store_artifacts:
+          path: /tmp/coverage
+          destination: coverage
 
       - run: 
           name: Install sonar scanner
