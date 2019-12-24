@@ -12,7 +12,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var corePlugins = [
     "org.ekstep.conceptselector-1.1",
-    "org.ekstep.assetbrowser-1.2",
+    "org.ekstep.assetbrowser-1.3",
     "org.ekstep.contenteditorfunctions-1.2",
     "org.ekstep.unitmeta-1.7",
     "org.ekstep.contentmeta-1.5",
