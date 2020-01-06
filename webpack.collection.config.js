@@ -143,9 +143,9 @@ module.exports = {
             'jquery': path.resolve('./node_modules/jquery/dist/jquery.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
             'iziToast': path.resolve('./app/bower_components/izitoast/dist/js/iziToast.min.js'),
-            'video.js': path.resolve('./plugins/org.ekstep.video-1.5/editor/libs/video.js'),
-            'global/document': path.resolve('./node_modules/global/window.js'),
-			'global/window': path.resolve('./node_modules/global/window.js')
+            // 'video.js': path.resolve('./plugins/org.ekstep.video-1.5/editor/libs/video.js'),
+            // 'global/document': path.resolve('./node_modules/global/window.js'),
+			// 'global/window': path.resolve('./node_modules/global/window.js')
         }
     },
     module: {
