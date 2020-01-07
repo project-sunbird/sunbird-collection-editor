@@ -46,7 +46,7 @@ node() {
                         bower install --force
                         cd ..
                         #gulp build
-                        #gulp packageCorePlugins
+                        gulp packageCorePlugins
                         npm run collection-plugins
                         npm run build
                         npm run test
