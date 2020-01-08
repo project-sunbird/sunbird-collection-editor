@@ -30,6 +30,7 @@ jobs:
       - run: npm install
       - run: cd app && bower cache clean --allow-root
       - run: cd app && bower install --force --allow-root
+      - run: gulp packageCorePlugins
       - run: npm run collection-plugins
       - run: npm run build
       
@@ -37,7 +38,7 @@ jobs:
           name: test-with-coverage
           command: 'npm run test'
       
-      - run: mkdir -p /tmp/coverage && cp /home/circleci/collection-editor/coverage/lcov/PhantomJS\ 2.1.1\ \(Linux\ 0.0.0\)/lcov.info /tmp/coverage
+      - run: mkdir -p /tmp/coverage && cp /home/circleci/collection-editor/coverage/PhantomJS\ 2.1.1\ \(Linux\ 0.0.0\)/lcov.info /tmp/coverage
 
       - store_artifacts:
           path: /tmp/coverage
