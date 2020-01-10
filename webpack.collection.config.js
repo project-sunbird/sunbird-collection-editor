@@ -12,7 +12,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var corePlugins = [
     "org.ekstep.conceptselector-1.1",
-    "org.ekstep.assetbrowser-1.2",
     "org.ekstep.contenteditorfunctions-1.2",
     "org.ekstep.unitmeta-1.7",
     "org.ekstep.contentmeta-1.5",
@@ -37,13 +36,14 @@ function getEntryFiles() {
             entryFiles: getVendorCSS(),
             outputName: 'plugin-vendor',
         },
-    ];    
+    ];
     return entryPlus(entryFiles);
 }
 
 
 function packagePlugins() {
     var pluginPackageArr = []; // Default coreplugin
+    pluginPackageArr.push('./app/scripts/coreplugins.js')
     corePlugins.forEach(function (plugin) {
         var dependenciesArr = [];
         var packagedDepArr = [];
@@ -52,10 +52,10 @@ function packagePlugins() {
         var pluginContent = fs.readFileSync('plugins/' + plugin + '/editor/plugin.js', 'utf8');
         if (fs.existsSync('plugins/' + plugin + '/editor/plugin.dist.js')) {
             fs.unlinkSync('plugins/' + plugin + '/editor/plugin.dist.js');
-        }        
+        }
         console.log(plugin);
 
-        if (manifest.editor.views && pluginContent && !/(org.ekstep.assetbrowser-|org.ekstep.preview-)/.test(plugin)) {                        
+        if (manifest.editor.views && pluginContent && !/(org.ekstep.assetbrowser-|org.ekstep.preview-)/.test(plugin)) {
             var controllerPathArr = [];
             var templatePathArr = [];
             manifest.editor.views.forEach(function (obj, i) {
@@ -77,10 +77,10 @@ function packagePlugins() {
                 pluginContent = uglifyjs.minify(pluginContent.replace(/(registerBreadcrumb)([^)]+)\)/g, function ($0) {
                     var dash;
                     dash = 'registerBreadcrumb({templateURL: ' + templatePathArr[count] + ', controllerURL:' + controllerPathArr[count] + ', allowTemplateCache: true})'
-                    count++;                
+                    count++;
                     return dash;
                 }))
-                
+
             } else if (matchRegisterMeta !== null) {
 
                 pluginContent = uglifyjs.minify(pluginContent.replace(/(registerMetaPage).*[\s]*?(objectType:.*?])([^)]+)\)/g, function ($1, $2, $3) {
@@ -143,6 +143,8 @@ module.exports = {
             'jquery': path.resolve('./node_modules/jquery/dist/jquery.js'),
             'angular': path.resolve('./app/bower_components/angular/angular.js'),
             'iziToast': path.resolve('./app/bower_components/izitoast/dist/js/iziToast.min.js'),
+            'global/document': path.resolve('./node_modules/global/window.js'),
+			'global/window': path.resolve('./node_modules/global/window.js')
         }
     },
     module: {
