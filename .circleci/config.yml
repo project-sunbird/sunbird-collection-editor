@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/collection-editor
     docker:
-      - image: circleci/node:6.10-browsers
+            - image: circleci/node:9.0.0
         environment:
            version_number: $CIRCLE_BRANCH
      
