@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/collection-editor
     docker:
-      - image: circleci/node:6.10-browsers
+      - image: circleci/node:9.0.0
         environment:
            version_number: $CIRCLE_BRANCH
      
@@ -25,12 +25,10 @@ jobs:
             target_branch=$(echo "${prdata}" | jq -r '.base.ref')
             git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b $target_branch
             fi
-
       - run: sudo npm install -g bower@1.8.0 grunt-cli@1.2.0 gulp@3.9.1 codacy-coverage
       - run: npm install
       - run: cd app && bower cache clean --allow-root
       - run: cd app && bower install --force --allow-root
-      - run: gulp packageCorePlugins
       - run: npm run collection-plugins
       - run: npm run build
       
@@ -52,7 +50,6 @@ jobs:
           name: Sonar scanner
           command: |
             sonar-scanner -Dsonar.projectKey=project-sunbird_sunbird-collection-editor -Dsonar.organization=project-sunbird -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info -Dsonar.language=js
-
       - save_cache:
           key: ce-dependency-cache-{{ checksum "package.json" }}
           paths: ./node_modules
