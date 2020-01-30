@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/collection-editor",
-  "version": "0.0.3",
+  "version": "2.8.0",
   "description": "Collection Editor to support content types like Book, Collection, Course, Lesson Plan",
   "main": "",
   "eslintConfig": {
