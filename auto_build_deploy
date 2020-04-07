@@ -1,0 +1,76 @@
+node() {
+    try {
+        String ANSI_GREEN = "\u001B[32m"
+        String ANSI_NORMAL = "\u001B[0m"
+        String ANSI_BOLD = "\u001B[1m"
+        String ANSI_RED = "\u001B[31m"
+        String ANSI_YELLOW = "\u001B[33m"
+
+        ansiColor('xterm') {
+            tag_name = env.JOB_NAME.split("/")[-1]
+                if (!tag_name.contains(env.public_repo_branch)) {
+                    println("Error.. Tag does not contain " + env.public_repo_branch)
+                    error("Oh ho! Tag is not a release candidate.. Skipping build")
+                 }
+            stage('Checkout') {
+                cleanWs()
+               def scmVars = checkout scm
+               checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/$tag_name"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
+               commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+               artifact_version = tag_name
+               branch_name = tag_name.split('_')[0].split('\\.')[0] + "." + tag_name.split('_')[0].split('\\.')[1]
+               sh "git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins"
+                    sh """
+                        cd plugins
+                        checkout_tag=\$(git ls-remote --tags origin $branch_name* | grep -o "$branch_name.*" | sort -V | tail -n1)
+                        git checkout tags/\${checkout_tag} -b \${checkout_tag}
+                    """
+            }    
+                
+                echo "artifact_version: " + artifact_version
+
+                stage('Build') {
+                    sh """
+                        export version_number=${branch_name}
+                        export build_number=${commit_hash}
+                        rm -rf collection-editor
+                        node -v
+                        npm -v                        
+                        npm install
+                        cd app
+                        bower cache clean
+                        bower install --force
+                        cd ..
+                        #gulp build
+                        gulp packageCorePlugins
+                        npm run collection-plugins
+                        npm run build
+                        npm run test
+                        #cp collection-editor.zip collection-editor.zip:${artifact_version}
+                    """
+                }
+                stage('ArchiveArtifacts') {
+                    sh """
+                        mkdir collection-editor-artifacts
+                        cp collection-editor.zip collection-editor-artifacts
+                        zip -j  collection-editor-artifacts.zip:${artifact_version}  collection-editor-artifacts/*                      
+                    """
+                    archiveArtifacts "collection-editor-artifacts.zip:${artifact_version}"
+                    sh """echo {\\"artifact_name\\" : \\"collection-editor-artifacts.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
+                    archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
+                    currentBuild.description = "${artifact_version}"
+                }
+        }
+        currentBuild.result = "SUCCESS"    
+        slack_notify(currentBuild.result, tag_name)
+        email_notify()  
+        auto_build_deploy()
+    }
+    catch (err) {
+        currentBuild.result = "FAILURE"
+        slack_notify(currentBuild.result, tag_name)
+        email_notify()
+        throw err
+    }
+
+}
