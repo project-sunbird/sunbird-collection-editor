@@ -1,3 +1,4 @@
+@Library('deploy-conf') _ 
 node() {
     try {
         String ANSI_GREEN = "\u001B[32m"
@@ -29,7 +30,7 @@ node() {
                 
                 echo "artifact_version: " + artifact_version
 
-                stage('Build') {
+         //       stage Build
                     sh """
                         export version_number=${branch_name}
                         export build_number=${commit_hash}
@@ -48,8 +49,8 @@ node() {
                         npm run test
                         #cp collection-editor.zip collection-editor.zip:${artifact_version}
                     """
-                }
-                stage('ArchiveArtifacts') {
+          
+         //       stage ArchiveArtifacts
                     sh """
                         mkdir collection-editor-artifacts
                         cp collection-editor.zip collection-editor-artifacts
@@ -59,7 +60,7 @@ node() {
                     sh """echo {\\"artifact_name\\" : \\"collection-editor-artifacts.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
                     archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
                     currentBuild.description = "${artifact_version}"
-                }
+                
         }
         currentBuild.result = "SUCCESS"    
         slack_notify(currentBuild.result, tag_name)
