@@ -200,6 +200,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			},
 			activate: function (event, data) {
 				ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node)
+				ecEditor.dispatchEvent('org.ekstep.collectioneditor:breadcrumb')
 				ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node)
 				org.ekstep.services.telemetryService.interact({ 'type': 'click', 'subtype': 'select', 'target': 'node', 'pluginid': 'org.ekstep.collectioneditor', 'pluginver': '1.3', 'objectid': data.node.data.id, 'stage': data.node.data.id })
 			},
@@ -597,7 +598,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 		var rootNode = ecEditor.jQuery('#collection-tree').fancytree('getRootNode').getFirstChild()
 
 		var node = tree.getActiveNode()
-		if (this.getObjectType(node.data.objectType).editable && (node.data.metadata.status !== 'Live')) {
+		if (this.getObjectType(node.data.objectType).editable) {
 			var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes
 			org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child')
 		} else {
