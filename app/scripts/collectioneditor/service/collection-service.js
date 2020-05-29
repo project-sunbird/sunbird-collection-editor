@@ -191,7 +191,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			extensions: ['dnd', 'filter', 'edit'],
 			source: tree,
 			keyboard: true,
-			escapeTitles: true, 
+			escapeTitles: true,
 			modifyChild: function (event, data) {
 				if (data && data.operation === 'remove') {
 					org.ekstep.services.telemetryService.interact({ 'type': 'click', 'subtype': 'remove', 'target': 'node', 'pluginid': 'org.ekstep.collectioneditor', 'pluginver': '1.3', 'objectid': data.node.data.id, 'stage': data.node.data.id })
@@ -597,7 +597,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 		var rootNode = ecEditor.jQuery('#collection-tree').fancytree('getRootNode').getFirstChild()
 
 		var node = tree.getActiveNode()
-		if (this.getObjectType(node.data.objectType).editable) {
+		if (this.getObjectType(node.data.objectType).editable && (node.data.metadata.status !== 'Live')) {
 			var childrenTypes = instance.getObjectType(rootNode.data.objectType).childrenTypes
 			org.ekstep.services.collectionService.addNode(childrenTypes[0], {}, 'child')
 		} else {
