@@ -191,7 +191,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			extensions: ['dnd', 'filter', 'edit'],
 			source: tree,
 			keyboard: true,
-			escapeTitles: true, 
+			escapeTitles: true,
 			modifyChild: function (event, data) {
 				if (data && data.operation === 'remove') {
 					org.ekstep.services.telemetryService.interact({ 'type': 'click', 'subtype': 'remove', 'target': 'node', 'pluginid': 'org.ekstep.collectioneditor', 'pluginver': '1.3', 'objectid': data.node.data.id, 'stage': data.node.data.id })
@@ -200,6 +200,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 			},
 			activate: function (event, data) {
 				ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected', data.node)
+				ecEditor.dispatchEvent('org.ekstep.collectioneditor:breadcrumb')
 				ecEditor.dispatchEvent('org.ekstep.collectioneditor:node:selected:' + data.node.data.objectType, data.node)
 				org.ekstep.services.telemetryService.interact({ 'type': 'click', 'subtype': 'select', 'target': 'node', 'pluginid': 'org.ekstep.collectioneditor', 'pluginver': '1.3', 'objectid': data.node.data.id, 'stage': data.node.data.id })
 			},
