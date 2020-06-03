@@ -218,6 +218,9 @@ org.ekstep.services.collectionService = new (Class.extend({
 					return true
 				},
 				dragDrop: function (node, data) {
+					if ((data.hitMode === 'before' || data.hitMode === 'after' || data.hitMode === 'over') && data.node.data.root) {
+						return instance.dropNotAllowed()
+					}
 					if (instance.config.rules && instance.config.rules.levels) return instance._dropNode(node, data)
 				},
 				filter: {
@@ -363,12 +366,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 		if (data.otherNode.getLevel() === node.getLevel()) {
 			objectType = node.getParent().data.objectType
 		} else if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
-			ecEditor.dispatchEvent('org.ekstep.toaster:warning', {
-				title: 'This operation is not allowed!',
-				position: 'topCenter',
-				icon: 'fa fa-warning'
-			})
-			return false
+			return instance.dropNotAllowed()
 		} else if (data.hitMode === 'before' || data.hitMode === 'after') {
 			objectType = node.getParent().data.objectType
 		} else {
@@ -697,6 +695,14 @@ org.ekstep.services.collectionService = new (Class.extend({
 			})
 		}
 		return keywords
+	},
+	dropNotAllowed: function () {
+		ecEditor.dispatchEvent('org.ekstep.toaster:warning', {
+			title: 'This operation is not allowed!',
+			position: 'topCenter',
+			icon: 'fa fa-warning'
+		})
+		return false
 	}
 
 }))()
