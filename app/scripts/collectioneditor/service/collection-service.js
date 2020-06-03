@@ -218,7 +218,6 @@ org.ekstep.services.collectionService = new (Class.extend({
 					return true
 				},
 				dragDrop: function (node, data) {
-					if ((data.hitMode === 'before' || data.hitMode === 'after') && data.node.data.root) return false
 					if (instance.config.rules && instance.config.rules.levels) return instance._dropNode(node, data)
 				},
 				filter: {
@@ -361,14 +360,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 		var instance = this
 
 		var objectType
-		if ((data.otherNode.getLevel() === node.getLevel()) && data.hitMode === 'over') {
-			ecEditor.dispatchEvent('org.ekstep.toaster:warning', {
-				title: 'This operation is not allowed!',
-				position: 'topCenter',
-				icon: 'fa fa-warning'
-			})
-			return false
-		} else if (data.otherNode.getLevel() === node.getLevel()) {
+		if (data.otherNode.getLevel() === node.getLevel()) {
 			objectType = node.getParent().data.objectType
 		} else if ((instance.maxTreeDepth(data.otherNode) + node.getLevel()) > instance.config.rules.levels) {
 			ecEditor.dispatchEvent('org.ekstep.toaster:warning', {
