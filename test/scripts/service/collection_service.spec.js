@@ -125,8 +125,29 @@ describe('collection service', function() {
         spyOn(org.ekstep.services.collectionService, "_dropNode").and.callThrough();
         var obj = org.ekstep.services.collectionService._dropNode(node, data);
         expect(org.ekstep.services.collectionService._dropNode).toHaveBeenCalled();
+    });
+    it('Should not drop the selected node - when node is root node"', function() {
+        var node = jQuery("#collection-tree").fancytree("getTree").getActiveNode()
+        var data = {"hitMode":"over","otherNode":{"data":{"objectType":"CourseUnit","id":"do_21271924058220134417288"},"title":"Untitled Textbook Unit"},"node":{"title":"CourseUnit","data":{"id":"do_21271924058220134417286", "root": true}}}
+
+        data.hitMode = 'over'
+        ecEditor.dispatchEvent = jasmine.createSpy();
+        spyOn(org.ekstep.services.collectionService, "dragDrop").and.callThrough();
+        var obj = org.ekstep.services.collectionService.dragDrop(node, data);
+        expect(org.ekstep.services.collectionService.dragDrop).toHaveBeenCalled();
+        expect(ecEditor.dispatchEvent).toHaveBeenCalledWith("org.ekstep.toaster:warning", { title: 'This operation is not allowed!', position: 'topCenter', icon: 'fa fa-warning' });
+
+        data.hitMode = 'before'        
+        var obj = org.ekstep.services.collectionService.dragDrop(node, data);
+        expect(org.ekstep.services.collectionService.dragDrop).toHaveBeenCalled();
+        expect(ecEditor.dispatchEvent).toHaveBeenCalledWith("org.ekstep.toaster:warning", { title: 'This operation is not allowed!', position: 'topCenter', icon: 'fa fa-warning' });
+
+        data.hitMode = 'after'
+        var obj = org.ekstep.services.collectionService.dragDrop(node, data);
+        expect(org.ekstep.services.collectionService.dragDrop).toHaveBeenCalled();
         expect(ecEditor.dispatchEvent).toHaveBeenCalledWith("org.ekstep.toaster:warning", { title: 'This operation is not allowed!', position: 'topCenter', icon: 'fa fa-warning' });
     });
+
     it('DropNode when hitMode is not Over', function(){
         var node = jQuery("#collection-tree").fancytree("getTree").getActiveNode()
         var data = {"hitMode":"over","otherNode":{"data":{"objectType":"TextBookUnit","id":"do_21271924058220134417288"},"title":"Untitled Textbook Unit"},"node":{"title":"Untitled Textbook Unit","data":{"id":"do_21271924058220134417286"}}}

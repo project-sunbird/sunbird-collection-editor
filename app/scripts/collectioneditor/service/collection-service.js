@@ -218,10 +218,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 					return true
 				},
 				dragDrop: function (node, data) {
-					if ((data.hitMode === 'before' || data.hitMode === 'after' || data.hitMode === 'over') && data.node.data.root) {
-						return instance.dropNotAllowed()
-					}
-					if (instance.config.rules && instance.config.rules.levels) return instance._dropNode(node, data)
+					return instance.dragDrop(node, data)
 				},
 				filter: {
 					autoApply: true,
@@ -695,6 +692,13 @@ org.ekstep.services.collectionService = new (Class.extend({
 			})
 		}
 		return keywords
+	},
+	dragDrop: function (node, data) {
+		var instance = this
+		if ((data.hitMode === 'before' || data.hitMode === 'after' || data.hitMode === 'over') && data.node.data.root) {
+			return instance.dropNotAllowed()
+		}
+		if (instance.config.rules && instance.config.rules.levels) return instance._dropNode(node, data)
 	},
 	dropNotAllowed: function () {
 		ecEditor.dispatchEvent('org.ekstep.toaster:warning', {
