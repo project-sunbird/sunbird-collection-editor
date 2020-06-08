@@ -249,6 +249,8 @@ org.ekstep.services.collectionService = new (Class.extend({
 				},
 				close: function (event, data) {
 					instance.setNodeTitle(data.node.title)
+					var activeNode = instance.getActiveNode()
+					if (activeNode.data && activeNode.data.root) ecEditor.dispatchEvent('content:title:update', data.node.title)
 					ecEditor.jQuery('span.fancytree-title').attr('style', 'width:11em;text-overflow:ellipsis;white-space:nowrap;overflow:hidden')
 					ecEditor.dispatchEvent('title:update:' + instance.getActiveNode().data.objectType.toLowerCase(), data.node.title, this)
 					ecEditor.jQuery('span.fancytree-title').attr('title', data.node.title)
