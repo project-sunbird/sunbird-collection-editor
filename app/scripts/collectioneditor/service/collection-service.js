@@ -431,11 +431,11 @@ org.ekstep.services.collectionService = new (Class.extend({
 					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'rename', false)
 				} else {
 					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'rename', nodeType.editable)
-					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addChild', (nodeType.addType === 'Editor'))
+					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addChild', (_.includes(nodeType.addType, 'Editor')))
 					if (node.getLevel() >= config.rules.levels - 1) {
 						ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addChild', false)
 					}
-					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addSibling', (!!(!node.data.root && nodeType.addType === 'Editor')))
+					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addSibling', (!!(!node.data.root && (_.includes(nodeType.addType, 'Editor')))))
 					ecEditor.jQuery('#collection-tree').contextmenu('enableEntry', 'addLesson', nodeType.editable)
 				}
 				return node.setActive()
@@ -635,7 +635,7 @@ org.ekstep.services.collectionService = new (Class.extend({
 	getObjectTypeByAddType: function (addType) {
 		var categoryList = []
 		_.find(this.config.rules.objectTypes, function (obj) {
-			if (obj.addType === addType) {
+			if (_.includes(obj.addType, addType)) {
 				categoryList.push(obj.type)
 			}
 		})
