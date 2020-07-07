@@ -6,7 +6,7 @@ window.context = {
         "name": "Santhosh Vasabhaktula",
         "email": "santhosh@ilimi.in"
     },
-    "framework": 'NCERT'
+    "framework": "NCERT"
 };
 
 window.config = {
