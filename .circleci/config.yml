@@ -46,7 +46,7 @@ jobs:
           name: Install NVM
           command: 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh|bash'
   
-        - run:
+      - run:
           name: alter node version
           command: 'source ~/.nvm/nvm.sh && nvm install 8 && nvm use 8 && nvm alias default 8 && node -v'
 
