@@ -16,7 +16,7 @@ node() {
                     artifact_version = branch_name + "_" + commit_hash
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
                     sh "git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins"
-                    sh "cd plugins && git checkout origin/${branch_name} -b ${branch_name}"
+                    sh "cd plugins && git checkout origin/release-3.2.0 -b release-3.2.0"
                 } else {
                     def scmVars = checkout scm
                     checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.github_release_tag}"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
