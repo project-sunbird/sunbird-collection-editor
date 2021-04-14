@@ -1,0 +1,219 @@
+{
+  "id": "api.form.create",
+  "ver": "1.0",
+  "ets": 0, // Device specific information to be added by Adopter OPS Team
+  "params": {
+    "msgid": "string", //UUID to be added by Adopter OPS Team
+    "did": "string" //Device specific information to be added by Adopter OPS Team
+   },
+  "request": {
+    "type": "content",
+    "subType": "collection",
+    "action": "save",
+    "framework": "", // to be added by the Adopter Ops Team
+    "rootOrgId": "", // to be added by the Adopter Ops Team
+    "data": {
+      "templateName": "defaultTemplate",
+      "action": "save",
+      "fields": [
+      {
+					"code": "appicon",
+					"dataType": "url",
+					"description": "App Icon",
+					"editable": true,
+					"index": 1,
+					"inputType": "file",
+					"label": "App Icon",
+					"name": "App Icon",
+					"placeholder": "App Icon",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "name",
+					"dataType": "text",
+					"description": "Title of the content",
+					"editable": true,
+					"index": 2,
+					"inputType": "text",
+					"label": "Title",
+					"name": "Title",
+					"placeholder": "Enter Title",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "description",
+					"dataType": "text",
+					"description": "Brief description",
+					"editable": true,
+					"index": 3,
+					"inputType": "textarea",
+					"label": "Description",
+					"name": "Description",
+					"placeholder": "Enter description",
+					"renderingHints": {},
+					"required": false,
+					"visible": true
+				}, {
+					"code": "keywords",
+					"dataType": "list",
+					"description": "Keywords for the content",
+					"editable": true,
+					"index": 4,
+					"inputType": "keywordsuggestion",
+					"label": "keywords",
+					"name": "Keywords",
+					"placeholder": "Enter Keywords",
+					"renderingHints": {},
+					"required": false,
+					"visible": true
+				}, {
+					"code": "primaryCategory",
+					"dataType": "text",
+					"description": "Collection Type",
+					"editable": false,
+					"index": 5,
+					"inputType": "text",
+					"label": "Collection Type",
+					"name": "Collection Type",
+					"placeholder": "",
+					"readonly": true,
+					"required": true,
+					"visible": true
+				}, {
+					"code": "additionalCategories",
+					"dataType": "list",
+					"description": "Additonal Category of the Content",
+					"editable": true,
+					"index": 5,
+					"inputType": "multiselect",
+					"label": "Additional Category",
+					"name": "Additional Category",
+					"placeholder": "Select Additional Category",
+					"renderingHints": {},
+					"range": ["Textbook", "Lesson Plan"],
+					"required": false,
+					"visible": true
+				}, {
+					"code": "board",
+					"dataType": "text",
+					"description": "Board",
+					"editable": true,
+					"index": 6,
+					"inputType": "select",
+					"label": "Board",
+					"name": "Board",
+					"placeholder": "Select Board",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "medium",
+					"dataType": "list",
+					"description": "",
+					"editable": true,
+					"index": 7,
+					"inputType": "select",
+					"label": "Medium of Instruction",
+					"name": "medium",
+					"placeholder": "Select Medium",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "gradeLevel",
+					"dataType": "list",
+					"description": "Class",
+					"editable": true,
+					"index": 8,
+					"inputType": "multiselect",
+					"label": "Question Paper classes",
+					"name": "Class",
+					"placeholder": "Select Class",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "subject",
+					"dataType": "list",
+					"description": "",
+					"editable": true,
+					"index": 9,
+					"inputType": "select",
+					"label": "Question Paper subjects",
+					"name": "Subject",
+					"placeholder": "Select Subject",
+					"renderingHints": {},
+					"required": true,
+					"visible": true
+				}, {
+					"code": "topic",
+					"dataType": "list",
+					"description": "Choose a Topics",
+					"editable": true,
+					"index": 10,
+					"inputType": "topicselector",
+					"label": "Topics Covered",
+					"name": "Topic",
+					"placeholder": "Choose Topics",
+					"renderingHints": {},
+					"required": false,
+					"visible": true
+				}, {
+					"code": "audience",
+					"dataType": "list",
+					"description": "",
+					"editable": true,
+					"index": 11,
+					"inputType": "select",
+					"label": "Audience Type",
+					"name": "Audience",
+					"placeholder": "Select Audience",
+					"renderingHints": {},
+					"range": ["Instructor", "Learner"],
+					"required": false,
+					"visible": true
+				}, {
+					"code": "author",
+					"visible": true,
+					"editable": true,
+					"dataType": "text",
+					"renderingHints": {},
+					"name": "Author",
+					"description": "Original Author",
+					"index": 12,
+					"inputType": "text",
+					"label": "Original Author",
+					"placeholder": "Author",
+					"required": false
+				}, {
+					"code": "attributions",
+					"visible": true,
+					"editable": true,
+					"dataType": "list",
+					"renderingHints": {},
+					"name": "attribution",
+					"description": "Attributions",
+					"index": 13,
+					"inputType": "text",
+					"label": "Attributions",
+					"placeholder": "Attributions",
+					"required": false
+				}, {
+					"code": "copyright",
+					"visible": true,
+					"editable": true,
+					"dataType": "text",
+					"renderingHints": {},
+					"name": "Copyright",
+					"description": "Copyright",
+					"index": 14,
+					"inputType": "text",
+					"label": "Copyright",
+					"placeholder": "Copyright",
+					"required": false
+				}]
+    }
+  }
+}
