@@ -15,9 +15,9 @@
 					"editable": true,
 					"index": 1,
 					"inputType": "file",
-					"label": "App Icon",
-					"name": "App Icon",
-					"placeholder": "App Icon",
+					"label": "Icon",
+					"name": "Icon",
+					"placeholder": "Icon",
 					"renderingHints": {},
 					"required": true,
 					"visible": true
