@@ -50,7 +50,7 @@
 				}, {
 					"code": "keywords",
 					"dataType": "list",
-					"description": "Keywords for the content",
+					"description": "Keywords for the collection",
 					"editable": true,
 					"index": 4,
 					"inputType": "keywordsuggestion",
