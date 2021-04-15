@@ -120,7 +120,7 @@
 					"editable": true,
 					"index": 8,
 					"inputType": "multiselect",
-					"label": "Question Paper classes",
+					"label": "Class",
 					"name": "Class",
 					"placeholder": "Select Class",
 					"renderingHints": {},
