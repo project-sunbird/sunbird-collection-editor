@@ -28,9 +28,9 @@
 					"editable": true,
 					"index": 2,
 					"inputType": "text",
-					"label": "Title",
-					"name": "Title",
-					"placeholder": "Enter Title",
+					"label": "Name",
+					"name": "Name",
+					"placeholder": "Enter Name",
 					"renderingHints": {},
 					"required": true,
 					"visible": true
