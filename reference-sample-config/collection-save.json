@@ -76,7 +76,7 @@
 				}, {
 					"code": "additionalCategories",
 					"dataType": "list",
-					"description": "Additonal Category of the Content",
+					"description": "Additonal Category of the Collection",
 					"editable": true,
 					"index": 5,
 					"inputType": "multiselect",
