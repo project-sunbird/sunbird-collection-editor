@@ -133,7 +133,7 @@
 					"editable": true,
 					"index": 9,
 					"inputType": "select",
-					"label": "Question Paper subjects",
+					"label": "Subject",
 					"name": "Subject",
 					"placeholder": "Select Subject",
 					"renderingHints": {},
