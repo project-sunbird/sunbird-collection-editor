@@ -205,7 +205,63 @@
 					"label": "Copyright",
 					"placeholder": "Copyright",
 					"required": false
-				}]
+				}, 
+ , {
+					"code": "copyrightYear",
+					"visible": true,
+					"editable": true,
+					"dataType": "list",
+					"renderingHints": {},
+					"description": "Year of Creation",
+					"index": 10,
+					"label": "Year of Creation",
+					"required": true,
+					"name": "Year of Creation",
+					"inputType": "number",
+					"placeholder": "Enter Year of Creation",
+					"validation": [{
+						"type": "min",
+						"message": "Maximum length of the year should be 4",
+						"value": "4"
+					}, {
+						"type": "max",
+						"message": "Minimum length of the year should be 4",
+						"value": "4"
+					}]
+				}, {
+					"code": "license",
+					"visible": true,
+					"editable": true,
+					"dataType": "text",
+					"renderingHints": {},
+					"name": "license",
+					"description": "License of the content",
+					"index": 11,
+					"inputType": "licenses",
+					"label": "license",
+					"placeholder": "license",
+					"required": true
+				}, {
+					"code": "licenseterms",
+					"visible": true,
+					"editable": true,
+					"defaultValue": "By creating any type of content (resources, books, courses etc.) on DIKSHA, you consent to publish it under the Creative Commons License Framework. Please choose the applicable creative commons license you wish to apply to your content.",
+					"dataType": "text",
+					"renderingHints": {
+						"value": {
+							"video/x-youtube": "By linking or uploading YouTube videos on DIKSHA, you consent to publishing it as per the terms of the YouTube video license. DIKSHA accepts only videos with YouTube Standard License or Creative Commons License."
+						},
+						"class": "twelve wide field"
+					},
+					"description": "licenseterms",
+					"index": 12,
+					"label": "License Terms",
+					"required": false,
+					"name": "licenseterms",
+					"inputType": "label",
+					"placeholder": "license"
+				}
+]
     }
   }
 }
