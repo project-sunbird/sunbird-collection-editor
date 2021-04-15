@@ -142,7 +142,7 @@
 				}, {
 					"code": "topic",
 					"dataType": "list",
-					"description": "Choose a Topics",
+					"description": "Choose Topics",
 					"editable": true,
 					"index": 10,
 					"inputType": "topicselector",
