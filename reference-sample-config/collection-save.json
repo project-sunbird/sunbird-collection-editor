@@ -2,8 +2,8 @@
     "type": "content",
     "subType": "collection",
     "action": "save",
-    "framework": "", // to be added by the Adopter Ops Team
-    "rootOrgId": "", // to be added by the Adopter Ops Team
+    "framework": "", 
+    "rootOrgId": "", 
     "data": {
       "templateName": "defaultTemplate",
       "action": "save",
@@ -205,15 +205,14 @@
 					"label": "Copyright",
 					"placeholder": "Copyright",
 					"required": false
-				}, 
- , {
+				},  {
 					"code": "copyrightYear",
 					"visible": true,
 					"editable": true,
 					"dataType": "list",
 					"renderingHints": {},
 					"description": "Year of Creation",
-					"index": 10,
+					"index": 15,
 					"label": "Year of Creation",
 					"required": true,
 					"name": "Year of Creation",
@@ -236,7 +235,7 @@
 					"renderingHints": {},
 					"name": "license",
 					"description": "License of the content",
-					"index": 11,
+					"index": 16,
 					"inputType": "licenses",
 					"label": "license",
 					"placeholder": "license",
@@ -254,14 +253,13 @@
 						"class": "twelve wide field"
 					},
 					"description": "licenseterms",
-					"index": 12,
+					"index": 17,
 					"label": "License Terms",
 					"required": false,
 					"name": "licenseterms",
 					"inputType": "label",
 					"placeholder": "license"
 				}
-]
+	]
     }
   }
-}
