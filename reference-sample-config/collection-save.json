@@ -24,7 +24,7 @@
 				}, {
 					"code": "name",
 					"dataType": "text",
-					"description": "Title of the content",
+					"description": "Name of the collection",
 					"editable": true,
 					"index": 2,
 					"inputType": "text",
