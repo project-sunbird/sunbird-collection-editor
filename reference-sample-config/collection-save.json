@@ -11,7 +11,7 @@
       {
 					"code": "appicon",
 					"dataType": "url",
-					"description": "App Icon",
+					"description": "Icon",
 					"editable": true,
 					"index": 1,
 					"inputType": "file",
