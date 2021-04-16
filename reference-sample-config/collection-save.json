@@ -1,4 +1,5 @@
-"request": {
+{ 
+  "request": {
 	"type": "content",
 	"subtype": "collection",
 	"action": "save",
@@ -278,4 +279,5 @@
 			}
 		]
 	}
+}
 }
