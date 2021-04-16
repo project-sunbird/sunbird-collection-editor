@@ -1,4 +1,4 @@
-		"request" : 
+{ "request" : 
 {
 			"type": "content",
 			"subtype": "collection",
@@ -280,3 +280,4 @@
 				]
 			}
 		}
+}
