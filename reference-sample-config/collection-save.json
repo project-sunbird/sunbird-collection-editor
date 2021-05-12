@@ -1,7 +1,7 @@
 { 
   "request": {
 	"type": "content",
-	"subtype": "collection",
+	"subType": "collection",
 	"action": "save",
 	"component": "",
 	"framework": "",
