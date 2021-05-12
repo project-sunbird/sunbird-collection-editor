@@ -107,6 +107,7 @@
 					{
 						"code": "board",
 						"dataType": "text",
+						"depends": ["medium", "gradeLevel", "subject", "topic"],
 						"description": "Board",
 						"editable": true,
 						"index": 6,
@@ -120,6 +121,7 @@
 					}, {
 						"code": "medium",
 						"dataType": "list",
+						"depends": ["gradeLevel", "subject", "topic"],
 						"description": "",
 						"editable": true,
 						"index": 7,
@@ -133,6 +135,7 @@
 					}, {
 						"code": "gradeLevel",
 						"dataType": "list",
+						"depends": ["subject", "topic"],
 						"description": "Class",
 						"editable": true,
 						"index": 8,
@@ -146,6 +149,7 @@
 					}, {
 						"code": "subject",
 						"dataType": "list",
+						"depends": ["topic"],
 						"description": "",
 						"editable": true,
 						"index": 9,
