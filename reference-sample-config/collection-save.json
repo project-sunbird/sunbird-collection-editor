@@ -153,7 +153,7 @@
 				"description": "",
 				"editable": true,
 				"index": 9,
-				"inputType": "select",
+				"inputType": "multiselect",
 				"label": "Subject",
 				"name": "Subject",
 				"placeholder": "Select Subject",
