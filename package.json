@@ -94,7 +94,7 @@
     "karma-phantomjs-launcher": "1.0.2",
     "merge-stream": "1.0.1",
     "mini-css-extract-plugin": "^0.4.1",
-    "node-sass": "^4.9.2",
+    "node-sass": "^7.0.0",
     "on-build-webpack": "^0.1.0",
     "optimize-css-assets-webpack-plugin": "^4.0.3",
     "phantomjs": "2.1.7",
