@@ -44,6 +44,7 @@ node() {
                         cd app
                         bower cache clean
                         bower install --force
+                        npm install gulp
                         cd ..
                         #gulp build
                         gulp packageCorePlugins
