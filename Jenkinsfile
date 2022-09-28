@@ -40,10 +40,11 @@ node() {
                         rm -rf collection-editor
                         node -v
                         npm -v                        
-                        npm install
+                        #npm install
                         cd app
                         bower cache clean
                         bower install --force
+                        npm install gulp
                         cd ..
                         #gulp build
                         gulp packageCorePlugins
